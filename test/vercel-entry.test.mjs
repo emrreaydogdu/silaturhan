@@ -22,7 +22,7 @@ test("homepage publishes the branded browser metadata", async () => {
 
   assert.match(
     markup,
-    /<title>Fizyoterapist Sılasu Turhan \| Maltepe, İstanbul<\/title>/,
+    /<title>Fizyoterapist Sılasu Turhan \| Kinezyoterapi Tedavisi<\/title>/,
   );
   assert.match(markup, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
 });
