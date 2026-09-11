@@ -1,0 +1,24 @@
+.booking-fields .booking-note,
+.booking-name.booking-phone {
+  grid-column: 1 / -1;
+}
+
+.booking-note textarea {
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(18, 52, 59, .18);
+  border-radius: .7rem;
+  color: #12343b;
+  font: inherit;
+  line-height: 1.55;
+  min-height: 6.75rem;
+  padding: .85rem 1rem;
+  resize: vertical;
+  width: 100%;
+}
+
+.booking-note textarea:focus,
+.booking-name.booking-phone input:focus {
+  border-color: #2e8980;
+  box-shadow: 0 0 0 3px rgba(46, 137, 128, .16);
+  outline: 0;
+}

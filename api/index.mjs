@@ -1,6 +1,9 @@
 import worker from "../server/index.js";
 
-const instagramStylesheet = '<link rel="stylesheet" href="/instagram-feed.css">';
+const extraStylesheets = [
+  '<link rel="stylesheet" href="/instagram-feed.css">',
+  '<link rel="stylesheet" href="/booking-refinement.css">',
+].join("");
 
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
@@ -12,13 +15,16 @@ export async function render(request, fetchAsset = fetch) {
   }
 
   const markup = await response.text();
-  if (markup.includes('href="/instagram-feed.css"')) {
+  if (
+    markup.includes('href="/instagram-feed.css"') &&
+    markup.includes('href="/booking-refinement.css"')
+  ) {
     return new Response(markup, response);
   }
 
   const headers = new Headers(response.headers);
   headers.delete("content-length");
-  return new Response(markup.replace("</head>", `${instagramStylesheet}</head>`), {
+  return new Response(markup.replace("</head>", `${extraStylesheets}</head>`), {
     headers,
     status: response.status,
     statusText: response.statusText,
