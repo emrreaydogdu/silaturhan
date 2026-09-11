@@ -115,6 +115,9 @@ export const multisportPage = `<!doctype html>
     <script>
       const header = document.querySelector('.site-header');
       const menuButton = document.querySelector('.menu-toggle');
+      const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 72);
+      updateHeader();
+      window.addEventListener('scroll', updateHeader, { passive: true });
       menuButton?.addEventListener('click', () => {
         const isOpen = header.classList.toggle('menu-open');
         menuButton.setAttribute('aria-expanded', String(isOpen));
