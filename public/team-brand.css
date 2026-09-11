@@ -1,0 +1,28 @@
+.brand > span:last-child {
+  min-width: 0;
+}
+
+.brand small {
+  white-space: nowrap;
+}
+
+.entry-content h2 {
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+}
+
+.entry-content h2 em {
+  display: inline-block;
+  font-size: 0.72em;
+  line-height: 1.08;
+}
+
+@media (max-width: 620px) {
+  .brand small {
+    font-size: 0.46rem;
+    letter-spacing: 0.11em;
+  }
+
+  .entry-content h2 {
+    font-size: clamp(2.1rem, 9vw, 3.2rem);
+  }
+}

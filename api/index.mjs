@@ -3,6 +3,7 @@ import worker from "../server/index.js";
 const extraStylesheets = [
   '<link rel="stylesheet" href="/instagram-feed.css">',
   '<link rel="stylesheet" href="/booking-refinement.css">',
+  '<link rel="stylesheet" href="/team-brand.css">',
 ].join("");
 
 export async function render(request, fetchAsset = fetch) {
@@ -17,7 +18,8 @@ export async function render(request, fetchAsset = fetch) {
   const markup = await response.text();
   if (
     markup.includes('href="/instagram-feed.css"') &&
-    markup.includes('href="/booking-refinement.css"')
+    markup.includes('href="/booking-refinement.css"') &&
+    markup.includes('href="/team-brand.css"')
   ) {
     return new Response(markup, response);
   }
