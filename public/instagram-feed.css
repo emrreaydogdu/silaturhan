@@ -1,0 +1,148 @@
+.instagram-section {
+  background: #edf4f0;
+  color: #12343b;
+  padding: clamp(4.5rem, 9vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+}
+
+.instagram-section > * {
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.instagram-heading {
+  display: grid;
+  gap: 1.1rem;
+  max-width: 690px;
+  margin-bottom: clamp(2.25rem, 5vw, 4rem);
+}
+
+.instagram-heading .eyebrow {
+  align-items: center;
+  color: #176b62;
+  display: flex;
+  font-size: .72rem;
+  font-weight: 700;
+  gap: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.instagram-heading .eyebrow span {
+  background: currentColor;
+  height: 1px;
+  width: 28px;
+}
+
+.instagram-heading h2 {
+  color: #12343b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.45rem, 5vw, 4.4rem);
+  font-weight: 400;
+  letter-spacing: -.055em;
+  line-height: .94;
+}
+
+.instagram-heading h2 em {
+  color: #2e8980;
+  font-weight: 400;
+}
+
+.instagram-heading > p:not(.eyebrow) {
+  color: #4a615e;
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 570px;
+}
+
+.instagram-profile-link {
+  align-items: center;
+  color: #12343b;
+  display: inline-flex;
+  font-size: .93rem;
+  font-weight: 700;
+  gap: .55rem;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.instagram-profile-link::after {
+  background: #12343b;
+  content: "";
+  display: block;
+  height: 1px;
+  transform-origin: left;
+  transition: transform .2s ease;
+  width: 100%;
+}
+
+.instagram-profile-link:hover::after,
+.instagram-profile-link:focus-visible::after {
+  transform: scaleX(.45);
+}
+
+.instagram-profile-link:focus-visible {
+  border-radius: .25rem;
+  outline: 3px solid #d5a995;
+  outline-offset: 5px;
+}
+
+.instagram-feed-grid {
+  display: grid;
+  gap: clamp(.8rem, 2vw, 1.4rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.instagram-feed-card {
+  aspect-ratio: 1;
+  background: #dcebe5;
+  border: 1px solid rgba(18, 52, 59, .09);
+  border-radius: 1.35rem;
+  overflow: hidden;
+  padding: 1.1rem;
+  position: relative;
+}
+
+.instagram-feed-card::before {
+  background: linear-gradient(115deg, transparent 26%, rgba(255, 255, 255, .5) 45%, transparent 63%);
+  content: "";
+  inset: 0;
+  position: absolute;
+  transform: translateX(-110%);
+  animation: instagram-feed-shimmer 1.8s ease-in-out infinite;
+}
+
+.instagram-skeleton {
+  background: rgba(18, 52, 59, .11);
+  border-radius: 999px;
+  height: .58rem;
+  position: relative;
+  width: 42%;
+}
+
+.instagram-skeleton + .instagram-skeleton {
+  bottom: 1.25rem;
+  position: absolute;
+  width: 65%;
+}
+
+.instagram-pending {
+  color: #4a615e;
+  font-size: .9rem;
+  grid-column: 1 / -1;
+  margin-top: .2rem;
+}
+
+@keyframes instagram-feed-shimmer {
+  to { transform: translateX(110%); }
+}
+
+@media (max-width: 700px) {
+  .instagram-section { padding-inline: 1.25rem; }
+  .instagram-feed-grid { grid-template-columns: 1fr; }
+  .instagram-feed-card { aspect-ratio: 1.28; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instagram-feed-card::before { animation: none; }
+  .instagram-profile-link::after { transition: none; }
+}

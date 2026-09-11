@@ -1,8 +1,27 @@
 import worker from "../server/index.js";
 
+const instagramStylesheet = '<link rel="stylesheet" href="/instagram-feed.css">';
+
 export async function render(request, fetchAsset = fetch) {
-  return worker.fetch(request, {
+  const response = await worker.fetch(request, {
     ASSETS: { fetch: fetchAsset },
+  });
+
+  if (!response.headers.get("content-type")?.includes("text/html")) {
+    return response;
+  }
+
+  const markup = await response.text();
+  if (markup.includes('href="/instagram-feed.css"')) {
+    return new Response(markup, response);
+  }
+
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  return new Response(markup.replace("</head>", `${instagramStylesheet}</head>`), {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
   });
 }
 
