@@ -16,13 +16,20 @@ a { color: inherit; text-decoration: none; }
 .skip-link { left: 1rem; padding: .7rem 1rem; position: fixed; top: -4rem; z-index: 10; background: var(--ink); color: white; }
 .skip-link:focus { top: 1rem; }
 .ms-header, .ms-footer { max-width: 1300px; margin: auto; padding-left: 5vw; padding-right: 5vw; }
-.ms-header { align-items: center; display: flex; justify-content: space-between; min-height: 94px; }
+.ms-header { align-items: center; display: grid; gap: 2rem; grid-template-columns: auto 1fr auto; min-height: 94px; }
 .clinic-mark { align-items: center; display: flex; gap: .7rem; line-height: 1; }
 .clinic-symbol { align-items: center; border: 1px solid var(--ink); border-radius: 50%; display: inline-flex; font-family: Georgia, serif; font-size: 1.75rem; height: 32px; justify-content: center; width: 32px; }
 .clinic-mark strong { display: block; font-size: 1rem; letter-spacing: -.04em; }
 .clinic-mark small { display: block; font-size: .48rem; font-weight: 700; letter-spacing: .16em; margin-top: .34rem; }
 .back-link { border-bottom: 1px solid var(--ink); font-size: .78rem; font-weight: 700; padding-bottom: .25rem; }
 .back-link span { color: var(--blue); font-size: 1rem; margin-left: .25rem; }
+.ms-nav { display: flex; gap: clamp(.8rem, 2.2vw, 2rem); justify-content: center; }
+.ms-nav a { color: var(--muted-ink); font-size: .72rem; font-weight: 700; position: relative; }
+.ms-nav a::after { background: var(--blue); bottom: -.45rem; content: ''; height: 1px; left: 0; position: absolute; transform: scaleX(0); transform-origin: right; transition: transform .2s ease; width: 100%; }
+.ms-nav a:hover::after, .ms-nav a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.header-links { align-items: center; display: flex; gap: 1.15rem; }
+.ms-header-cta { background: var(--ink); color: white; font-size: .68rem; font-weight: 700; padding: .78rem .95rem; }
+.ms-header-cta span { color: #9fe5df; font-size: 1rem; margin-left: .3rem; }
 .ms-hero { background: var(--mist); isolation: isolate; min-height: min(760px, calc(100vh - 94px)); overflow: hidden; padding: clamp(4rem, 9vw, 8.5rem) 5vw; position: relative; }
 .hero-copy, .benefit-intro, .benefit-grid, .how-it-works, .clarity-panel { max-width: 1180px; margin-left: auto; margin-right: auto; }
 .hero-copy { position: relative; z-index: 1; }
@@ -75,11 +82,19 @@ h3 { font-size: clamp(2.2rem, 4vw, 3.65rem); line-height: .94; }
 .clarity-panel .button-primary { background: white; color: var(--ink); white-space: nowrap; }
 .clarity-stamp { align-items: center; border: 1px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; flex-direction: column; font-size: 1.1rem; height: 76px; justify-content: center; line-height: .75; width: 76px; }
 .clarity-stamp span { color: #a8ddd4; font-size: 1.65rem; }
-.ms-footer { border-top: 1px solid var(--line); color: var(--muted-ink); display: flex; flex-wrap: wrap; font-size: .68rem; gap: .5rem 2rem; justify-content: space-between; padding-bottom: 2rem; padding-top: 1.2rem; }
-.ms-footer p { margin: 0; }
+.ms-footer { align-items: start; border-top: 1px solid var(--line); color: var(--muted-ink); display: grid; font-size: .68rem; gap: 1.75rem; grid-template-columns: 1fr 1.2fr 1fr; padding-bottom: 2.2rem; padding-top: 1.8rem; }
+.footer-brand strong { color: var(--ink); display: block; font-size: .98rem; letter-spacing: -.04em; }
+.footer-brand span { display: block; font-size: .62rem; font-weight: 700; letter-spacing: .07em; margin-top: .35rem; }
+.footer-nav { display: flex; flex-wrap: wrap; gap: .8rem 1.35rem; }
+.footer-nav a { border-bottom: 1px solid transparent; padding-bottom: .2rem; }
+.footer-nav a:hover, .footer-nav a:focus-visible, .footer-nav [aria-current="page"] { border-color: var(--blue); color: var(--ink); }
+.footer-meta { text-align: right; }
+.footer-meta p { margin: 0 0 .55rem; }
 @media (max-width: 760px) {
-  .ms-header { min-height: 78px; }
+  .ms-header { gap: 1rem; grid-template-columns: 1fr auto; min-height: 78px; padding-bottom: .9rem; padding-top: .9rem; }
   .clinic-mark strong { font-size: .88rem; }
+  .ms-nav { grid-column: 1 / -1; justify-content: flex-start; order: 3; overflow-x: auto; padding-bottom: .15rem; }
+  .header-links .back-link { display: none; }
   .back-link { font-size: .68rem; }
   .ms-hero { min-height: auto; padding-bottom: 13rem; }
   .member-note { bottom: 2.5rem; left: 5vw; right: 5vw; max-width: none; }
@@ -89,6 +104,8 @@ h3 { font-size: clamp(2.2rem, 4vw, 3.65rem); line-height: .94; }
   .card-disc { margin: 3.5rem 0 1.7rem; }
   .clarity-panel { align-items: start; grid-template-columns: auto 1fr; padding: 1.6rem; }
   .clarity-panel .button { grid-column: 1 / -1; }
+  .ms-footer { grid-template-columns: 1fr; }
+  .footer-meta { text-align: left; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-orbit { animation: orbit-breathe 7s ease-in-out infinite alternate; }

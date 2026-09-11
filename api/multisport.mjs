@@ -19,7 +19,15 @@ export const multisportPage = `<!doctype html>
         <span class="clinic-symbol" aria-hidden="true">×</span>
         <span><strong>Fizyoterapist</strong><small>SILASU TURHAN · TİLBE MERİÇ</small></span>
       </a>
-      <a class="back-link" href="/">Ana sayfa <span aria-hidden="true">↗</span></a>
+      <nav class="ms-nav" aria-label="Ana menü">
+        <a href="/#hizmetler">Hizmetler</a>
+        <a href="/#yaklasim">Yaklaşımımız</a>
+        <a href="/#iletisim">İletişim</a>
+      </nav>
+      <div class="header-links">
+        <a class="back-link" href="/">Ana sayfa <span aria-hidden="true">↗</span></a>
+        <a class="ms-header-cta" href="/#iletisim">Randevu <span aria-hidden="true">→</span></a>
+      </div>
     </header>
 
     <main id="icerik">
@@ -102,8 +110,20 @@ export const multisportPage = `<!doctype html>
     </main>
 
     <footer class="ms-footer">
-      <p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p>
-      <p>MultiSport markası ilgili marka sahibine aittir.</p>
+      <div class="footer-brand">
+        <strong>Fizyoterapist</strong>
+        <span>Sılasu Turhan · Tilbe Meriç</span>
+      </div>
+      <nav class="footer-nav" aria-label="Alt menü">
+        <a href="/">Ana sayfa</a>
+        <a href="/#hizmetler">Hizmetler</a>
+        <a href="/#iletisim">İletişim</a>
+        <a href="/multisport" aria-current="page">MultiSport sayfası</a>
+      </nav>
+      <div class="footer-meta">
+        <p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p>
+        <p>MultiSport markası ilgili marka sahibine aittir.</p>
+      </div>
     </footer>
   </body>
 </html>`;

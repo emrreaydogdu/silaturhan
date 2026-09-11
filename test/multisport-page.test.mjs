@@ -18,5 +18,12 @@ test("MultiSport members have a dedicated benefits page", async () => {
   assert.match(page, /İndirimli destek[\s\S]*seçenekleri/);
   assert.match(page, /Randevu planla/);
   assert.match(page, /multisport\.css/);
+  assert.match(page, /class="ms-nav"/);
+  assert.match(page, /href="\/#hizmetler"/);
+  assert.match(page, /href="\/#yaklasim"/);
+  assert.match(page, /class="footer-nav"/);
+  assert.match(page, /MultiSport sayfası/);
   assert.match(styles, /\.ms-hero/);
+  assert.match(styles, /\.ms-nav/);
+  assert.match(styles, /\.footer-nav/);
 });
