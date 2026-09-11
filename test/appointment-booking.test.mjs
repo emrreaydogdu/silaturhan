@@ -19,3 +19,10 @@ test("appointment booking captures contact details without a time picker", () =>
     assert.doesNotMatch(bundle, /09:00/);
   }
 });
+
+test("booking modal opens from a direct appointment link", () => {
+  const clientBundle = bookingBundles[0];
+
+  assert.match(clientBundle, /URLSearchParams\(window\.location\.search\)/);
+  assert.match(clientBundle, /randevu/);
+});

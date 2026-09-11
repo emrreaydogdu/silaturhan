@@ -35,13 +35,13 @@ export const multisportPage = `<!doctype html>
         <div class="hero-copy">
           <div class="partner-lockup">
             <span>İş ortağımız</span>
-            <img src="${logoUrl}" alt="MultiSport" width="183" height="54" />
+            <img class="multisport-logo" src="${logoUrl}" alt="MultiSport" width="236" height="128" />
           </div>
           <p class="eyebrow">HAREKETİNİZE YER AÇIN</p>
           <h1 id="hero-title">MultiSport üyeliğinizle<br /><em>hareketinize</em> destek.</h1>
           <p class="hero-lede">Kartınızla kapsam dahilindeki uygulamalardan yararlanın; kapsam dışındaki klinik hizmetlerde ise size özel indirimli seçenekleri birlikte planlayalım.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="/#iletisim">Randevu planla <span aria-hidden="true">→</span></a>
+            <a class="button button-primary" href="/?randevu=1">Randevu planla <span aria-hidden="true">→</span></a>
             <a class="button button-quiet" href="#nasil-calisir">Nasıl çalışır?</a>
           </div>
         </div>
@@ -103,11 +103,11 @@ export const multisportPage = `<!doctype html>
           <p class="eyebrow">ŞEFFAF BİLGİLENDİRME</p>
           <h2 id="clarity-title">Kapsam, kart türünüze ve güncel anlaşma koşullarına göre randevu öncesinde teyit edilir.</h2>
         </div>
-        <a class="button button-primary" href="/#iletisim">İletişime geçin <span aria-hidden="true">→</span></a>
+        <a class="button button-primary" href="/?randevu=1">İletişime geçin <span aria-hidden="true">→</span></a>
       </section>
     </main>
 
-    <footer class="homepage-footer">
+    <footer>
       <a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a>
       <p>© 2026 Fizyoterapist Sılasu Turhan</p>
       <p><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6h4"></path></svg> Randevu ile hizmet verilmektedir.</p>
@@ -123,7 +123,7 @@ export const multisportPage = `<!doctype html>
         menuButton.setAttribute('aria-expanded', String(isOpen));
         menuButton.setAttribute('aria-label', isOpen ? 'Menüyü kapat' : 'Menüyü aç');
       });
-      document.querySelectorAll('[data-contact-trigger]').forEach((button) => button.addEventListener('click', () => { window.location.href = '/#iletisim'; }));
+      document.querySelectorAll('[data-contact-trigger]').forEach((button) => button.addEventListener('click', () => { window.location.href = '/?randevu=1'; }));
     </script>
   </body>
 </html>`;
