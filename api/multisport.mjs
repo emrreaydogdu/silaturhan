@@ -10,25 +10,23 @@ export const multisportPage = `<!doctype html>
     <meta name="theme-color" content="#12343b" />
     <title>MultiSport Üyelerine Özel | Fizyoterapist Sılasu Turhan · Tilbe Meriç</title>
     <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/_next/static/css/index.C91Two5O.css" />
     <link rel="stylesheet" href="/multisport.css" />
   </head>
   <body class="multisport-page">
     <a class="skip-link" href="#icerik">İçeriğe geç</a>
-    <header class="ms-header">
-      <a class="clinic-mark" href="/" aria-label="Fizyoterapistler Sılasu Turhan ve Tilbe Meriç ana sayfa">
-        <span class="clinic-symbol" aria-hidden="true">×</span>
-        <span><strong>Fizyoterapist</strong><small>SILASU TURHAN · TİLBE MERİÇ</small></span>
-      </a>
-      <nav class="ms-nav" aria-label="Ana menü">
-        <a href="/#hizmetler">Hizmetler</a>
-        <a href="/#yaklasim">Yaklaşımımız</a>
-        <a href="/#iletisim">İletişim</a>
-      </nav>
-      <div class="header-links">
-        <a class="back-link" href="/">Ana sayfa <span aria-hidden="true">↗</span></a>
-        <a class="ms-header-cta" href="/#iletisim">Randevu <span aria-hidden="true">→</span></a>
-      </div>
-    </header>
+    <div class="site-header-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Fizyoterapistler Sılasu Turhan ve Tilbe Meriç ana sayfa"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a>
+        <nav class="desktop-nav" aria-label="Ana menü"><a href="/#hizmetler">Hizmetler</a><a href="/#yaklasim">Yaklaşımımız</a><a href="/uzm-fzt-silasu-arikan">Uzmanlık</a><a href="/#iletisim">İletişim</a></nav>
+        <div class="header-actions">
+          <div class="language-switcher"><button class="language-trigger" type="button" aria-label="Dil seçin" aria-expanded="false"><img src="https://flagcdn.com/tr.svg" alt=""/><span>TR</span><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button><div id="google_translate_element" class="google-translate-element"></div></div>
+          <button class="header-cta" type="button" data-contact-trigger><span>Randevu</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></button>
+          <button class="menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button>
+        </div>
+        <nav class="mobile-menu" aria-label="Mobil menü"><a href="/#hizmetler">Hizmetler <span aria-hidden="true">↗</span></a><a href="/#yaklasim">Yaklaşımımız <span aria-hidden="true">↗</span></a><a href="/uzm-fzt-silasu-arikan">Uzmanlık <span aria-hidden="true">↗</span></a><a href="/#iletisim">İletişim <span aria-hidden="true">↗</span></a><button class="mobile-menu-cta" type="button" data-contact-trigger>Randevu oluştur <span aria-hidden="true">↗</span></button></nav>
+      </header>
+    </div>
 
     <main id="icerik">
       <section class="ms-hero" aria-labelledby="hero-title">
@@ -109,22 +107,21 @@ export const multisportPage = `<!doctype html>
       </section>
     </main>
 
-    <footer class="ms-footer">
-      <div class="footer-brand">
-        <strong>Fizyoterapist</strong>
-        <span>Sılasu Turhan · Tilbe Meriç</span>
-      </div>
-      <nav class="footer-nav" aria-label="Alt menü">
-        <a href="/">Ana sayfa</a>
-        <a href="/#hizmetler">Hizmetler</a>
-        <a href="/#iletisim">İletişim</a>
-        <a href="/multisport" aria-current="page">MultiSport sayfası</a>
-      </nav>
-      <div class="footer-meta">
-        <p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p>
-        <p>MultiSport markası ilgili marka sahibine aittir.</p>
-      </div>
+    <footer class="homepage-footer">
+      <a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a>
+      <p>© 2026 Fizyoterapist Sılasu Turhan</p>
+      <p><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6h4"></path></svg> Randevu ile hizmet verilmektedir.</p>
     </footer>
+    <script>
+      const header = document.querySelector('.site-header');
+      const menuButton = document.querySelector('.menu-toggle');
+      menuButton?.addEventListener('click', () => {
+        const isOpen = header.classList.toggle('menu-open');
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+        menuButton.setAttribute('aria-label', isOpen ? 'Menüyü kapat' : 'Menüyü aç');
+      });
+      document.querySelectorAll('[data-contact-trigger]').forEach((button) => button.addEventListener('click', () => { window.location.href = '/#iletisim'; }));
+    </script>
   </body>
 </html>`;
 
