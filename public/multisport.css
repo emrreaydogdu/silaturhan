@@ -32,7 +32,8 @@ a { color: inherit; text-decoration: none; }
 .ms-header-cta { background: var(--ink); color: white; font-size: .68rem; font-weight: 700; padding: .78rem .95rem; }
 .ms-header-cta span { color: #9fe5df; font-size: 1rem; margin-left: .3rem; }
 .ms-hero { background: var(--mist); isolation: isolate; min-height: min(760px, calc(100vh - 94px)); overflow: hidden; padding: clamp(4rem, 9vw, 8.5rem) 5vw; position: relative; }
-.hero-copy, .benefit-intro, .benefit-grid, .how-it-works, .clarity-panel { max-width: 1180px; margin-left: auto; margin-right: auto; }
+.hero-copy { max-width: 1180px; margin-left: auto; margin-right: auto; }
+.benefit-intro, .benefit-grid, .how-it-works, .clarity-panel { margin-left: auto; margin-right: auto; width: min(1180px, calc(100% - clamp(48px, 10vw, 152px))); }
 .hero-copy { position: relative; z-index: 1; }
 .partner-lockup { align-items: center; display: flex; gap: 1.4rem; margin-bottom: clamp(3rem, 7vw, 6rem); }
 .partner-lockup span { border-right: 1px solid var(--line); color: var(--muted-ink); font-size: .62rem; font-weight: 700; letter-spacing: .16em; padding: .25rem 1rem .25rem 0; text-transform: uppercase; }

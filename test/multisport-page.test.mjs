@@ -34,4 +34,6 @@ test("MultiSport members have a dedicated benefits page", async () => {
   assert.match(page, /addEventListener\('scroll'/);
   assert.match(styles, /\.ms-hero/);
   assert.match(styles, /\.site-header-shell/);
+  assert.match(styles, /\.benefit-intro, \.benefit-grid, \.how-it-works, \.clarity-panel/);
+  assert.match(styles, /width: min\(1180px, calc\(100% - clamp\(48px, 10vw, 152px\)\)\)/);
 });
