@@ -35,12 +35,18 @@ test("homepage publishes the prepared Instagram feed section", async () => {
   assert.equal((markup.match(/src="\/instagram-feed\.js"/g) ?? []).length, 1);
   assert.doesNotMatch(markup, /instagram-skeleton|instagram-pending|aria-busy="true"/);
   assert.match(markup, /href="\/instagram-feed\.css"/);
-  assert.match(markup, /Gönderiyi yükle/);
   assert.equal(
     existsSync(new URL("../public/instagram-feed.css", import.meta.url)),
     true,
   );
   const feedScript = readFileSync(new URL("../public/instagram-feed.js", import.meta.url), "utf8");
+  const feedStyles = readFileSync(new URL("../public/instagram-feed.css", import.meta.url), "utf8");
   assert.match(feedScript, /https:\/\/www\.instagram\.com\/embed\.js/);
-  assert.match(feedScript, /instgrm\.Embeds\.process\(\)/);
+  assert.match(feedScript, /querySelectorAll\(previewSelector\)/);
+  assert.match(feedScript, /data-instagram-permalink/);
+  assert.match(feedScript, /createElement\("blockquote"\)/);
+  assert.match(feedScript, /DOMContentLoaded|document\.readyState/);
+  assert.doesNotMatch(feedScript, /addEventListener\("click"/);
+  assert.doesNotMatch(feedScript, /Gönderiyi yükle/);
+  assert.match(feedStyles, /\.instagram-preview-actions\s*\{\s*display:\s*none;/);
 });

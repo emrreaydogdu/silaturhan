@@ -4,8 +4,10 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/instagram-feed.css">',
   '<link rel="stylesheet" href="/booking-refinement.css">',
   '<link rel="stylesheet" href="/team-brand.css">',
+  '<link rel="stylesheet" href="/multisport-promo.css">',
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
+const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
 
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
@@ -17,23 +19,34 @@ export async function render(request, fetchAsset = fetch) {
   }
 
   const markup = await response.text();
-  const hasExtraStylesheets =
-    markup.includes('href="/instagram-feed.css"') &&
-    markup.includes('href="/booking-refinement.css"') &&
-    markup.includes('href="/team-brand.css"');
-  const hasInstagramClientScript = markup.includes(instagramClientScript);
+  let enhancedMarkup = markup;
+  const hasExtraStylesheets = [
+    'href="/instagram-feed.css"',
+    'href="/booking-refinement.css"',
+    'href="/team-brand.css"',
+    'href="/multisport-promo.css"',
+  ].every((stylesheet) => enhancedMarkup.includes(stylesheet));
+  const hasInstagramClientScript = enhancedMarkup.includes(instagramClientScript);
   const needsInstagramClientScript =
-    markup.includes('class="instagram-section"') && !hasInstagramClientScript;
+    enhancedMarkup.includes('class="instagram-section"') && !hasInstagramClientScript;
+  const needsSiteEnhancementsScript =
+    enhancedMarkup.includes('class="instagram-section"') &&
+    !enhancedMarkup.includes(siteEnhancementsScript);
 
-  if (hasExtraStylesheets && !needsInstagramClientScript) {
+  if (hasExtraStylesheets && !needsInstagramClientScript && !needsSiteEnhancementsScript) {
     return new Response(markup, response);
   }
 
-  let enhancedMarkup = markup;
   if (needsInstagramClientScript) {
     enhancedMarkup = enhancedMarkup.replace(
       "</body>",
       `${instagramClientScript}</body>`,
+    );
+  }
+  if (needsSiteEnhancementsScript) {
+    enhancedMarkup = enhancedMarkup.replace(
+      "</body>",
+      `${siteEnhancementsScript}</body>`,
     );
   }
   if (!hasExtraStylesheets) {

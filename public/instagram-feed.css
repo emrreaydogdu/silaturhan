@@ -246,10 +246,7 @@
 }
 
 .instagram-preview-actions {
-  align-items: center;
-  display: flex;
-  gap: .8rem;
-  justify-content: space-between;
+  display: none;
 }
 
 .instagram-load-button {

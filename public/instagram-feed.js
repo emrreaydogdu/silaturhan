@@ -1,62 +1,77 @@
-const embedScriptUrl = "https://www.instagram.com/embed.js";
-let embedScriptPromise;
+(() => {
+  const previewSelector = ".instagram-preview-card";
+  const embedScriptUrl = "https://www.instagram.com/embed.js";
+  let embedScriptPromise;
 
-function loadInstagramEmbedScript() {
-  if (window.instgrm?.Embeds) return Promise.resolve();
-  if (embedScriptPromise) return embedScriptPromise;
+  function loadEmbedScript() {
+    if (window.instgrm?.Embeds) return Promise.resolve();
+    if (embedScriptPromise) return embedScriptPromise;
 
-  embedScriptPromise = new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = embedScriptUrl;
-    script.onload = resolve;
-    script.onerror = () => {
-      embedScriptPromise = undefined;
-      reject(new Error("Instagram embed script failed to load"));
-    };
-    document.head.append(script);
-  });
+    embedScriptPromise = new Promise((resolve, reject) => {
+      const existingScript = document.querySelector(`script[src="${embedScriptUrl}"]`);
+      const script = existingScript ?? document.createElement("script");
+      script.async = true;
+      script.src = embedScriptUrl;
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", reject, { once: true });
+      if (!existingScript) document.head.append(script);
+    });
 
-  return embedScriptPromise;
-}
-
-function showInstagramFallback(card, permalink) {
-  const link = document.createElement("a");
-  link.className = "instagram-embed-fallback";
-  link.href = permalink;
-  link.target = "_blank";
-  link.rel = "noreferrer";
-  link.textContent = "Gönderi yüklenemedi. Instagram’da görüntüle";
-  card.replaceChildren(link);
-}
-
-document.addEventListener("click", async (event) => {
-  const button = event.target.closest(".instagram-load-button[data-instagram-permalink]");
-  if (!button) return;
-
-  event.preventDefault();
-  const card = button.closest(".instagram-preview-card");
-  const permalink = button.dataset.instagramPermalink;
-  if (!card || !permalink || card.dataset.instagramLoading === "true") return;
-
-  card.dataset.instagramLoading = "true";
-  card.classList.add("is-embedded");
-  card.setAttribute("aria-busy", "true");
-
-  const quote = document.createElement("blockquote");
-  quote.className = "instagram-media";
-  quote.dataset.instgrmPermalink = permalink;
-  quote.dataset.instgrmVersion = "14";
-  quote.style.cssText = "background:#fff;border:0;border-radius:1rem;margin:0 auto;max-width:100%;min-width:0;padding:0;width:100%";
-  card.replaceChildren(quote);
-
-  try {
-    await loadInstagramEmbedScript();
-    window.instgrm.Embeds.process();
-  } catch {
-    showInstagramFallback(card, permalink);
-  } finally {
-    delete card.dataset.instagramLoading;
-    card.removeAttribute("aria-busy");
+    return embedScriptPromise;
   }
-});
+
+  function createEmbed(card, permalink) {
+    const quote = document.createElement("blockquote");
+    quote.className = "instagram-media";
+    quote.dataset.instgrmPermalink = permalink;
+    quote.dataset.instgrmVersion = "14";
+    quote.setAttribute("aria-label", `${card.querySelector(".instagram-preview-author")?.textContent ?? "Instagram"} Instagram gönderisi`);
+
+    const fallback = document.createElement("a");
+    fallback.className = "instagram-embed-fallback";
+    fallback.href = permalink;
+    fallback.target = "_blank";
+    fallback.rel = "noreferrer";
+    fallback.textContent = "Instagram gönderisini görüntüle";
+    quote.append(fallback);
+
+    card.classList.remove("instagram-preview-card");
+    card.classList.add("instagram-embed-card");
+    card.replaceChildren(quote);
+  }
+
+  async function processEmbeds() {
+    const cards = [...document.querySelectorAll(previewSelector)];
+    if (cards.length === 0) return;
+
+    for (const card of cards) {
+      const permalink = card.querySelector("[data-instagram-permalink]")?.dataset.instagramPermalink;
+      if (permalink) createEmbed(card, permalink);
+    }
+
+    try {
+      await loadEmbedScript();
+      window.instgrm?.Embeds?.process();
+    } catch {
+      // The in-blockquote link remains available if Instagram is unreachable.
+    }
+  }
+
+  function start() {
+    processEmbeds();
+
+    const section = document.querySelector(".instagram-section");
+    if (section) {
+      new MutationObserver(processEmbeds).observe(section, {
+        childList: true,
+        subtree: true,
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+})();

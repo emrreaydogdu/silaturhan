@@ -22,7 +22,9 @@ test("MultiSport members have a dedicated benefits page", async () => {
   assert.match(page, /class="site-header-shell"/);
   assert.match(page, /class="site-header"/);
   assert.match(page, /class="desktop-nav"/);
+  assert.match(page, /<a href="\/multisport" aria-current="page">MultiSport<\/a>/);
   assert.match(page, /class="mobile-menu"/);
+  assert.match(page, /<a href="\/multisport" aria-current="page">MultiSport <span aria-hidden="true">↗<\/span><\/a>/);
   assert.match(page, /href="\/#hizmetler"/);
   assert.match(page, /href="\/#yaklasim"/);
   assert.match(page, /class="brand footer-brand"/);
