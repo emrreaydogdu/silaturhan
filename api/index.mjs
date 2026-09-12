@@ -5,7 +5,7 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/booking-refinement.css">',
   '<link rel="stylesheet" href="/team-brand.css">',
 ].join("");
-const instagramEmbedScript = '<script async src="https://www.instagram.com/embed.js"></script>';
+const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
@@ -21,19 +21,19 @@ export async function render(request, fetchAsset = fetch) {
     markup.includes('href="/instagram-feed.css"') &&
     markup.includes('href="/booking-refinement.css"') &&
     markup.includes('href="/team-brand.css"');
-  const hasInstagramEmbedScript = markup.includes(instagramEmbedScript);
-  const needsInstagramEmbedScript =
-    markup.includes('class="instagram-section"') && !hasInstagramEmbedScript;
+  const hasInstagramClientScript = markup.includes(instagramClientScript);
+  const needsInstagramClientScript =
+    markup.includes('class="instagram-section"') && !hasInstagramClientScript;
 
-  if (hasExtraStylesheets && !needsInstagramEmbedScript) {
+  if (hasExtraStylesheets && !needsInstagramClientScript) {
     return new Response(markup, response);
   }
 
   let enhancedMarkup = markup;
-  if (needsInstagramEmbedScript) {
+  if (needsInstagramClientScript) {
     enhancedMarkup = enhancedMarkup.replace(
       "</body>",
-      `${instagramEmbedScript}</body>`,
+      `${instagramClientScript}</body>`,
     );
   }
   if (!hasExtraStylesheets) {

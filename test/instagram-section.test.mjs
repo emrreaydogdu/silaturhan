@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 test("homepage publishes the prepared Instagram feed section", async () => {
@@ -29,16 +29,18 @@ test("homepage publishes the prepared Instagram feed section", async () => {
 
   assert.match(markup, /Sılasu Turhan/);
   assert.match(markup, /Tilbe Meriç/);
-  assert.equal((markup.match(/class="instagram-feed-card/g) ?? []).length, 6);
-  assert.equal((markup.match(/class="instagram-media"/g) ?? []).length, 6);
-  assert.equal(
-    (markup.match(/src="https:\/\/www\.instagram\.com\/embed\.js"/g) ?? []).length,
-    1,
-  );
+  assert.equal((markup.match(/class="instagram-feed-card instagram-preview-card"/g) ?? []).length, 6);
+  assert.equal((markup.match(/class="instagram-media"/g) ?? []).length, 0);
+  assert.doesNotMatch(markup, /https:\/\/www\.instagram\.com\/embed\.js/);
+  assert.equal((markup.match(/src="\/instagram-feed\.js"/g) ?? []).length, 1);
   assert.doesNotMatch(markup, /instagram-skeleton|instagram-pending|aria-busy="true"/);
   assert.match(markup, /href="\/instagram-feed\.css"/);
+  assert.match(markup, /Gönderiyi yükle/);
   assert.equal(
     existsSync(new URL("../public/instagram-feed.css", import.meta.url)),
     true,
   );
+  const feedScript = readFileSync(new URL("../public/instagram-feed.js", import.meta.url), "utf8");
+  assert.match(feedScript, /https:\/\/www\.instagram\.com\/embed\.js/);
+  assert.match(feedScript, /instgrm\.Embeds\.process\(\)/);
 });
