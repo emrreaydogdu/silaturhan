@@ -28,7 +28,10 @@ test("static build exports the homepage, MultiSport page, and runtime assets", a
     assert.match(home, /Fizyoterapist Sılasu Turhan/);
     assert.match(home, /instagram-section/);
     assert.doesNotMatch(home, /instagram\.com\/embed\.js/);
+    assert.match(home, /data-static-document-navigation/);
+    assert.match(home, /window\.location\.assign\(destination\.href\)/);
     assert.match(multisport, /MultiSport üyeliğinizle/);
+    assert.match(multisport, /data-static-document-navigation/);
     assert.ok(instagramScript.size > 0);
   } finally {
     await rm(outputDirectory, { recursive: true, force: true });
