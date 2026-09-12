@@ -64,28 +64,17 @@
     ensureMultiSportNavigation();
     ensureHomePromotion();
 
-    const header = document.querySelector(".site-header");
-    if (header && !header.dataset.multisportObserver) {
-      header.dataset.multisportObserver = "true";
-      new MutationObserver(ensureMultiSportNavigation).observe(header, {
+    if (document.body && !document.body.dataset.siteEnhancementObserver) {
+      document.body.dataset.siteEnhancementObserver = "true";
+      new MutationObserver(() => {
+        ensureMultiSportNavigation();
+        ensureHomePromotion();
+        ensureOsteopathyAppointmentOption();
+      }).observe(document.body, {
         childList: true,
         subtree: true,
       });
     }
-
-    const main = document.querySelector("main");
-    if (main && !main.dataset.multisportObserver) {
-      main.dataset.multisportObserver = "true";
-      new MutationObserver(ensureHomePromotion).observe(main, {
-        childList: true,
-        subtree: true,
-      });
-    }
-
-    new MutationObserver(ensureOsteopathyAppointmentOption).observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
   }
 
   if (document.readyState === "loading") {

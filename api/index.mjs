@@ -9,6 +9,25 @@ const extraStylesheets = [
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
 const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
+const multiSportDesktopLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport</a>';
+const multiSportMobileLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport<span aria-hidden="true">↗</span></a>';
+
+function addNavigationLink(markup, navigationClass, link) {
+  const navigationStart = markup.indexOf(`<nav class="${navigationClass}"`);
+  if (navigationStart === -1) return markup;
+
+  const navigationEnd = markup.indexOf("</nav>", navigationStart);
+  if (navigationEnd === -1) return markup;
+
+  const navigation = markup.slice(navigationStart, navigationEnd);
+  if (navigation.includes("data-multisport-menu-link")) return markup;
+
+  const updatedNavigation = navigation.replace(
+    '<a href="/#iletisim">',
+    `${link}<a href="/#iletisim">`,
+  );
+  return markup.slice(0, navigationStart) + updatedNavigation + markup.slice(navigationEnd);
+}
 
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
@@ -21,13 +40,18 @@ export async function render(request, fetchAsset = fetch) {
 
   const markup = await response.text();
   let enhancedMarkup = markup;
+  const isMultiSportPage = new URL(request.url).pathname === "/multisport";
+  if (!isMultiSportPage) {
+    enhancedMarkup = addNavigationLink(enhancedMarkup, "desktop-nav", multiSportDesktopLink);
+    enhancedMarkup = addNavigationLink(enhancedMarkup, "mobile-menu", multiSportMobileLink);
+  }
   const needsOsteopathyService =
     new URL(request.url).pathname === "/" &&
     !enhancedMarkup.includes("data-osteopathy-service");
   if (needsOsteopathyService) {
     enhancedMarkup = enhancedMarkup.replace(
-      /(<div class="services-grid">[\s\S]*?)(<\/div><\/section>)/,
-      (_, serviceCards, sectionEnd) => `${serviceCards}${osteopathyServiceCard}${sectionEnd}`,
+      /(<div class="services-grid">[\s\S]*?<\/article>)/,
+      (_, firstServiceCard) => `${firstServiceCard}${osteopathyServiceCard}`,
     );
   }
   const hasExtraStylesheets = [
@@ -42,12 +66,16 @@ export async function render(request, fetchAsset = fetch) {
   const needsSiteEnhancementsScript =
     enhancedMarkup.includes('class="instagram-section"') &&
     !enhancedMarkup.includes(siteEnhancementsScript);
+  const needsMultiSportNavigation =
+    !isMultiSportPage &&
+    (enhancedMarkup.match(/data-multisport-menu-link/g) ?? []).length < 2;
 
   if (
     hasExtraStylesheets &&
     !needsInstagramClientScript &&
     !needsSiteEnhancementsScript &&
-    !needsOsteopathyService
+    !needsOsteopathyService &&
+    !needsMultiSportNavigation
   ) {
     return new Response(markup, response);
   }
