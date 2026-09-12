@@ -12,6 +12,10 @@ test("homepage publishes the prepared Instagram feed section", async () => {
 
   assert.match(markup, /class="instagram-section"/);
   assert.match(markup, /@fztsilasuarikanturhan/);
+  assert.equal((markup.match(/class="instagram-account instagram-account-/g) ?? []).length, 2);
+  assert.match(markup, /Sılasu Turhan/);
+  assert.match(markup, /Tilbe Meriç/);
+  assert.equal((markup.match(/class="instagram-feed-card/g) ?? []).length, 6);
   assert.match(markup, /href="\/instagram-feed\.css"/);
   assert.equal(
     existsSync(new URL("../public/instagram-feed.css", import.meta.url)),

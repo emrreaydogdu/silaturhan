@@ -92,6 +92,45 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.instagram-feed-dual {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.instagram-account {
+  border-top: 1px solid rgba(18, 52, 59, .16);
+  padding-top: 1rem;
+}
+
+.instagram-account-heading {
+  align-items: baseline;
+  display: flex;
+  gap: .75rem;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.instagram-account-heading p {
+  color: #12343b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  letter-spacing: -.03em;
+  margin: 0;
+}
+
+.instagram-account-heading a,
+.instagram-account-heading span {
+  color: #176b62;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.instagram-account-heading a {
+  text-decoration: underline;
+  text-underline-offset: .25rem;
+}
+
 .instagram-feed-card {
   aspect-ratio: 1;
   background: #dcebe5;
@@ -140,6 +179,10 @@
   .instagram-section { padding-inline: 1.25rem; }
   .instagram-feed-grid { grid-template-columns: 1fr; }
   .instagram-feed-card { aspect-ratio: 1.28; }
+  .instagram-feed-dual { gap: 2.75rem; grid-template-columns: 1fr; }
+  .instagram-account .instagram-feed-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .instagram-account .instagram-feed-card { aspect-ratio: 1; padding: .55rem; }
+  .instagram-account-heading { margin-bottom: .85rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
