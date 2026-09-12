@@ -12,6 +12,8 @@ test("homepage publishes the prepared Instagram feed section", async () => {
 
   assert.match(markup, /class="instagram-section"/);
   assert.match(markup, /@fztsilasuarikanturhan/);
+  assert.match(markup, /@fzt\.tilbemeric/);
+  assert.match(markup, /href="https:\/\/www\.instagram\.com\/fzt\.tilbemeric\/"/);
   assert.equal((markup.match(/class="instagram-account instagram-account-/g) ?? []).length, 2);
   assert.match(markup, /Sılasu Turhan/);
   assert.match(markup, /Tilbe Meriç/);
