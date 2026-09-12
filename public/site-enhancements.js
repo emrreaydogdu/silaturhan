@@ -49,6 +49,17 @@
     services.insertAdjacentElement("afterend", promotion);
   }
 
+  function ensureOsteopathyAppointmentOption() {
+    const serviceSelect = document.querySelector(".booking-fields select");
+    if (!serviceSelect) return;
+    if ([...serviceSelect.options].some((option) => option.value === "Osteopati")) return;
+
+    const option = document.createElement("option");
+    option.value = "Osteopati";
+    option.textContent = "Osteopati";
+    serviceSelect.append(option);
+  }
+
   function mountEnhancements() {
     ensureMultiSportNavigation();
     ensureHomePromotion();
@@ -70,6 +81,11 @@
         subtree: true,
       });
     }
+
+    new MutationObserver(ensureOsteopathyAppointmentOption).observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   }
 
   if (document.readyState === "loading") {

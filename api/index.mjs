@@ -8,6 +8,7 @@ const extraStylesheets = [
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
+const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
 
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
@@ -20,6 +21,15 @@ export async function render(request, fetchAsset = fetch) {
 
   const markup = await response.text();
   let enhancedMarkup = markup;
+  const needsOsteopathyService =
+    new URL(request.url).pathname === "/" &&
+    !enhancedMarkup.includes("data-osteopathy-service");
+  if (needsOsteopathyService) {
+    enhancedMarkup = enhancedMarkup.replace(
+      /(<div class="services-grid">[\s\S]*?)(<\/div><\/section>)/,
+      (_, serviceCards, sectionEnd) => `${serviceCards}${osteopathyServiceCard}${sectionEnd}`,
+    );
+  }
   const hasExtraStylesheets = [
     'href="/instagram-feed.css"',
     'href="/booking-refinement.css"',
@@ -33,7 +43,12 @@ export async function render(request, fetchAsset = fetch) {
     enhancedMarkup.includes('class="instagram-section"') &&
     !enhancedMarkup.includes(siteEnhancementsScript);
 
-  if (hasExtraStylesheets && !needsInstagramClientScript && !needsSiteEnhancementsScript) {
+  if (
+    hasExtraStylesheets &&
+    !needsInstagramClientScript &&
+    !needsSiteEnhancementsScript &&
+    !needsOsteopathyService
+  ) {
     return new Response(markup, response);
   }
 
