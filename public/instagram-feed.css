@@ -95,7 +95,7 @@
 .instagram-feed-dual {
   display: grid;
   gap: clamp(2.5rem, 6vw, 5rem);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .instagram-account {
@@ -141,6 +141,30 @@
   position: relative;
 }
 
+.instagram-embed-card {
+  aspect-ratio: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  padding: 0;
+}
+
+.instagram-embed-card::before {
+  display: none;
+}
+
+.instagram-embed-card blockquote.instagram-media {
+  background: #fff !important;
+  border: 0 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 12px 32px rgba(18, 52, 59, .08) !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
 .instagram-feed-card::before {
   background: linear-gradient(115deg, transparent 26%, rgba(255, 255, 255, .5) 45%, transparent 63%);
   content: "";
@@ -180,8 +204,8 @@
   .instagram-feed-grid { grid-template-columns: 1fr; }
   .instagram-feed-card { aspect-ratio: 1.28; }
   .instagram-feed-dual { gap: 2.75rem; grid-template-columns: 1fr; }
-  .instagram-account .instagram-feed-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .instagram-account .instagram-feed-card { aspect-ratio: 1; padding: .55rem; }
+  .instagram-account .instagram-feed-grid { grid-template-columns: 1fr; }
+  .instagram-account .instagram-feed-card { aspect-ratio: auto; padding: 0; }
   .instagram-account-heading { margin-bottom: .85rem; }
 }
 

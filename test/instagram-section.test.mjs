@@ -15,9 +15,27 @@ test("homepage publishes the prepared Instagram feed section", async () => {
   assert.match(markup, /@fzt\.tilbemeric/);
   assert.match(markup, /href="https:\/\/www\.instagram\.com\/fzt\.tilbemeric\/"/);
   assert.equal((markup.match(/class="instagram-account instagram-account-/g) ?? []).length, 2);
+  const silaStart = markup.indexOf('class="instagram-account instagram-account-silasu"');
+  const tilbeStart = markup.indexOf('class="instagram-account instagram-account-tilbe"');
+  const silaMarkup = markup.slice(silaStart, markup.indexOf("</section>", silaStart));
+  const tilbeMarkup = markup.slice(tilbeStart, markup.indexOf("</section>", tilbeStart));
+
+  for (const shortcode of ["DdE7j7gIKGg", "DcjNyjhI_nt", "DcOH_9AICJt"]) {
+    assert.ok(silaMarkup.includes(shortcode), `Sılasu's feed should embed ${shortcode}`);
+  }
+  for (const shortcode of ["DXCmcpoClmk", "DX6IB74KQTA", "DWedsHlCrBp"]) {
+    assert.ok(tilbeMarkup.includes(shortcode), `Tilbe's feed should embed ${shortcode}`);
+  }
+
   assert.match(markup, /Sılasu Turhan/);
   assert.match(markup, /Tilbe Meriç/);
   assert.equal((markup.match(/class="instagram-feed-card/g) ?? []).length, 6);
+  assert.equal((markup.match(/class="instagram-media"/g) ?? []).length, 6);
+  assert.equal(
+    (markup.match(/src="https:\/\/www\.instagram\.com\/embed\.js"/g) ?? []).length,
+    1,
+  );
+  assert.doesNotMatch(markup, /instagram-skeleton|instagram-pending|aria-busy="true"/);
   assert.match(markup, /href="\/instagram-feed\.css"/);
   assert.equal(
     existsSync(new URL("../public/instagram-feed.css", import.meta.url)),
