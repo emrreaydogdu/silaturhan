@@ -109,8 +109,8 @@ export async function render(request, fetchAsset = fetch) {
     !enhancedMarkup.includes('class="business-gallery-section"');
   if (needsBusinessGallery) {
     enhancedMarkup = enhancedMarkup.replace(
-      /(?=<section class="kinezyo-section")/,
-      businessGalleryMarkup,
+      /(<section class="services-section"[\s\S]*?<\/section>)/,
+      `$1${businessGalleryMarkup}`,
     );
   }
   const hasExtraStylesheets = [

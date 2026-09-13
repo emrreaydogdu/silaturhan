@@ -13,6 +13,8 @@
 
 .business-gallery-heading {
   display: block;
+  margin-left: 0;
+  text-align: left;
   margin-bottom: clamp(2rem, 5vw, 4rem);
 }
 
@@ -36,6 +38,7 @@
   margin: 0;
   font: 400 clamp(2.3rem, 5.8vw, 5rem)/0.98 var(--font-serif, Georgia, serif);
   max-width: 48rem;
+  margin-left: 0;
   letter-spacing: -0.055em;
 }
 
@@ -46,6 +49,7 @@
 
 .business-gallery-heading > div > p {
   max-width: 42rem;
+  margin-left: 0;
   margin: 1.1rem 0 0;
   color: var(--gallery-muted);
   font: 400 clamp(0.95rem, 1.3vw, 1.08rem)/1.75 var(--font-sans, Arial, sans-serif);

@@ -46,7 +46,8 @@
       </div>
       <a class="multisport-home-promo-cta" href="/multisport">Üyelik avantajlarını incele <span aria-hidden="true">↗</span></a>
     `;
-    services.insertAdjacentElement("afterend", promotion);
+    const gallery = document.querySelector(".business-gallery-section");
+    (gallery ?? services).insertAdjacentElement("afterend", promotion);
   }
 
   function ensureOsteopathyAppointmentOption() {

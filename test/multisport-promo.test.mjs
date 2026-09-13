@@ -26,6 +26,7 @@ test("homepage loads the MultiSport promotion and its responsive assets", async 
   assert.match(script, /desktop-nav/);
   assert.match(script, /mobile-menu/);
   assert.match(script, /services-section/);
+  assert.match(script, /business-gallery-section/);
   assert.match(styles, /\.multisport-home-promo/);
   assert.match(styles, /@media\s*\(max-width:\s*700px\)/);
 });

@@ -4,9 +4,9 @@ function ensureBusinessGallery() {
   if (window.location.pathname !== "/") return;
 
   let section = document.querySelector("#isletmemizden-kareler");
-  const howItWorks = document.querySelector(".kinezyo-flow");
-  if (!section && howItWorks) {
-    howItWorks.insertAdjacentHTML("afterend", businessGalleryMarkup);
+  const services = document.querySelector(".services-section");
+  if (!section && services) {
+    services.insertAdjacentHTML("afterend", businessGalleryMarkup);
     section = document.querySelector("#isletmemizden-kareler");
   }
 

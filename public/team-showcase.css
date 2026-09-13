@@ -101,17 +101,9 @@
   right: 1.15rem;
   bottom: 1.05rem;
   left: 1.15rem;
-  display: flex;
-  align-items: baseline;
-  gap: .7rem;
+  display: block;
   color: #fff;
   font: 500 .78rem/1.35 var(--font-sans, Arial, sans-serif);
-}
-
-.team-showcase-person figcaption span {
-  color: var(--team-aqua);
-  font: 700 .64rem/1 var(--font-sans, Arial, sans-serif);
-  letter-spacing: .12em;
 }
 
 .team-showcase-copy {
@@ -136,22 +128,27 @@
   display: inline-flex;
   gap: .65rem;
   align-items: center;
-  margin-top: 1.5rem;
-  padding-bottom: .35rem;
-  border-bottom: 1px solid rgb(139 208 196 / 62%);
-  color: var(--team-cream);
-  font: 650 .76rem/1.2 var(--font-sans, Arial, sans-serif);
+  margin-top: 1.6rem;
+  padding: .78rem 1rem;
+  border: 1px solid var(--team-aqua);
+  border-radius: 999px;
+  background: var(--team-aqua);
+  color: var(--team-ink);
+  font: 700 .74rem/1.2 Arial, "Helvetica Neue", sans-serif;
+  letter-spacing: .02em;
   text-decoration: none;
 }
 
 .team-showcase-copy a span {
-  color: var(--team-aqua);
+  color: currentColor;
   font-size: 1rem;
 }
 
 .team-showcase-copy a:hover,
 .team-showcase-copy a:focus-visible {
-  color: var(--team-aqua);
+  border-color: var(--team-cream);
+  background: var(--team-cream);
+  color: var(--team-ink);
 }
 
 .team-showcase-copy a:focus-visible {
