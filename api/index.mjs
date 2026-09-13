@@ -62,7 +62,7 @@ export async function render(request, fetchAsset = fetch) {
     !enhancedMarkup.includes('class="business-gallery-section"');
   if (needsBusinessGallery) {
     enhancedMarkup = enhancedMarkup.replace(
-      /(?=<section class="instagram-section")/,
+      /(?=<section class="kinezyo-flow")/,
       businessGalleryMarkup,
     );
   }

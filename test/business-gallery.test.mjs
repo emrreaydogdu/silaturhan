@@ -15,9 +15,11 @@ test("homepage renders all clinic photos in a responsive, accessible gallery", a
 
   assert.match(markup, /class="business-gallery-section"/);
   assert.match(markup, /İşletmemizden/);
+  assert.match(markup, /id="isletmemizden-kareler"/);
   assert.match(markup, /aria-labelledby="business-gallery-title"/);
   assert.match(markup, /class="instagram-section"/);
-  assert.ok(markup.indexOf('class="services-section"') < markup.indexOf('class="business-gallery-section"'));
+  assert.ok(markup.indexOf('class="intro-strip"') < markup.indexOf('class="business-gallery-section"'));
+  assert.ok(markup.indexOf('class="business-gallery-section"') < markup.indexOf('class="kinezyo-flow"'));
   assert.ok(markup.indexOf('class="business-gallery-section"') < markup.indexOf('class="instagram-section"'));
   assert.equal((markup.match(/class="business-gallery-trigger/g) ?? []).length, 13);
   assert.match(markup, /loading="lazy"/);
