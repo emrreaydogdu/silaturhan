@@ -130,6 +130,7 @@ export const multisportPage = `<!doctype html>
       });
       document.querySelectorAll('[data-contact-trigger]').forEach((button) => button.addEventListener('click', () => { window.location.href = '/?randevu=1'; }));
     </script>
+    <script defer src="/navigation-unifier.js"></script>
   </body>
 </html>`;
 
