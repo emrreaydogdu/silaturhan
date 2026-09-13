@@ -12,6 +12,7 @@ test("Tilbe Meriç has a dedicated profile page with her portrait and expertise 
   assert.match(page, /Fizyoterapist Tilbe Meriç \| Maltepe Fizyoterapi/);
   assert.match(page, /\/images\/team\/tilbe-meric\.webp/);
   assert.match(page, /Uzmanlık alanları/);
+  assert.match(page, /href="#uzmanlik">Uzmanlık profilini inceleyin/);
   assert.match(page, /Kinezyoterapi/);
   for (const service of [
     "Manuel Terapi",
