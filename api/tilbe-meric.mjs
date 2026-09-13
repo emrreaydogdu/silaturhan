@@ -1,3 +1,5 @@
+import { universalContactCta } from "./contact-cta.mjs";
+
 const arrow = '<span aria-hidden="true">↗</span>';
 
 export const tilbeMericPage = `<!doctype html>
@@ -11,6 +13,7 @@ export const tilbeMericPage = `<!doctype html>
     <link rel="icon" href="/favicon.svg" />
     <link rel="stylesheet" href="/_next/static/css/index.C91Two5O.css" />
     <link rel="stylesheet" href="/team-brand.css" />
+    <link rel="stylesheet" href="/universal-contact.css?v=1" />
     <link rel="stylesheet" href="/liquid-glass.css" />
   </head>
   <body>
@@ -25,7 +28,7 @@ export const tilbeMericPage = `<!doctype html>
 
       <section class="profile-services" aria-labelledby="tilbe-services-title"><div class="profile-services-heading"><p class="eyebrow"><span></span> Seans planı</p><h2 id="tilbe-services-title">İhtiyacınıza göre<br/><em>birlikte</em> şekillenir.</h2><p>İlk görüşmede hedeflerinizi ve günlük yaşam ihtiyaçlarınızı dinleyerek size uygun başlangıç planını oluşturuyoruz.</p><a class="button primary" href="#uzmanlik">Uzmanlık profilini inceleyin ${arrow}</a></div><div class="profile-service-list"><article><span>01</span><p>Fizyoterapi ve Rehabilitasyon</p></article><article><span>02</span><p>Kinezyoterapi</p></article><article><span>03</span><p>Ortopedik Rehabilitasyon</p></article><article><span>04</span><p>Klinik Pilates</p></article><article><span>05</span><p>Manuel Terapi</p></article><article><span>06</span><p>Osteopati</p></article><article><span>07</span><p>Medikal Masaj</p></article><article><span>08</span><p>Nörolojik Rehabilitasyon</p></article><article><span>09</span><p>İnme Rehabilitasyonu</p></article><article><span>10</span><p>Parkinson Rehabilitasyonu</p></article><article><span>11</span><p>MS Rehabilitasyonu</p></article><article><span>12</span><p>El Rehabilitasyonu</p></article><article><span>13</span><p>Diz Protezi Sonrası Rehabilitasyon</p></article><article><span>14</span><p>Omuz Ameliyatı Sonrası Rehabilitasyon</p></article><article><span>15</span><p>Çapraz Bağ Yırtıkları Rehabilitasyonu</p></article><article><span>16</span><p>Menisküs Rehabilitasyonu</p></article><article><span>17</span><p>Skolyoz Rehabilitasyonu</p></article><article><span>18</span><p>Evde Fizyoterapi</p></article><article><span>19</span><p>Hamile Pilatesi</p></article><article><span>20</span><p>Pilates</p></article><article><span>21</span><p>İnkontinans Rehabilitasyonu</p></article><article><span>22</span><p>Migren Rehabilitasyonu</p></article><article><span>23</span><p>Oyun Terapisi</p></article></div></section>
 
-      <section class="profile-cta"><p class="eyebrow light"><span></span> Birlikte başlayalım</p><h2>Hareketiniz için<br/><em>ilk adımı</em> atın.</h2><a class="button light-button" href="/?randevu=1">Randevu talebi oluştur ${arrow}</a></section><footer><a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a><p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p><p>Randevu ile hizmet verilmektedir.</p></footer>
+      ${universalContactCta}<footer><a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a><p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p><p>Randevu ile hizmet verilmektedir.</p></footer>
     </main>
   </body>
 </html>`;

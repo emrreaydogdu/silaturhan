@@ -36,6 +36,8 @@ test("Tilbe Meriç has a dedicated profile page with her portrait and expertise 
     assert.match(page, new RegExp(service, "i"));
   }
   assert.match(page, /href="\/\?randevu=1"/);
+  assert.match(page, /universalContactCta/);
+  assert.match(page, /universal-contact\.css/);
   assert.match(config, /"source": "\/fzt-tilbe-meric"/);
   assert.match(buildScript, /"fzt-tilbe-meric"/);
 });
@@ -47,5 +49,6 @@ test("Sılasu Arıkan's profile uses her own portrait", async () => {
   assert.match(silasuArikanPage, /Uzm\. Fzt\. Sılasu Arıkan \| Maltepe Fizyoterapi/);
   assert.match(silasuArikanPage, /class="profile-hero"/);
   assert.match(silasuArikanPage, /class="interests-section"/);
+  assert.match(silasuArikanPage, /class="universal-contact-cta"/);
   assert.doesNotMatch(silasuArikanPage, /Hareketi<br\/>anlayarak|Hareket<br\/>ile iyileşme/);
 });

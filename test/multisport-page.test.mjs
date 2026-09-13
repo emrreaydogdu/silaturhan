@@ -30,6 +30,8 @@ test("MultiSport members have a dedicated benefits page", async () => {
   assert.match(page, /class="brand footer-brand"/);
   assert.match(page, /<footer>/);
   assert.match(page, /Randevu ile hizmet verilmektedir/);
+  assert.match(page, /universalContactCta/);
+  assert.match(page, /universal-contact\.css/);
   assert.match(page, /index\.C91Two5O\.css/);
   assert.match(page, /window\.scrollY > 72/);
   assert.match(page, /classList\.toggle\('is-scrolled'/);

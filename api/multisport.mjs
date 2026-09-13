@@ -1,3 +1,5 @@
+import { universalContactCta } from "./contact-cta.mjs";
+
 const logoUrl =
   "https://images.seeklogo.com/logo-png/55/1/multisport-logo-png_seeklogo-557663.png";
 
@@ -12,6 +14,7 @@ export const multisportPage = `<!doctype html>
     <link rel="icon" href="/favicon.svg" />
     <link rel="stylesheet" href="/_next/static/css/index.C91Two5O.css" />
     <link rel="stylesheet" href="/multisport.css" />
+    <link rel="stylesheet" href="/universal-contact.css?v=1" />
     <link rel="stylesheet" href="/liquid-glass.css" />
   </head>
   <body class="multisport-page">
@@ -107,6 +110,7 @@ export const multisportPage = `<!doctype html>
         <a class="button button-primary" href="/?randevu=1">İletişime geçin <span aria-hidden="true">→</span></a>
       </section>
     </main>
+    ${universalContactCta}
 
     <footer>
       <a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a>
