@@ -20,6 +20,8 @@ const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></scri
 const businessGalleryScript = '<script type="module" src="/business-gallery.js"></script>';
 const teamShowcaseScript = '<script type="module" src="/team-showcase.js"></script>';
 const blogSliderScript = '<script defer src="/blog-slider.js"></script>';
+const blogHomeScript = '<script defer src="/blog-home.js"></script>';
+const blogTemplateMarkup = `<script id="blog-section-template" type="application/json">${JSON.stringify(blogSectionMarkup).replaceAll("<", "\\u003c")}</script>`;
 const siteTitle = "Maltepe Fizyoterapi | Sılasu Turhan & Tilbe Meriç";
 const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
 const multiSportDesktopLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport</a>';
@@ -253,6 +255,12 @@ export async function render(request, fetchAsset = fetch) {
   const needsBlogSliderScript =
     enhancedMarkup.includes('class="blog-section"') &&
     !enhancedMarkup.includes(blogSliderScript);
+  const needsBlogHomeScript =
+    pathname === "/" &&
+    !enhancedMarkup.includes(blogHomeScript);
+  const needsBlogTemplate =
+    pathname === "/" &&
+    !enhancedMarkup.includes('id="blog-section-template"');
   const needsMultiSportNavigation =
     !isMultiSportPage &&
     (enhancedMarkup.match(/data-multisport-menu-link/g) ?? []).length < 2;
@@ -267,6 +275,8 @@ export async function render(request, fetchAsset = fetch) {
     !needsBusinessGalleryScript &&
     !needsTeamShowcaseScript &&
     !needsBlogSliderScript &&
+    !needsBlogHomeScript &&
+    !needsBlogTemplate &&
     !needsBusinessGallery &&
     !needsTeamShowcase &&
     !needsOsteopathyService &&
@@ -306,6 +316,18 @@ export async function render(request, fetchAsset = fetch) {
     enhancedMarkup = enhancedMarkup.replace(
       "</body>",
       `${blogSliderScript}</body>`,
+    );
+  }
+  if (needsBlogHomeScript) {
+    enhancedMarkup = enhancedMarkup.replace(
+      "</body>",
+      `${blogHomeScript}</body>`,
+    );
+  }
+  if (needsBlogTemplate) {
+    enhancedMarkup = enhancedMarkup.replace(
+      "</body>",
+      `${blogTemplateMarkup}</body>`,
     );
   }
   if (!hasExtraStylesheets) {

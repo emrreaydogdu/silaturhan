@@ -16,6 +16,8 @@ test("homepage provides a three-card article slider with ten crawlable articles"
   assert.match(markup, /class="blog-section"/);
   assert.match(markup, /data-blog-track/);
   assert.match(markup, /blog-slider\.js/);
+  assert.match(markup, /blog-home\.js/);
+  assert.match(markup, /id="blog-section-template"/);
   assert.ok(markup.indexOf("faq-section") < markup.indexOf("blog-section"));
   assert.ok(markup.indexOf("blog-section") < markup.indexOf("contact-section"));
   const archive = renderBlogIndex();
@@ -55,6 +57,9 @@ test("homepage has Maltepe and İstanbul local SEO markup and a published sitema
   const blogShell = await readFile(new URL("../public/blog-shell.js", import.meta.url), "utf8");
   assert.match(blogShell, /is-scrolled/);
   assert.match(blogShell, /window\.scrollY > 72/);
+  const blogHome = await readFile(new URL("../public/blog-home.js", import.meta.url), "utf8");
+  assert.match(blogHome, /MutationObserver/);
+  assert.match(blogHome, /faq\.insertAdjacentElement\("afterend", section\)/);
   const liquidGlass = await readFile(new URL("../public/liquid-glass.css", import.meta.url), "utf8");
   assert.match(liquidGlass, /backdrop-filter: blur\(38px\)/);
   assert.match(liquidGlass, /\.site-header\.menu-open \.mobile-menu/);
