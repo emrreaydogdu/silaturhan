@@ -9,6 +9,10 @@
     ["/#iletisim", "İletişim"],
   ];
 
+  function setLinkContent(link, content) {
+    if (link.innerHTML !== content) link.innerHTML = content;
+  }
+
   function applyNavigation(navigation) {
     const isMobile = navigation.classList.contains("mobile-menu");
     const linksByPath = new Map([...navigation.querySelectorAll("a[href]")].map((link) => [link.getAttribute("href"), link]));
@@ -18,9 +22,9 @@
       const legacyExpert = href === "/uzmanlar" ? linksByPath.get("/uzm-fzt-silasu-arikan") : null;
       const existing = linksByPath.get(href) ?? legacyExpert;
       if (existing) {
-        existing.setAttribute("href", href);
+        if (existing.getAttribute("href") !== href) existing.setAttribute("href", href);
         if (href === "/uzmanlar" || href === "/blog/") {
-          existing.innerHTML = `${label}${isMobile ? arrow : ""}`;
+          setLinkContent(existing, `${label}${isMobile ? arrow : ""}`);
         }
         return;
       }
@@ -38,12 +42,14 @@
 
   normalizeAll();
   let queued = false;
-  new MutationObserver(() => {
+  const observer = new MutationObserver(() => {
     if (queued) return;
     queued = true;
     queueMicrotask(() => {
       queued = false;
       normalizeAll();
     });
-  }).observe(document.documentElement, { childList: true, subtree: true });
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  window.setTimeout(() => observer.disconnect(), 2000);
 })();
