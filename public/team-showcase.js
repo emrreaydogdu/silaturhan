@@ -3,9 +3,15 @@ import { teamShowcaseMarkup } from "./team-showcase-data.js";
 function ensureTeamShowcase() {
   if (window.location.pathname !== "/") return;
 
-  const section = document.querySelector(".team-section");
+  let section = document.querySelector(".team-section");
   if (section && !section.matches("[data-team-showcase]")) {
     section.outerHTML = teamShowcaseMarkup;
+    section = document.querySelector("[data-team-showcase]");
+  }
+
+  const kinezyotherapy = document.querySelector(".kinezyo-section");
+  if (section && kinezyotherapy && kinezyotherapy.previousElementSibling !== section) {
+    kinezyotherapy.before(section);
   }
 }
 

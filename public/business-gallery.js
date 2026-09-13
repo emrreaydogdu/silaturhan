@@ -6,7 +6,8 @@ function ensureBusinessGallery() {
   let section = document.querySelector("#isletmemizden-kareler");
   const services = document.querySelector(".services-section");
   if (!section && services) {
-    services.insertAdjacentHTML("afterend", businessGalleryMarkup);
+    const promotion = document.querySelector(".multisport-home-promo");
+    (promotion ?? services).insertAdjacentHTML("afterend", businessGalleryMarkup);
     section = document.querySelector("#isletmemizden-kareler");
   }
 

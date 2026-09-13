@@ -57,21 +57,21 @@
     }
   }
 
-  function placeInstagramAboveHowItWorks() {
+  function placeInstagramBelowKinezyotherapy() {
     const section = document.querySelector(".instagram-section");
-    const howItWorks = document.querySelector(".kinezyo-flow");
-    if (section && howItWorks && howItWorks.previousElementSibling !== section) {
-      howItWorks.before(section);
+    const kinezyotherapy = document.querySelector(".kinezyo-section");
+    if (section && kinezyotherapy && kinezyotherapy.nextElementSibling !== section) {
+      kinezyotherapy.after(section);
     }
   }
 
   function start() {
-    placeInstagramAboveHowItWorks();
+    placeInstagramBelowKinezyotherapy();
     processEmbeds();
 
     if (document.body) {
       new MutationObserver(() => {
-        placeInstagramAboveHowItWorks();
+        placeInstagramBelowKinezyotherapy();
         processEmbeds();
       }).observe(document.body, {
         childList: true,

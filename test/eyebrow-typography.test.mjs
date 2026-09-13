@@ -7,10 +7,9 @@ const typography = await readFile(
   "utf8",
 );
 
-test("upper labels and entry screen use the clean interface typeface", () => {
-  assert.doesNotMatch(typography, /Cormorant Garamond/);
+test("upper labels and entry screen use the original display typeface", () => {
+  assert.match(typography, /Cormorant Garamond/);
   assert.match(typography, /\.eyebrow,\s*\.instagram-heading \.eyebrow/);
-  assert.match(typography, /font-family: Arial, "Helvetica Neue", sans-serif/);
-  assert.match(typography, /\.entry-content h2,/);
-  assert.match(typography, /font-style: normal/);
+  assert.match(typography, /font-weight: 500/);
+  assert.match(typography, /\.entry-content h2 \{/);
 });

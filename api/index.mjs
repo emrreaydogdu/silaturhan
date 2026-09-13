@@ -64,6 +64,51 @@ function moveSectionBefore(markup, sourceClass, targetClass) {
   return withoutSection.slice(0, targetStart) + section + withoutSection.slice(targetStart);
 }
 
+function moveSectionAfter(markup, sourceClass, targetClass) {
+  const sourceStart = markup.indexOf(`<section class="${sourceClass}"`);
+  if (sourceStart === -1) return markup;
+
+  const sectionTag = /<\/?section\b[^>]*>/g;
+  sectionTag.lastIndex = sourceStart;
+  let depth = 0;
+  let sourceEnd = -1;
+  for (let match = sectionTag.exec(markup); match; match = sectionTag.exec(markup)) {
+    if (match[0].startsWith("</")) {
+      depth -= 1;
+      if (depth === 0) {
+        sourceEnd = sectionTag.lastIndex;
+        break;
+      }
+    } else {
+      depth += 1;
+    }
+  }
+  if (sourceEnd === -1) return markup;
+
+  const section = markup.slice(sourceStart, sourceEnd);
+  const withoutSection = markup.slice(0, sourceStart) + markup.slice(sourceEnd);
+  const targetStart = withoutSection.indexOf(`<section class="${targetClass}"`);
+  if (targetStart === -1) return markup;
+
+  sectionTag.lastIndex = targetStart;
+  depth = 0;
+  let targetEnd = -1;
+  for (let match = sectionTag.exec(withoutSection); match; match = sectionTag.exec(withoutSection)) {
+    if (match[0].startsWith("</")) {
+      depth -= 1;
+      if (depth === 0) {
+        targetEnd = sectionTag.lastIndex;
+        break;
+      }
+    } else {
+      depth += 1;
+    }
+  }
+  if (targetEnd === -1) return markup;
+
+  return withoutSection.slice(0, targetEnd) + section + withoutSection.slice(targetEnd);
+}
+
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
     ASSETS: { fetch: fetchAsset },
@@ -98,11 +143,18 @@ export async function render(request, fetchAsset = fetch) {
       teamShowcaseMarkup,
     );
   }
-  const needsInstagramPlacement =
-    new URL(request.url).pathname === "/" &&
-    enhancedMarkup.indexOf('class="instagram-section"') > enhancedMarkup.indexOf('class="kinezyo-flow"');
-  if (needsInstagramPlacement) {
-    enhancedMarkup = moveSectionBefore(enhancedMarkup, "instagram-section", "kinezyo-flow");
+  const isHomepage = new URL(request.url).pathname === "/";
+  if (isHomepage) {
+    enhancedMarkup = moveSectionBefore(
+      enhancedMarkup,
+      "team-section team-showcase",
+      "kinezyo-section",
+    );
+    enhancedMarkup = moveSectionAfter(
+      enhancedMarkup,
+      "instagram-section",
+      "kinezyo-section",
+    );
   }
   const needsBusinessGallery =
     new URL(request.url).pathname === "/" &&
@@ -145,7 +197,6 @@ export async function render(request, fetchAsset = fetch) {
     !needsTeamShowcaseScript &&
     !needsBusinessGallery &&
     !needsTeamShowcase &&
-    !needsInstagramPlacement &&
     !needsOsteopathyService &&
     !needsMultiSportNavigation
   ) {

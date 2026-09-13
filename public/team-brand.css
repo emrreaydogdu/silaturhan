@@ -1,10 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap");
+
 .eyebrow,
-.instagram-heading .eyebrow,
-.multisport-home-promo .eyebrow {
-  font-family: Arial, "Helvetica Neue", sans-serif;
-  font-size: clamp(.66rem, .8vw, .76rem);
-  font-weight: 700;
-  letter-spacing: .14em;
+.instagram-heading .eyebrow {
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: clamp(0.8rem, 1.1vw, 0.96rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
 }
 
 .brand > span:last-child {
@@ -15,29 +16,14 @@
   white-space: nowrap;
 }
 
-.entry-content {
-  font-family: Arial, "Helvetica Neue", sans-serif;
-}
-
-.entry-content h2,
-.entry-content h2 em {
-  font-family: Arial, "Helvetica Neue", sans-serif;
-  font-size: clamp(2.35rem, 6.2vw, 4.2rem);
-  font-style: normal;
-  font-weight: 650;
-  letter-spacing: -.065em;
-  line-height: .94;
+.entry-content h2 {
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
 }
 
 .entry-content h2 em {
-  color: #b8e3d9;
-  display: inline;
-}
-
-.entry-content p,
-.entry-content small {
-  font-family: Arial, "Helvetica Neue", sans-serif;
-  font-weight: 700;
+  display: inline-block;
+  font-size: .72em;
+  line-height: 1.08;
 }
 
 @media (max-width: 620px) {
@@ -46,8 +32,7 @@
     letter-spacing: .11em;
   }
 
-  .entry-content h2,
-  .entry-content h2 em {
-    font-size: clamp(2rem, 8.7vw, 3rem);
+  .entry-content h2 {
+    font-size: clamp(2.15rem, 11vw, 3.2rem);
   }
 }
