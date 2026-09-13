@@ -118,16 +118,6 @@ export const multisportPage = `<!doctype html>
       <p><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6h4"></path></svg> Randevu ile hizmet verilmektedir.</p>
     </footer>
     <script>
-      const header = document.querySelector('.site-header');
-      const menuButton = document.querySelector('.menu-toggle');
-      const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 72);
-      updateHeader();
-      window.addEventListener('scroll', updateHeader, { passive: true });
-      menuButton?.addEventListener('click', () => {
-        const isOpen = header.classList.toggle('menu-open');
-        menuButton.setAttribute('aria-expanded', String(isOpen));
-        menuButton.setAttribute('aria-label', isOpen ? 'Menüyü kapat' : 'Menüyü aç');
-      });
       document.querySelectorAll('[data-contact-trigger]').forEach((button) => button.addEventListener('click', () => { window.location.href = '/?randevu=1'; }));
     </script>
     <script defer src="/navigation-unifier.js?v=fast-3"></script>

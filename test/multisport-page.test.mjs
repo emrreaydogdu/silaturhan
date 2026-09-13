@@ -6,10 +6,11 @@ const root = new URL("../", import.meta.url);
 const source = async (path) => readFile(new URL(path, root), "utf8").catch(() => "");
 
 test("MultiSport members have a dedicated benefits page", async () => {
-  const [config, page, styles] = await Promise.all([
+  const [config, page, styles, headerRuntime] = await Promise.all([
     source("vercel.json"),
     source("api/multisport.mjs"),
     source("public/multisport.css"),
+    source("public/header-runtime.js"),
   ]);
 
   assert.match(config, /"source":\s*"\/multisport"/);
@@ -33,9 +34,9 @@ test("MultiSport members have a dedicated benefits page", async () => {
   assert.match(page, /universalContactCta/);
   assert.match(page, /universal-contact\.css/);
   assert.match(page, /index\.C91Two5O\.css/);
-  assert.match(page, /window\.scrollY > 72/);
-  assert.match(page, /classList\.toggle\('is-scrolled'/);
-  assert.match(page, /addEventListener\('scroll'/);
+  assert.match(headerRuntime, /window\.scrollY > 72/);
+  assert.match(headerRuntime, /classList\.toggle\("is-scrolled"/);
+  assert.match(headerRuntime, /addEventListener\("scroll"/);
   assert.match(styles, /\.ms-hero/);
   assert.match(styles, /\.site-header-shell/);
   assert.match(styles, /\.benefit-intro, \.benefit-grid, \.how-it-works, \.clarity-panel/);

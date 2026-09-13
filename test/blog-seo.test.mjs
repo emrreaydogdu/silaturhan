@@ -64,9 +64,9 @@ test("homepage has Maltepe and İstanbul local SEO markup and a published sitema
 
   const robots = await readFile(new URL("../public/robots.txt", import.meta.url), "utf8");
   assert.match(robots, /Sitemap: https:\/\/www\.turhanmeric\.com\/sitemap\.xml/);
-  const blogShell = await readFile(new URL("../public/blog-shell.js", import.meta.url), "utf8");
-  assert.match(blogShell, /is-scrolled/);
-  assert.match(blogShell, /window\.scrollY > 72/);
+  const headerRuntime = await readFile(new URL("../public/header-runtime.js", import.meta.url), "utf8");
+  assert.match(headerRuntime, /is-scrolled/);
+  assert.match(headerRuntime, /window\.scrollY > 72/);
   const blogHome = await readFile(new URL("../public/blog-home.js", import.meta.url), "utf8");
   assert.match(blogHome, /MutationObserver/);
   assert.match(blogHome, /faq\.insertAdjacentElement\("afterend", section\)/);

@@ -23,7 +23,7 @@ document.addEventListener("click", (event) => {
   event.preventDefault();
   window.location.assign(destination.href);
 }, true);
-</script>`;
+</script><script defer src="/header-runtime.js?v=header-1"></script>`;
 const staticHomeRuntime = '<script defer src="/static-home.js?v=static-1"></script>';
 const contentTypes = new Map([
   [".css", "text/css; charset=utf-8"],

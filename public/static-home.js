@@ -19,16 +19,6 @@
     window.setTimeout(finishEntry, 3200);
   }
 
-  const header = document.querySelector(".site-header");
-  const menu = document.querySelector(".mobile-menu");
-  const menuToggle = document.querySelector(".menu-toggle");
-  menuToggle?.addEventListener("click", () => {
-    const open = header?.classList.toggle("menu-open");
-    menuToggle.setAttribute("aria-expanded", String(open));
-    menuToggle.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
-  });
-  menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => header?.classList.remove("menu-open")));
-
   function requestAppointment(event) {
     event.preventDefault();
     window.location.assign(appointmentUrl);
