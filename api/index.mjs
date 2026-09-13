@@ -5,7 +5,7 @@ import { blogSectionMarkup } from "./blog.mjs";
 import { homeSeoMarkup } from "./seo.mjs";
 
 const extraStylesheets = [
-  '<link rel="stylesheet" href="/instagram-feed.css?v=silasu-native-embed-1">',
+  '<link rel="stylesheet" href="/instagram-feed.css?v=silasu-curated-2">',
   '<link rel="stylesheet" href="/booking-refinement.css">',
   '<link rel="stylesheet" href="/team-brand.css">',
   '<link rel="stylesheet" href="/multisport-promo.css">',
@@ -15,7 +15,7 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/link-refinement.css">',
   '<link rel="stylesheet" href="/liquid-glass.css">',
 ].join("");
-const instagramClientScript = '<script defer src="/instagram-feed.js?v=silasu-native-embed-1"></script>';
+const instagramClientScript = '<script defer src="/instagram-feed.js?v=silasu-curated-2"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
 const businessGalleryScript = '<script type="module" src="/business-gallery.js"></script>';
 const teamShowcaseScript = '<script type="module" src="/team-showcase.js"></script>';
@@ -230,7 +230,7 @@ export async function render(request, fetchAsset = fetch) {
     enhancedMarkup = enhancedMarkup.replace("</head>", `${homeSeoMarkup}</head>`);
   }
   const hasExtraStylesheets = [
-    'href="/instagram-feed.css?v=silasu-native-embed-1"',
+    'href="/instagram-feed.css?v=silasu-curated-2"',
     'href="/booking-refinement.css"',
     'href="/team-brand.css"',
     'href="/multisport-promo.css"',

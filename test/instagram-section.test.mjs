@@ -33,9 +33,9 @@ test("homepage publishes the prepared Instagram feed section", async () => {
   assert.equal((markup.match(/class="instagram-feed-card instagram-preview-card"/g) ?? []).length, 6);
   assert.equal((markup.match(/class="instagram-media"/g) ?? []).length, 0);
   assert.doesNotMatch(markup, /https:\/\/www\.instagram\.com\/embed\.js/);
-  assert.equal((markup.match(/src="\/instagram-feed\.js\?v=silasu-native-embed-1"/g) ?? []).length, 1);
+  assert.equal((markup.match(/src="\/instagram-feed\.js\?v=silasu-curated-2"/g) ?? []).length, 1);
   assert.doesNotMatch(markup, /instagram-skeleton|instagram-pending|aria-busy="true"/);
-  assert.match(markup, /href="\/instagram-feed\.css\?v=silasu-native-embed-1"/);
+  assert.match(markup, /href="\/instagram-feed\.css\?v=silasu-curated-2"/);
   assert.equal(
     existsSync(new URL("../public/instagram-feed.css", import.meta.url)),
     true,
@@ -46,11 +46,12 @@ test("homepage publishes the prepared Instagram feed section", async () => {
   assert.match(feedScript, /querySelectorAll\(previewSelector\)/);
   assert.match(feedScript, /data-instagram-permalink/);
   assert.match(feedScript, /createElement\("blockquote"\)/);
-  assert.match(feedScript, /createElement\("iframe"\)/);
+  assert.match(feedScript, /keepCuratedPreview/);
   assert.match(feedScript, /author === "Sılasu Turhan"/);
+  assert.match(feedScript, /removeLegacyProfileLink/);
   assert.match(feedScript, /DOMContentLoaded|document\.readyState/);
   assert.doesNotMatch(feedScript, /addEventListener\("click"/);
   assert.doesNotMatch(feedScript, /Gönderiyi yükle/);
   assert.match(feedStyles, /\.instagram-preview-actions\s*\{\s*display:\s*none;/);
-  assert.match(feedStyles, /\.instagram-native-embed-card/);
+  assert.match(feedStyles, /\.instagram-curated-card/);
 });

@@ -61,9 +61,8 @@ test("Instagram embeds start automatically for every post on page entry", async 
 
   const silaCards = cards.slice(0, 3);
   const tilbeCards = cards.slice(3);
-  assert.equal(silaCards.filter((card) => card.classList.contains("instagram-native-embed-card")).length, 3);
-  assert.ok(silaCards.every((card) => card.child.tagName === "iframe"));
-  assert.ok(silaCards.every((card) => card.child.src.endsWith("/embed/")));
+  assert.equal(silaCards.filter((card) => card.classList.contains("instagram-curated-card")).length, 3);
+  assert.ok(silaCards.every((card) => !card.child));
   assert.equal(tilbeCards.filter((card) => card.classList.contains("instagram-embed-card")).length, 3);
   assert.ok(tilbeCards.every((card) => card.child.className === "instagram-media"));
   assert.ok(tilbeCards.every((card) => card.child.dataset.instgrmPermalink.startsWith("https://www.instagram.com/reel/")));

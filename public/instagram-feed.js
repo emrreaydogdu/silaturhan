@@ -40,17 +40,10 @@
     card.replaceChildren(quote);
   }
 
-  function createNativeEmbed(card, permalink) {
-    const frame = document.createElement("iframe");
-    frame.className = "instagram-native-frame";
-    frame.src = `${permalink.replace(/\/$/, "")}/embed/`;
-    frame.title = `${card.querySelector(".instagram-preview-author")?.textContent ?? "Instagram"} Instagram Reels gönderisi`;
-    frame.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
-    frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
-
+  function keepCuratedPreview(card) {
     card.classList.remove("instagram-preview-card");
-    card.classList.add("instagram-native-embed-card");
-    card.replaceChildren(frame);
+    card.classList.add("instagram-curated-card");
+    card.querySelector(".instagram-preview-actions")?.remove();
   }
 
   async function processEmbeds() {
@@ -63,7 +56,7 @@
       if (!permalink) continue;
 
       if (author === "Sılasu Turhan") {
-        createNativeEmbed(card, permalink);
+        keepCuratedPreview(card);
       } else {
         createEmbed(card, permalink);
       }
@@ -85,13 +78,19 @@
     }
   }
 
+  function removeLegacyProfileLink() {
+    document.querySelectorAll(".instagram-heading .instagram-profile-link").forEach((link) => link.remove());
+  }
+
   function start() {
     placeInstagramBelowKinezyotherapy();
+    removeLegacyProfileLink();
     processEmbeds();
 
     if (document.body) {
       new MutationObserver(() => {
         placeInstagramBelowKinezyotherapy();
+        removeLegacyProfileLink();
         processEmbeds();
       }).observe(document.body, {
         childList: true,
