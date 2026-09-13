@@ -1,6 +1,8 @@
 import worker from "../server/index.js";
 import { businessGalleryMarkup } from "./business-gallery.mjs";
 import { teamShowcaseMarkup } from "./team-showcase.mjs";
+import { blogSectionMarkup } from "./blog.mjs";
+import { homeSeoMarkup } from "./seo.mjs";
 
 const extraStylesheets = [
   '<link rel="stylesheet" href="/instagram-feed.css">',
@@ -9,11 +11,13 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/multisport-promo.css">',
   '<link rel="stylesheet" href="/business-gallery.css">',
   '<link rel="stylesheet" href="/team-showcase.css">',
+  '<link rel="stylesheet" href="/blog.css">',
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
 const businessGalleryScript = '<script type="module" src="/business-gallery.js"></script>';
 const teamShowcaseScript = '<script type="module" src="/team-showcase.js"></script>';
+const blogSliderScript = '<script defer src="/blog-slider.js"></script>';
 const siteTitle = "Maltepe Fizyoterapi | Sılasu Turhan & Tilbe Meriç";
 const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
 const multiSportDesktopLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport</a>';
@@ -110,6 +114,22 @@ function moveSectionAfter(markup, sourceClass, targetClass) {
   return withoutSection.slice(0, targetEnd) + section + withoutSection.slice(targetEnd);
 }
 
+function insertAfterSection(markup, sectionClass, insertedMarkup) {
+  const sectionStart = markup.indexOf(`<section class="${sectionClass}"`);
+  if (sectionStart === -1) return markup;
+
+  const sectionTag = /<\/?section\b[^>]*>/g;
+  sectionTag.lastIndex = sectionStart;
+  let depth = 0;
+  for (let match = sectionTag.exec(markup); match; match = sectionTag.exec(markup)) {
+    depth += match[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) {
+      return markup.slice(0, sectionTag.lastIndex) + insertedMarkup + markup.slice(sectionTag.lastIndex);
+    }
+  }
+  return markup;
+}
+
 export async function render(request, fetchAsset = fetch) {
   const response = await worker.fetch(request, {
     ASSETS: { fetch: fetchAsset },
@@ -176,6 +196,20 @@ export async function render(request, fetchAsset = fetch) {
       `$1${businessGalleryMarkup}`,
     );
   }
+  const needsBlogSection =
+    pathname === "/" &&
+    !enhancedMarkup.includes('class="blog-section"');
+  if (needsBlogSection) {
+    enhancedMarkup = insertAfterSection(
+      enhancedMarkup,
+      "instagram-section",
+      blogSectionMarkup,
+    );
+  }
+  const needsHomeSeo = pathname === "/" && !enhancedMarkup.includes('data-local-seo="true"');
+  if (needsHomeSeo) {
+    enhancedMarkup = enhancedMarkup.replace("</head>", `${homeSeoMarkup}</head>`);
+  }
   const hasExtraStylesheets = [
     'href="/instagram-feed.css"',
     'href="/booking-refinement.css"',
@@ -183,6 +217,7 @@ export async function render(request, fetchAsset = fetch) {
     'href="/multisport-promo.css"',
     'href="/business-gallery.css"',
     'href="/team-showcase.css"',
+    'href="/blog.css"',
   ].every((stylesheet) => enhancedMarkup.includes(stylesheet));
   const hasInstagramClientScript = enhancedMarkup.includes(instagramClientScript);
   const needsInstagramClientScript =
@@ -196,6 +231,9 @@ export async function render(request, fetchAsset = fetch) {
   const needsTeamShowcaseScript =
     enhancedMarkup.includes('data-team-showcase="true"') &&
     !enhancedMarkup.includes(teamShowcaseScript);
+  const needsBlogSliderScript =
+    enhancedMarkup.includes('class="blog-section"') &&
+    !enhancedMarkup.includes(blogSliderScript);
   const needsMultiSportNavigation =
     !isMultiSportPage &&
     (enhancedMarkup.match(/data-multisport-menu-link/g) ?? []).length < 2;
@@ -206,9 +244,12 @@ export async function render(request, fetchAsset = fetch) {
     !needsSiteEnhancementsScript &&
     !needsBusinessGalleryScript &&
     !needsTeamShowcaseScript &&
+    !needsBlogSliderScript &&
     !needsBusinessGallery &&
     !needsTeamShowcase &&
     !needsOsteopathyService &&
+    !needsBlogSection &&
+    !needsHomeSeo &&
     !needsMultiSportNavigation
   ) {
     return new Response(enhancedMarkup, response);
@@ -236,6 +277,12 @@ export async function render(request, fetchAsset = fetch) {
     enhancedMarkup = enhancedMarkup.replace(
       "</body>",
       `${teamShowcaseScript}</body>`,
+    );
+  }
+  if (needsBlogSliderScript) {
+    enhancedMarkup = enhancedMarkup.replace(
+      "</body>",
+      `${blogSliderScript}</body>`,
     );
   }
   if (!hasExtraStylesheets) {

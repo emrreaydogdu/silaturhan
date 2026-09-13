@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { multisportPage } from "../api/multisport.mjs";
 import { tilbeMericPage } from "../api/tilbe-meric.mjs";
 import { silasuArikanPage } from "../api/silasu-arikan.mjs";
+import { blogArticles, renderArticlePage, renderBlogIndex } from "../api/blog.mjs";
 import { render } from "../api/index.mjs";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -28,6 +29,7 @@ const contentTypes = new Map([
   [".png", "image/png"],
   [".svg", "image/svg+xml"],
   [".webp", "image/webp"],
+  [".xml", "application/xml; charset=utf-8"],
 ]);
 
 async function fetchPublicAsset(request) {
@@ -99,5 +101,31 @@ await writeFile(
   resolve(tilbeProfileDirectory, "index.html"),
   tilbeMericPage.replace("</head>", `${staticNavigationScript}</head>`),
 );
+
+const blogDirectory = resolve(outputRoot, "blog");
+await mkdir(blogDirectory, { recursive: true });
+await writeFile(
+  resolve(blogDirectory, "index.html"),
+  renderBlogIndex().replace("</head>", `${staticNavigationScript}</head>`),
+);
+for (const article of blogArticles) {
+  const articleDirectory = resolve(blogDirectory, article.slug);
+  await mkdir(articleDirectory, { recursive: true });
+  await writeFile(
+    resolve(articleDirectory, "index.html"),
+    renderArticlePage(article).replace("</head>", `${staticNavigationScript}</head>`),
+  );
+}
+
+const sitemapPaths = [
+  "/",
+  "/multisport/",
+  "/uzm-fzt-silasu-arikan/",
+  "/fzt-tilbe-meric/",
+  "/blog/",
+  ...blogArticles.map((article) => `/blog/${article.slug}/`),
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths.map((pathname) => `  <url><loc>https://www.turhanmeric.com${pathname}</loc></url>`).join("\n")}\n</urlset>\n`;
+await writeFile(resolve(outputRoot, "sitemap.xml"), sitemap);
 
 console.log(`Static site generated at ${outputRoot}`);

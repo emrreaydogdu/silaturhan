@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-test("static build exports the homepage, MultiSport page, and runtime assets", async () => {
+test("static build exports the homepage, profiles, articles, sitemap, and runtime assets", async () => {
   const outputDirectory = await mkdtemp(join(tmpdir(), "turhanmeric-static-"));
   try {
     const buildScript = fileURLToPath(
@@ -19,9 +19,12 @@ test("static build exports the homepage, MultiSport page, and runtime assets", a
 
     assert.equal(build.status, 0, build.stderr || build.stdout);
 
-    const [home, multisport, instagramScript] = await Promise.all([
+    const [home, multisport, blogIndex, article, sitemap, instagramScript] = await Promise.all([
       readFile(join(outputDirectory, "index.html"), "utf8"),
       readFile(join(outputDirectory, "multisport", "index.html"), "utf8"),
+      readFile(join(outputDirectory, "blog", "index.html"), "utf8"),
+      readFile(join(outputDirectory, "blog", "kinezyoterapi-nedir", "index.html"), "utf8"),
+      readFile(join(outputDirectory, "sitemap.xml"), "utf8"),
       stat(join(outputDirectory, "instagram-feed.js")),
     ]);
 
@@ -29,10 +32,14 @@ test("static build exports the homepage, MultiSport page, and runtime assets", a
     assert.match(home, /instagram-section/);
     assert.doesNotMatch(home, /instagram\.com\/embed\.js/);
     assert.match(home, /data-static-document-navigation/);
+    assert.match(home, /blog-section/);
     assert.match(home, /window\.location\.assign\(destination\.href\)/);
     assert.match(multisport, /MultiSport üyeliğinizle/);
     assert.match(multisport, /data-static-document-navigation/);
     assert.ok(instagramScript.size > 0);
+    assert.match(blogIndex, /Fizyoterapi Rehberi/);
+    assert.match(article, /Kinezyoterapi Nedir/);
+    assert.match(sitemap, /blog\/kinezyoterapi-nedir\//);
   } finally {
     await rm(outputDirectory, { recursive: true, force: true });
   }
