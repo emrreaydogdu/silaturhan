@@ -41,15 +41,7 @@
   }
 
   normalizeAll();
-  let queued = false;
-  const observer = new MutationObserver(() => {
-    if (queued) return;
-    queued = true;
-    queueMicrotask(() => {
-      queued = false;
-      normalizeAll();
-    });
-  });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
-  window.setTimeout(() => observer.disconnect(), 2000);
+  window.setTimeout(normalizeAll, 180);
+  window.setTimeout(normalizeAll, 900);
+  window.addEventListener("pageshow", normalizeAll, { once: true });
 })();
