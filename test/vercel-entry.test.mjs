@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("Vercel entry renders the homepage", async () => {
@@ -22,7 +23,11 @@ test("homepage publishes the branded browser metadata", async () => {
 
   assert.match(
     markup,
-    /<title>Fizyoterapist Sılasu Turhan \| Kinezyoterapi Tedavisi<\/title>/,
+    /<title>Fizyoterapistler Sılasu Turhan & Tilbe Meriç \| Kinezyoterapi<\/title>/,
   );
   assert.match(markup, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
+
+  const favicon = await readFile(new URL("../public/favicon.svg", import.meta.url), "utf8");
+  assert.match(favicon, /Fizyoterapistler Sılasu Turhan ve Tilbe Meriç/);
+  assert.match(favicon, /M18 19h19/);
 });

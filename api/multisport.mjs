@@ -8,7 +8,7 @@ export const multisportPage = `<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="MultiSport üyelerine özel fizyoterapi uygulamaları ve indirimli destek seçenekleri." />
     <meta name="theme-color" content="#12343b" />
-    <title>MultiSport Üyelerine Özel | Fizyoterapist Sılasu Turhan · Tilbe Meriç</title>
+    <title>MultiSport Üyelerine Özel | Fizyoterapistler Sılasu Turhan &amp; Tilbe Meriç</title>
     <link rel="icon" href="/favicon.svg" />
     <link rel="stylesheet" href="/_next/static/css/index.C91Two5O.css" />
     <link rel="stylesheet" href="/multisport.css" />

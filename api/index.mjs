@@ -14,6 +14,7 @@ const instagramClientScript = '<script defer src="/instagram-feed.js"></script>'
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
 const businessGalleryScript = '<script type="module" src="/business-gallery.js"></script>';
 const teamShowcaseScript = '<script type="module" src="/team-showcase.js"></script>';
+const siteTitle = "Fizyoterapistler Sılasu Turhan & Tilbe Meriç | Kinezyoterapi";
 const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
 const multiSportDesktopLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport</a>';
 const multiSportMobileLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport<span aria-hidden="true">↗</span></a>';
@@ -119,7 +120,7 @@ export async function render(request, fetchAsset = fetch) {
   }
 
   const markup = await response.text();
-  let enhancedMarkup = markup;
+  let enhancedMarkup = markup.replace(/<title>[^<]*<\/title>/, `<title>${siteTitle}</title>`);
   const isMultiSportPage = new URL(request.url).pathname === "/multisport";
   if (!isMultiSportPage) {
     enhancedMarkup = addNavigationLink(enhancedMarkup, "desktop-nav", multiSportDesktopLink);
@@ -200,7 +201,7 @@ export async function render(request, fetchAsset = fetch) {
     !needsOsteopathyService &&
     !needsMultiSportNavigation
   ) {
-    return new Response(markup, response);
+    return new Response(enhancedMarkup, response);
   }
 
   if (needsInstagramClientScript) {
