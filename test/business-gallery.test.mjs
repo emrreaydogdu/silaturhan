@@ -5,13 +5,17 @@ import test from "node:test";
 
 const assetRoot = new URL("../public/images/business-gallery/", import.meta.url);
 
-test("homepage renders all clinic photos in a responsive, accessible gallery", async () => {
+test("homepage retains the clinic gallery after hydration and renders it accessibly", async () => {
   const { render } = await import("../api/index.mjs");
   const response = await render(
     new Request("https://example.com/"),
     async () => new Response("Not found", { status: 404 }),
   );
   const markup = await response.text();
+  const clientScript = await (await import("node:fs/promises")).readFile(
+    new URL("../public/business-gallery.js", import.meta.url),
+    "utf8",
+  );
 
   assert.match(markup, /class="business-gallery-section"/);
   assert.match(markup, /İşletmemizden/);
@@ -26,6 +30,10 @@ test("homepage renders all clinic photos in a responsive, accessible gallery", a
   assert.match(markup, /<dialog[^>]*class="business-gallery-lightbox"/);
   assert.match(markup, /href="\/business-gallery\.css"/);
   assert.match(markup, /src="\/business-gallery\.js"/);
+  assert.match(clientScript, /new MutationObserver/);
+  assert.match(clientScript, /\.intro-strip/);
+  assert.match(clientScript, /insertAdjacentHTML\("afterend"/);
+  assert.match(clientScript, /document\.addEventListener\("click"/);
 });
 
 test("optimized gallery photos are available as WebP assets", async () => {
@@ -57,6 +65,7 @@ test("static build includes the gallery runtime and image assets", async () => {
     const home = await readFile(join(outputDirectory, "index.html"), "utf8");
     assert.match(home, /business-gallery-section/);
     assert.ok((await stat(join(outputDirectory, "business-gallery.js"))).size > 0);
+    assert.ok((await stat(join(outputDirectory, "business-gallery-data.js"))).size > 0);
     assert.ok((await stat(join(outputDirectory, "business-gallery.css"))).size > 0);
     assert.ok((await stat(join(outputDirectory, "images", "business-gallery", "01.webp"))).size > 0);
   } finally {
