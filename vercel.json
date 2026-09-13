@@ -9,6 +9,7 @@
     { "source": "/multisport", "destination": "/api/multisport" },
     { "source": "/uzm-fzt-silasu-arikan", "destination": "/api/silasu-arikan" },
     { "source": "/fzt-tilbe-meric", "destination": "/api/tilbe-meric" },
+    { "source": "/uzmanlar", "destination": "/api/uzmanlar" },
     { "source": "/blog", "destination": "/api/blog" },
     { "source": "/blog/:slug", "destination": "/api/blog?slug=:slug" }
   ]

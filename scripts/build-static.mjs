@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { multisportPage } from "../api/multisport.mjs";
 import { tilbeMericPage } from "../api/tilbe-meric.mjs";
 import { silasuArikanPage } from "../api/silasu-arikan.mjs";
+import { expertsPage } from "../api/uzmanlar.mjs";
 import { blogArticles, renderArticlePage, renderBlogIndex } from "../api/blog.mjs";
 import { render } from "../api/index.mjs";
 
@@ -102,6 +103,13 @@ await writeFile(
   tilbeMericPage.replace("</head>", `${staticNavigationScript}</head>`),
 );
 
+const expertsDirectory = resolve(outputRoot, "uzmanlar");
+await mkdir(expertsDirectory, { recursive: true });
+await writeFile(
+  resolve(expertsDirectory, "index.html"),
+  expertsPage.replace("</head>", `${staticNavigationScript}</head>`),
+);
+
 const blogDirectory = resolve(outputRoot, "blog");
 await mkdir(blogDirectory, { recursive: true });
 await writeFile(
@@ -122,6 +130,7 @@ const sitemapPaths = [
   "/multisport/",
   "/uzm-fzt-silasu-arikan/",
   "/fzt-tilbe-meric/",
+  "/uzmanlar/",
   "/blog/",
   ...blogArticles.map((article) => `/blog/${article.slug}/`),
 ];

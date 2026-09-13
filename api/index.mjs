@@ -29,6 +29,12 @@ const multiSportMobileLink = '<a href="/multisport" data-multisport-menu-link="t
 const blogDesktopLink = '<a href="/#makaleler" data-blog-menu-link="true">Makaleler</a>';
 const blogMobileLink = '<a href="/#makaleler" data-blog-menu-link="true">Makaleler<span aria-hidden="true">↗</span></a>';
 
+function useExpertsNavigation(markup) {
+  return markup
+    .replaceAll('href="/uzm-fzt-silasu-arikan">Uzmanlık', 'href="/uzmanlar">Uzmanlarımız')
+    .replaceAll('href="/uzm-fzt-silasu-arikan">Uzmanlık<svg', 'href="/uzmanlar">Uzmanlarımız<svg');
+}
+
 function addNavigationLink(markup, navigationClass, link, marker) {
   const navigationStart = markup.indexOf(`<nav class="${navigationClass}"`);
   if (navigationStart === -1) return markup;
@@ -152,6 +158,7 @@ export async function render(request, fetchAsset = fetch) {
       : siteTitle;
   const markup = await response.text();
   let enhancedMarkup = markup.replace(/<title>[^<]*<\/title>/, `<title>${pageTitle}</title>`);
+  enhancedMarkup = useExpertsNavigation(enhancedMarkup);
   if (pathname === "/uzm-fzt-silasu-arikan") {
     enhancedMarkup = enhancedMarkup
       .replace('src="/images/hero-physio.png"', 'src="/images/team/silasu-turhan.webp"')
