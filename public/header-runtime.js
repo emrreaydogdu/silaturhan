@@ -47,7 +47,11 @@
       actions.append(toggle);
     }
     setMenuState(header, toggle, false);
-    toggle.addEventListener("click", () => setMenuState(header, toggle, !header.classList.contains("menu-open")));
+    toggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setMenuState(header, toggle, !header.classList.contains("menu-open"));
+    }, true);
     header.querySelectorAll(".mobile-menu a, .mobile-menu-cta").forEach((link) => {
       link.addEventListener("click", () => setMenuState(header, toggle, false));
     });
