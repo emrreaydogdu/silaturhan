@@ -39,6 +39,9 @@ test("each article has canonical Article and breadcrumb structured data", () => 
     assert.match(markup, new RegExp(`og:image" content="https://www\\.turhanmeric\\.com${article.cover}`));
     assert.match(markup, new RegExp(`src="${article.cover}"`));
     assert.match(markup, /Benzer <em>rehberler\.<\/em>/);
+    assert.match(markup, /class="article-cta"/);
+    assert.match(markup, /Randevu talebi oluştur/);
+    assert.match(markup, /0551 646 74 62/);
     assert.match(markup, /Bilgilendirme/);
     assert.match(markup, /class="site-header"/);
     assert.match(markup, /<footer>/);

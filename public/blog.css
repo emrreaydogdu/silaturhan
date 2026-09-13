@@ -409,6 +409,59 @@
 .blog-related-grid a > span { margin: 1.05rem 1.05rem 0; color: var(--journal-teal); font-family: Arial, sans-serif; font-size: 0.61rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.3; }
 .blog-related-grid strong { margin: 0.62rem 1.05rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.08rem, 1.6vw, 1.3rem); font-weight: 500; line-height: 1.05; letter-spacing: -0.035em; }
 .blog-related-grid small { margin: auto 1.05rem 1.05rem; color: var(--journal-teal); font-family: Arial, sans-serif; font-size: 0.72rem; font-weight: 700; }
+.article-cta {
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(4.5rem, 10vw, 8rem);
+  background: #167b78;
+  color: #f7faf6;
+}
+.article-cta-rings { position: absolute; inset: 0; pointer-events: none; }
+.article-cta-rings i { position: absolute; display: block; border: 1px solid rgba(213, 239, 233, 0.21); border-radius: 50%; }
+.article-cta-rings i:nth-child(1) { width: clamp(16rem, 28vw, 28rem); height: clamp(16rem, 28vw, 28rem); left: 37%; top: -12rem; }
+.article-cta-rings i:nth-child(2) { width: clamp(11rem, 20vw, 20rem); height: clamp(11rem, 20vw, 20rem); left: 46%; top: -7rem; }
+.article-cta-rings i:nth-child(3) { width: clamp(5rem, 9vw, 9rem); height: clamp(5rem, 9vw, 9rem); left: 54%; top: 1rem; background: rgba(204, 224, 242, 0.15); }
+.article-cta-inner {
+  position: relative;
+  display: grid;
+  width: min(1120px, calc(100% - 2.5rem));
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
+  gap: clamp(3rem, 10vw, 10rem);
+  padding: clamp(4rem, 8vw, 6.5rem) 0;
+}
+.article-cta-copy > p {
+  margin: 0 0 1.45rem;
+  color: #c6dfda;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.article-cta-copy > p::before { display: inline-block; width: 1.15rem; height: 1px; margin: 0 0.65rem 0.22rem 0; background: currentColor; content: ""; }
+.article-cta-copy h2 { max-width: 10ch; margin: 0; color: #fffdf9; font-family: Georgia, "Times New Roman", serif; font-size: clamp(3rem, 6.2vw, 5.8rem); font-weight: 500; letter-spacing: -0.07em; line-height: 0.88; }
+.article-cta-copy h2 em { color: #d5c2ed; font-weight: 400; }
+.article-cta-copy > span { display: block; max-width: 25rem; margin: 1.8rem 0; color: #e1efec; font-size: 1rem; line-height: 1.55; }
+.article-cta-copy > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  padding: 1rem 1.25rem;
+  background: #fffdf9;
+  color: var(--journal-ink);
+  font-family: Arial, sans-serif;
+  font-size: 0.83rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+.article-cta-copy > a:hover { background: #d8efea; transform: translateY(-2px); }
+.article-cta-copy > a svg { width: 1rem; height: 1rem; }
+.article-cta-contact { display: grid; align-content: center; gap: 1.45rem; margin: 0; font-style: normal; }
+.article-cta-contact a, .article-cta-contact p { display: grid; gap: 0.35rem; margin: 0; color: #fffdf9; text-decoration: none; }
+.article-cta-contact small { color: #b9d8d2; font-family: Arial, sans-serif; font-size: 0.64rem; font-style: normal; font-weight: 700; letter-spacing: 0.13em; }
+.article-cta-contact strong { font-family: Arial, sans-serif; font-size: 0.9rem; font-style: normal; font-weight: 500; line-height: 1.55; }
+.article-cta-contact a:hover strong { color: #d9c6ee; }
 
 .blog-card a:focus-visible,
 .blog-controls button:focus-visible,
@@ -442,6 +495,10 @@
   .blog-related > div:first-child { display: block; }
   .blog-related h2 { margin-top: 0.75rem; }
   .blog-related-grid { grid-template-columns: 1fr; }
+  .article-cta-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .article-cta-rings i:nth-child(1) { left: 35%; }
+  .article-cta-rings i:nth-child(2) { left: 52%; }
+  .article-cta-rings i:nth-child(3) { left: 67%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
