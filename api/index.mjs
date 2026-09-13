@@ -1,13 +1,16 @@
 import worker from "../server/index.js";
+import { businessGalleryMarkup } from "./business-gallery.mjs";
 
 const extraStylesheets = [
   '<link rel="stylesheet" href="/instagram-feed.css">',
   '<link rel="stylesheet" href="/booking-refinement.css">',
   '<link rel="stylesheet" href="/team-brand.css">',
   '<link rel="stylesheet" href="/multisport-promo.css">',
+  '<link rel="stylesheet" href="/business-gallery.css">',
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
+const businessGalleryScript = '<script defer src="/business-gallery.js"></script>';
 const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
 const multiSportDesktopLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport</a>';
 const multiSportMobileLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport<span aria-hidden="true">↗</span></a>';
@@ -54,11 +57,21 @@ export async function render(request, fetchAsset = fetch) {
       (_, firstServiceCard) => `${firstServiceCard}${osteopathyServiceCard}`,
     );
   }
+  const needsBusinessGallery =
+    new URL(request.url).pathname === "/" &&
+    !enhancedMarkup.includes('class="business-gallery-section"');
+  if (needsBusinessGallery) {
+    enhancedMarkup = enhancedMarkup.replace(
+      /(?=<section class="instagram-section")/,
+      businessGalleryMarkup,
+    );
+  }
   const hasExtraStylesheets = [
     'href="/instagram-feed.css"',
     'href="/booking-refinement.css"',
     'href="/team-brand.css"',
     'href="/multisport-promo.css"',
+    'href="/business-gallery.css"',
   ].every((stylesheet) => enhancedMarkup.includes(stylesheet));
   const hasInstagramClientScript = enhancedMarkup.includes(instagramClientScript);
   const needsInstagramClientScript =
@@ -66,6 +79,9 @@ export async function render(request, fetchAsset = fetch) {
   const needsSiteEnhancementsScript =
     enhancedMarkup.includes('class="instagram-section"') &&
     !enhancedMarkup.includes(siteEnhancementsScript);
+  const needsBusinessGalleryScript =
+    enhancedMarkup.includes('class="business-gallery-section"') &&
+    !enhancedMarkup.includes(businessGalleryScript);
   const needsMultiSportNavigation =
     !isMultiSportPage &&
     (enhancedMarkup.match(/data-multisport-menu-link/g) ?? []).length < 2;
@@ -74,6 +90,8 @@ export async function render(request, fetchAsset = fetch) {
     hasExtraStylesheets &&
     !needsInstagramClientScript &&
     !needsSiteEnhancementsScript &&
+    !needsBusinessGalleryScript &&
+    !needsBusinessGallery &&
     !needsOsteopathyService &&
     !needsMultiSportNavigation
   ) {
@@ -90,6 +108,12 @@ export async function render(request, fetchAsset = fetch) {
     enhancedMarkup = enhancedMarkup.replace(
       "</body>",
       `${siteEnhancementsScript}</body>`,
+    );
+  }
+  if (needsBusinessGalleryScript) {
+    enhancedMarkup = enhancedMarkup.replace(
+      "</body>",
+      `${businessGalleryScript}</body>`,
     );
   }
   if (!hasExtraStylesheets) {
