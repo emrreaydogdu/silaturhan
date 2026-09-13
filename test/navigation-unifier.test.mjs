@@ -11,9 +11,10 @@ test("navigation runtime keeps Makaleler and Uzmanlarımız after client renderi
   assert.match(script, /Makaleler/);
   assert.match(script, /Uzmanlarımız/);
   assert.match(script, /\/uzmanlar/);
+  assert.match(script, /\/#makaleler/);
   assert.doesNotMatch(script, /existing\.innerHTML\s*=/);
   assert.match(script, /if \(link\.innerHTML !== content\)/);
   assert.doesNotMatch(script, /MutationObserver/);
   assert.match(script, /window\.setTimeout\(normalizeAll, 900\)/);
-  pages.forEach((page) => assert.match(page, /navigation-unifier\.js\?v=fast-2/));
+  pages.forEach((page) => assert.match(page, /navigation-unifier\.js\?v=fast-3/));
 });

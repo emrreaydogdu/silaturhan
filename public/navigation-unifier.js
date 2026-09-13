@@ -20,7 +20,8 @@
 
     standardLinks.forEach(([href, label]) => {
       const legacyExpert = href === "/uzmanlar" ? linksByPath.get("/uzm-fzt-silasu-arikan") : null;
-      const existing = linksByPath.get(href) ?? legacyExpert;
+      const legacyBlog = href === "/blog/" ? linksByPath.get("/#makaleler") : null;
+      const existing = linksByPath.get(href) ?? legacyExpert ?? legacyBlog;
       if (existing) {
         if (existing.getAttribute("href") !== href) existing.setAttribute("href", href);
         if (href === "/uzmanlar" || href === "/blog/") {

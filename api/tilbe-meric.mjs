@@ -30,7 +30,7 @@ export const tilbeMericPage = `<!doctype html>
 
       ${universalContactCta}<footer><a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a><p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p><p>Randevu ile hizmet verilmektedir.</p></footer>
     </main>
-    <script defer src="/navigation-unifier.js?v=fast-2"></script>
+    <script defer src="/navigation-unifier.js?v=fast-3"></script>
   </body>
 </html>`;
 
