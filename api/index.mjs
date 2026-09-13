@@ -12,6 +12,7 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/business-gallery.css">',
   '<link rel="stylesheet" href="/team-showcase.css">',
   '<link rel="stylesheet" href="/blog.css">',
+  '<link rel="stylesheet" href="/link-refinement.css">',
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
@@ -180,6 +181,10 @@ export async function render(request, fetchAsset = fetch) {
   }
   const isHomepage = pathname === "/";
   if (isHomepage) {
+    enhancedMarkup = enhancedMarkup.replace(
+      /<a class="instagram-profile-link"[\s\S]*?<\/a>/,
+      "",
+    );
     enhancedMarkup = moveSectionBefore(
       enhancedMarkup,
       "team-section team-showcase",
@@ -222,6 +227,7 @@ export async function render(request, fetchAsset = fetch) {
     'href="/business-gallery.css"',
     'href="/team-showcase.css"',
     'href="/blog.css"',
+    'href="/link-refinement.css"',
   ].every((stylesheet) => enhancedMarkup.includes(stylesheet));
   const hasInstagramClientScript = enhancedMarkup.includes(instagramClientScript);
   const needsInstagramClientScript =

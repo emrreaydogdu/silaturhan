@@ -1,0 +1,38 @@
+.text-link {
+  align-items: center;
+  border: 1px solid rgba(18, 52, 59, .28);
+  border-radius: 999px;
+  color: #12343b !important;
+  display: inline-flex;
+  font-size: .76rem !important;
+  font-weight: 750 !important;
+  gap: .55rem;
+  line-height: 1;
+  padding: .78rem 1rem;
+  text-decoration: none !important;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+}
+
+.text-link:hover {
+  background: #12343b;
+  border-color: #12343b;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
+.text-link:focus-visible {
+  outline: 3px solid #d5a995;
+  outline-offset: 3px;
+}
+
+.text-link svg {
+  flex: 0 0 auto;
+  transition: transform .2s ease;
+}
+
+.text-link:hover svg { transform: translate(2px, -2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .text-link,
+  .text-link svg { transition: none; }
+}
