@@ -220,7 +220,7 @@ export async function render(request, fetchAsset = fetch) {
     enhancedMarkup = moveSectionAfter(
       enhancedMarkup,
       "blog-section",
-      "intro-strip",
+      "faq-section",
     );
   }
   const needsHomeSeo = pathname === "/" && !enhancedMarkup.includes('data-local-seo="true"');
