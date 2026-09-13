@@ -2,6 +2,12 @@
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector("[data-blog-menu-toggle]");
 
+  const syncHeaderPosition = () => {
+    header?.classList.toggle("is-scrolled", window.scrollY > 72);
+  };
+  syncHeaderPosition();
+  window.addEventListener("scroll", syncHeaderPosition, { passive: true });
+
   toggle?.addEventListener("click", () => {
     const isOpen = header?.classList.toggle("menu-open") ?? false;
     toggle.setAttribute("aria-expanded", String(isOpen));

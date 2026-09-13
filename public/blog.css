@@ -242,11 +242,36 @@
 .blog-index-hero h1 { margin: 1rem 0 1.25rem; font-size: clamp(3.2rem, 8vw, 7rem); line-height: 0.87; }
 .blog-index-hero > p:last-child { max-width: 39rem; margin: 0; color: #456267; font-size: 1.05rem; line-height: 1.7; }
 
-.blog-index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding-bottom: 6rem; }
-.blog-index-grid article { min-height: 15rem; border-top: 1px solid var(--journal-ink); padding: 1rem 0 1.5rem; }
-.blog-index-grid h2 { margin: 2.5rem 0 0.8rem; font-size: 1.7rem; line-height: 1; }
+.blog-index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; padding-bottom: 6rem; }
+.blog-index-grid article {
+  border: 1px solid var(--journal-line);
+  border-radius: 1.4rem;
+  box-shadow: 0 1rem 2.7rem rgba(18, 61, 64, 0.06);
+  display: flex;
+  flex-direction: column;
+  min-height: 20rem;
+  overflow: hidden;
+  padding: 1.55rem;
+  position: relative;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+.blog-index-grid article::after {
+  border: 1px solid rgba(23, 125, 123, 0.18);
+  border-radius: 50%;
+  content: "";
+  height: 9rem;
+  position: absolute;
+  right: -4.25rem;
+  top: -4.75rem;
+  width: 9rem;
+}
+.blog-index-grid article:nth-child(3n + 1) { background: #fff; }
+.blog-index-grid article:nth-child(3n + 2) { background: #e8f1ee; }
+.blog-index-grid article:nth-child(3n) { background: #f0ebdc; }
+.blog-index-grid article:hover { box-shadow: 0 1.4rem 3.2rem rgba(18, 61, 64, 0.13); transform: translateY(-5px); }
+.blog-index-grid h2 { margin: 3.3rem 0 0.85rem; max-width: 14ch; font-size: 1.75rem; line-height: 1; }
 .blog-index-grid article > p:not(:first-child) { margin: 0; color: #456267; line-height: 1.55; }
-.blog-index-grid a { margin-top: 1.25rem; }
+.blog-index-grid a { margin-top: auto; align-self: flex-start; }
 
 .blog-article { max-width: 760px; padding: clamp(3rem, 7vw, 6rem) 0 7rem; }
 .blog-article nav { margin-bottom: 3rem; font-size: 0.8rem; }
@@ -286,6 +311,7 @@
   .blog-brand { font-size: 1.08rem; }
   .blog-site-header > a:last-child { padding: 0.7rem 0.85rem; font-size: 0.72rem; }
   .blog-index-grid { grid-template-columns: 1fr; }
+  .blog-index-grid article { min-height: 18rem; }
   .blog-index-hero { padding-top: 3.5rem; }
 }
 
