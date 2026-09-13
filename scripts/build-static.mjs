@@ -24,6 +24,7 @@ document.addEventListener("click", (event) => {
   window.location.assign(destination.href);
 }, true);
 </script>`;
+const staticHomeRuntime = '<script defer src="/static-home.js?v=static-1"></script>';
 const contentTypes = new Map([
   [".css", "text/css; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],
@@ -76,10 +77,18 @@ async function renderHome(pathname = "/") {
   return markup.replace("</head>", `${staticNavigationScript}</head>`);
 }
 
+function stripClientHydration(markup) {
+  return markup
+    .replace(/<link\b[^>]*\brel="modulepreload"[^>]*>/g, "")
+    .replace(/<script\b[^>]*\bsrc="\/_next\/static\/chunks\/[^"]+"[^>]*><\/script>/g, "")
+    .replace(/<script>([\s\S]*?)<\/script>/g, "")
+    .replace(/<script>Object\.assign\(\(\(self\[Symbol\.for\("vinext\.navigationRuntime"\)[\s\S]*?<\/script>/g, "");
+}
+
 await mkdir(outputRoot, { recursive: true });
 await cp(publicRoot, outputRoot, { recursive: true, force: true });
 
-const homePage = await renderHome();
+const homePage = stripClientHydration(await renderHome()).replace("</body>", `${staticHomeRuntime}</body>`);
 await writeFile(resolve(outputRoot, "index.html"), homePage);
 
 const multisportDirectory = resolve(outputRoot, "multisport");
