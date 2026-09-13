@@ -19,10 +19,11 @@ test("Tilbe Meriç has a dedicated profile page with her portrait and expertise 
 });
 
 test("Sılasu Arıkan's profile uses her own portrait", async () => {
-  const { render } = await import("../api/index.mjs");
-  const response = await render(new Request("https://example.com/uzm-fzt-silasu-arikan"));
-  const markup = await response.text();
+  const { silasuArikanPage } = await import("../api/silasu-arikan.mjs");
 
-  assert.match(markup, /\/images\/team\/silasu-turhan\.webp/);
-  assert.match(markup, /Uzm\. Fzt\. Sılasu Arıkan \| Maltepe Fizyoterapi/);
+  assert.match(silasuArikanPage, /\/images\/team\/silasu-turhan\.webp/);
+  assert.match(silasuArikanPage, /Uzm\. Fzt\. Sılasu Arıkan \| Maltepe Fizyoterapi/);
+  assert.match(silasuArikanPage, /class="profile-hero"/);
+  assert.match(silasuArikanPage, /class="interests-section"/);
+  assert.doesNotMatch(silasuArikanPage, /Hareketi<br\/>anlayarak|Hareket<br\/>ile iyileşme/);
 });

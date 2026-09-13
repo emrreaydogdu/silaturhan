@@ -3,6 +3,7 @@ import { extname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { multisportPage } from "../api/multisport.mjs";
 import { tilbeMericPage } from "../api/tilbe-meric.mjs";
+import { silasuArikanPage } from "../api/silasu-arikan.mjs";
 import { render } from "../api/index.mjs";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -87,7 +88,10 @@ await writeFile(
 
 const expertiseDirectory = resolve(outputRoot, "uzm-fzt-silasu-arikan");
 await mkdir(expertiseDirectory, { recursive: true });
-await writeFile(resolve(expertiseDirectory, "index.html"), await renderHome("/uzm-fzt-silasu-arikan"));
+await writeFile(
+  resolve(expertiseDirectory, "index.html"),
+  silasuArikanPage.replace("</head>", `${staticNavigationScript}</head>`),
+);
 
 const tilbeProfileDirectory = resolve(outputRoot, "fzt-tilbe-meric");
 await mkdir(tilbeProfileDirectory, { recursive: true });

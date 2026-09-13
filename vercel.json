@@ -7,7 +7,7 @@
   "rewrites": [
     { "source": "/", "destination": "/api" },
     { "source": "/multisport", "destination": "/api/multisport" },
-    { "source": "/uzm-fzt-silasu-arikan", "destination": "/api" },
+    { "source": "/uzm-fzt-silasu-arikan", "destination": "/api/silasu-arikan" },
     { "source": "/fzt-tilbe-meric", "destination": "/api/tilbe-meric" }
   ]
 }
