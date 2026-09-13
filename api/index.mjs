@@ -22,8 +22,10 @@ const siteTitle = "Maltepe Fizyoterapi | Sılasu Turhan & Tilbe Meriç";
 const osteopathyServiceCard = '<article data-osteopathy-service style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><h3 style="margin:0 0 10px">Osteopati</h3><p>Bütüncül değerlendirme ve manuel yaklaşımla hareket sistemine yönelik destek.</p></div></article>';
 const multiSportDesktopLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport</a>';
 const multiSportMobileLink = '<a href="/multisport" data-multisport-menu-link="true">MultiSport<span aria-hidden="true">↗</span></a>';
+const blogDesktopLink = '<a href="/#makaleler" data-blog-menu-link="true">Makaleler</a>';
+const blogMobileLink = '<a href="/#makaleler" data-blog-menu-link="true">Makaleler<span aria-hidden="true">↗</span></a>';
 
-function addNavigationLink(markup, navigationClass, link) {
+function addNavigationLink(markup, navigationClass, link, marker) {
   const navigationStart = markup.indexOf(`<nav class="${navigationClass}"`);
   if (navigationStart === -1) return markup;
 
@@ -31,7 +33,7 @@ function addNavigationLink(markup, navigationClass, link) {
   if (navigationEnd === -1) return markup;
 
   const navigation = markup.slice(navigationStart, navigationEnd);
-  if (navigation.includes("data-multisport-menu-link")) return markup;
+  if (navigation.includes(marker)) return markup;
 
   const updatedNavigation = navigation.replace(
     '<a href="/#iletisim">',
@@ -153,8 +155,10 @@ export async function render(request, fetchAsset = fetch) {
   }
   const isMultiSportPage = pathname === "/multisport";
   if (!isMultiSportPage) {
-    enhancedMarkup = addNavigationLink(enhancedMarkup, "desktop-nav", multiSportDesktopLink);
-    enhancedMarkup = addNavigationLink(enhancedMarkup, "mobile-menu", multiSportMobileLink);
+    enhancedMarkup = addNavigationLink(enhancedMarkup, "desktop-nav", multiSportDesktopLink, "data-multisport-menu-link");
+    enhancedMarkup = addNavigationLink(enhancedMarkup, "mobile-menu", multiSportMobileLink, "data-multisport-menu-link");
+    enhancedMarkup = addNavigationLink(enhancedMarkup, "desktop-nav", blogDesktopLink, "data-blog-menu-link");
+    enhancedMarkup = addNavigationLink(enhancedMarkup, "mobile-menu", blogMobileLink, "data-blog-menu-link");
   }
   const needsOsteopathyService =
     pathname === "/" &&
@@ -237,6 +241,9 @@ export async function render(request, fetchAsset = fetch) {
   const needsMultiSportNavigation =
     !isMultiSportPage &&
     (enhancedMarkup.match(/data-multisport-menu-link/g) ?? []).length < 2;
+  const needsBlogNavigation =
+    !isMultiSportPage &&
+    (enhancedMarkup.match(/data-blog-menu-link/g) ?? []).length < 2;
 
   if (
     hasExtraStylesheets &&
@@ -251,6 +258,7 @@ export async function render(request, fetchAsset = fetch) {
     !needsBlogSection &&
     !needsHomeSeo &&
     !needsMultiSportNavigation
+    && !needsBlogNavigation
   ) {
     return new Response(enhancedMarkup, response);
   }
