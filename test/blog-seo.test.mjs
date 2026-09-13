@@ -16,8 +16,8 @@ test("homepage provides a three-card article slider with ten crawlable articles"
   assert.match(markup, /class="blog-section"/);
   assert.match(markup, /data-blog-track/);
   assert.match(markup, /blog-slider\.js/);
-  assert.ok(markup.indexOf("instagram-section") < markup.indexOf("blog-section"));
-  assert.ok(markup.indexOf("blog-section") < markup.indexOf("approach-section"));
+  assert.ok(markup.indexOf("intro-strip") < markup.indexOf("blog-section"));
+  assert.ok(markup.indexOf("blog-section") < markup.indexOf("kinezyo-flow"));
   const archive = renderBlogIndex();
   assert.match(archive, new RegExp(blogArticles[9].slug));
   assert.match(archive, /class="site-header"/);

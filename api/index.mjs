@@ -215,6 +215,13 @@ export async function render(request, fetchAsset = fetch) {
       blogSectionMarkup,
     );
   }
+  if (pathname === "/" && enhancedMarkup.includes('class="blog-section"')) {
+    enhancedMarkup = moveSectionAfter(
+      enhancedMarkup,
+      "blog-section",
+      "intro-strip",
+    );
+  }
   const needsHomeSeo = pathname === "/" && !enhancedMarkup.includes('data-local-seo="true"');
   if (needsHomeSeo) {
     enhancedMarkup = enhancedMarkup.replace("</head>", `${homeSeoMarkup}</head>`);
