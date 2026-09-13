@@ -16,7 +16,7 @@ test("Instagram embeds start automatically for every post on page entry", async 
       button: { dataset: { instagramPermalink: `https://www.instagram.com/reel/test-${index}/` } },
       querySelector(selector) {
         if (selector === "[data-instagram-permalink]") return this.button;
-        if (selector === ".instagram-preview-author") return { textContent: "Fizyoterapist" };
+        if (selector === ".instagram-preview-author") return { textContent: index < 3 ? "Sılasu Turhan" : "Tilbe Meriç" };
         return null;
       },
       replaceChildren(child) {
@@ -59,9 +59,14 @@ test("Instagram embeds start automatically for every post on page entry", async 
     Promise,
   });
 
-  assert.equal(cards.filter((card) => card.classList.contains("instagram-embed-card")).length, 6);
-  assert.ok(cards.every((card) => card.child.className === "instagram-media"));
-  assert.ok(cards.every((card) => card.child.dataset.instgrmPermalink.startsWith("https://www.instagram.com/reel/")));
+  const silaCards = cards.slice(0, 3);
+  const tilbeCards = cards.slice(3);
+  assert.equal(silaCards.filter((card) => card.classList.contains("instagram-native-embed-card")).length, 3);
+  assert.ok(silaCards.every((card) => card.child.tagName === "iframe"));
+  assert.ok(silaCards.every((card) => card.child.src.endsWith("/embed/")));
+  assert.equal(tilbeCards.filter((card) => card.classList.contains("instagram-embed-card")).length, 3);
+  assert.ok(tilbeCards.every((card) => card.child.className === "instagram-media"));
+  assert.ok(tilbeCards.every((card) => card.child.dataset.instgrmPermalink.startsWith("https://www.instagram.com/reel/")));
   assert.equal(loadedScripts.length, 1);
   assert.equal(loadedScripts[0].src, "https://www.instagram.com/embed.js");
 });

@@ -40,13 +40,33 @@
     card.replaceChildren(quote);
   }
 
+  function createNativeEmbed(card, permalink) {
+    const frame = document.createElement("iframe");
+    frame.className = "instagram-native-frame";
+    frame.src = `${permalink.replace(/\/$/, "")}/embed/`;
+    frame.title = `${card.querySelector(".instagram-preview-author")?.textContent ?? "Instagram"} Instagram Reels gönderisi`;
+    frame.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+    frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+
+    card.classList.remove("instagram-preview-card");
+    card.classList.add("instagram-native-embed-card");
+    card.replaceChildren(frame);
+  }
+
   async function processEmbeds() {
     const cards = [...document.querySelectorAll(previewSelector)];
     if (cards.length === 0) return;
 
     for (const card of cards) {
       const permalink = card.querySelector("[data-instagram-permalink]")?.dataset.instagramPermalink;
-      if (permalink) createEmbed(card, permalink);
+      const author = card.querySelector(".instagram-preview-author")?.textContent?.trim();
+      if (!permalink) continue;
+
+      if (author === "Sılasu Turhan") {
+        createNativeEmbed(card, permalink);
+      } else {
+        createEmbed(card, permalink);
+      }
     }
 
     try {
