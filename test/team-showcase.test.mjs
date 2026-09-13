@@ -18,7 +18,7 @@ test("homepage introduces both physiotherapists in the redesigned team section",
   assert.match(markup, /\/images\/team\/tilbe-meric\.webp/);
   assert.match(markup, /href="\/team-showcase\.css"/);
   assert.match(markup, /src="\/team-showcase\.js"/);
-  assert.match(markup, /Randevu planlayın/);
+  assert.match(markup, /href="\/fzt-tilbe-meric">Uzmanlık profilini inceleyin/);
   assert.doesNotMatch(markup.slice(markup.indexOf('data-team-showcase="true"'), markup.indexOf('</section>', markup.indexOf('data-team-showcase="true"'))), /<span>0[12]<\/span>/);
   assert.ok(markup.indexOf('class="team-section team-showcase"') < markup.indexOf('class="kinezyo-section"'));
   assert.match(runtime, /new MutationObserver/);

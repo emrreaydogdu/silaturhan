@@ -2,6 +2,7 @@ import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { extname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { multisportPage } from "../api/multisport.mjs";
+import { tilbeMericPage } from "../api/tilbe-meric.mjs";
 import { render } from "../api/index.mjs";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -87,5 +88,12 @@ await writeFile(
 const expertiseDirectory = resolve(outputRoot, "uzm-fzt-silasu-arikan");
 await mkdir(expertiseDirectory, { recursive: true });
 await writeFile(resolve(expertiseDirectory, "index.html"), await renderHome("/uzm-fzt-silasu-arikan"));
+
+const tilbeProfileDirectory = resolve(outputRoot, "fzt-tilbe-meric");
+await mkdir(tilbeProfileDirectory, { recursive: true });
+await writeFile(
+  resolve(tilbeProfileDirectory, "index.html"),
+  tilbeMericPage.replace("</head>", `${staticNavigationScript}</head>`),
+);
 
 console.log(`Static site generated at ${outputRoot}`);

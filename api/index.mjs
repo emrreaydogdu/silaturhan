@@ -119,15 +119,25 @@ export async function render(request, fetchAsset = fetch) {
     return response;
   }
 
+  const pathname = new URL(request.url).pathname;
+  const pageTitle =
+    pathname === "/uzm-fzt-silasu-arikan"
+      ? "Uzm. Fzt. Sılasu Arıkan | Maltepe Fizyoterapi"
+      : siteTitle;
   const markup = await response.text();
-  let enhancedMarkup = markup.replace(/<title>[^<]*<\/title>/, `<title>${siteTitle}</title>`);
-  const isMultiSportPage = new URL(request.url).pathname === "/multisport";
+  let enhancedMarkup = markup.replace(/<title>[^<]*<\/title>/, `<title>${pageTitle}</title>`);
+  if (pathname === "/uzm-fzt-silasu-arikan") {
+    enhancedMarkup = enhancedMarkup
+      .replace('src="/images/hero-physio.png"', 'src="/images/team/silasu-turhan.webp"')
+      .replace('alt="Fizyoterapi stüdyosunda hareket egzersizi"', 'alt="Fizyoterapist Sılasu Arıkan Turhan"');
+  }
+  const isMultiSportPage = pathname === "/multisport";
   if (!isMultiSportPage) {
     enhancedMarkup = addNavigationLink(enhancedMarkup, "desktop-nav", multiSportDesktopLink);
     enhancedMarkup = addNavigationLink(enhancedMarkup, "mobile-menu", multiSportMobileLink);
   }
   const needsOsteopathyService =
-    new URL(request.url).pathname === "/" &&
+    pathname === "/" &&
     !enhancedMarkup.includes("data-osteopathy-service");
   if (needsOsteopathyService) {
     enhancedMarkup = enhancedMarkup.replace(
@@ -144,7 +154,7 @@ export async function render(request, fetchAsset = fetch) {
       teamShowcaseMarkup,
     );
   }
-  const isHomepage = new URL(request.url).pathname === "/";
+  const isHomepage = pathname === "/";
   if (isHomepage) {
     enhancedMarkup = moveSectionBefore(
       enhancedMarkup,
@@ -158,7 +168,7 @@ export async function render(request, fetchAsset = fetch) {
     );
   }
   const needsBusinessGallery =
-    new URL(request.url).pathname === "/" &&
+    pathname === "/" &&
     !enhancedMarkup.includes('class="business-gallery-section"');
   if (needsBusinessGallery) {
     enhancedMarkup = enhancedMarkup.replace(
