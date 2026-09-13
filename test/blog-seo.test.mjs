@@ -29,10 +29,16 @@ test("homepage provides a three-card article slider with ten crawlable articles"
 
 test("each article has canonical Article and breadcrumb structured data", () => {
   for (const article of blogArticles) {
+    assert.match(article.cover, /^\/images\/articles\/.+\.webp$/);
+    assert.ok(article.coverAlt);
+    assert.ok(article.readingTime);
     const markup = renderArticlePage(article);
     assert.match(markup, new RegExp(`canonical" href="https://www\\.turhanmeric\\.com/blog/${article.slug}/`));
     assert.match(markup, /"@type":"Article"/);
     assert.match(markup, /"@type":"BreadcrumbList"/);
+    assert.match(markup, new RegExp(`og:image" content="https://www\\.turhanmeric\\.com${article.cover}`));
+    assert.match(markup, new RegExp(`src="${article.cover}"`));
+    assert.match(markup, /Benzer <em>rehberler\.<\/em>/);
     assert.match(markup, /Bilgilendirme/);
     assert.match(markup, /class="site-header"/);
     assert.match(markup, /<footer>/);
