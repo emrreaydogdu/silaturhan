@@ -13,6 +13,7 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/team-showcase.css">',
   '<link rel="stylesheet" href="/blog.css">',
   '<link rel="stylesheet" href="/link-refinement.css">',
+  '<link rel="stylesheet" href="/liquid-glass.css">',
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js"></script>';
 const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script>';
@@ -235,6 +236,7 @@ export async function render(request, fetchAsset = fetch) {
     'href="/team-showcase.css"',
     'href="/blog.css"',
     'href="/link-refinement.css"',
+    'href="/liquid-glass.css"',
   ].every((stylesheet) => enhancedMarkup.includes(stylesheet));
   const hasInstagramClientScript = enhancedMarkup.includes(instagramClientScript);
   const needsInstagramClientScript =

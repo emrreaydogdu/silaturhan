@@ -11,6 +11,7 @@ export const tilbeMericPage = `<!doctype html>
     <link rel="icon" href="/favicon.svg" />
     <link rel="stylesheet" href="/_next/static/css/index.C91Two5O.css" />
     <link rel="stylesheet" href="/team-brand.css" />
+    <link rel="stylesheet" href="/liquid-glass.css" />
   </head>
   <body>
     <main class="doctor-page">

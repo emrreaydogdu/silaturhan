@@ -55,4 +55,7 @@ test("homepage has Maltepe and İstanbul local SEO markup and a published sitema
   const blogShell = await readFile(new URL("../public/blog-shell.js", import.meta.url), "utf8");
   assert.match(blogShell, /is-scrolled/);
   assert.match(blogShell, /window\.scrollY > 72/);
+  const liquidGlass = await readFile(new URL("../public/liquid-glass.css", import.meta.url), "utf8");
+  assert.match(liquidGlass, /backdrop-filter: blur\(28px\)/);
+  assert.match(liquidGlass, /\.site-header\.menu-open \.mobile-menu/);
 });

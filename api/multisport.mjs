@@ -12,6 +12,7 @@ export const multisportPage = `<!doctype html>
     <link rel="icon" href="/favicon.svg" />
     <link rel="stylesheet" href="/_next/static/css/index.C91Two5O.css" />
     <link rel="stylesheet" href="/multisport.css" />
+    <link rel="stylesheet" href="/liquid-glass.css" />
   </head>
   <body class="multisport-page">
     <a class="skip-link" href="#icerik">İçeriğe geç</a>
