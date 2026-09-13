@@ -57,12 +57,23 @@
     }
   }
 
+  function placeInstagramAboveHowItWorks() {
+    const section = document.querySelector(".instagram-section");
+    const howItWorks = document.querySelector(".kinezyo-flow");
+    if (section && howItWorks && howItWorks.previousElementSibling !== section) {
+      howItWorks.before(section);
+    }
+  }
+
   function start() {
+    placeInstagramAboveHowItWorks();
     processEmbeds();
 
-    const section = document.querySelector(".instagram-section");
-    if (section) {
-      new MutationObserver(processEmbeds).observe(section, {
+    if (document.body) {
+      new MutationObserver(() => {
+        placeInstagramAboveHowItWorks();
+        processEmbeds();
+      }).observe(document.body, {
         childList: true,
         subtree: true,
       });

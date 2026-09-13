@@ -22,18 +22,19 @@ test("homepage retains the clinic gallery after hydration and renders it accessi
   assert.match(markup, /id="isletmemizden-kareler"/);
   assert.match(markup, /aria-labelledby="business-gallery-title"/);
   assert.match(markup, /class="instagram-section"/);
-  assert.ok(markup.indexOf('class="intro-strip"') < markup.indexOf('class="business-gallery-section"'));
-  assert.ok(markup.indexOf('class="business-gallery-section"') < markup.indexOf('class="kinezyo-flow"'));
-  assert.ok(markup.indexOf('class="business-gallery-section"') < markup.indexOf('class="instagram-section"'));
+  assert.ok(markup.indexOf('class="kinezyo-flow"') < markup.indexOf('class="business-gallery-section"'));
+  assert.ok(markup.indexOf('class="business-gallery-section"') < markup.indexOf('class="kinezyo-section"'));
+  assert.ok(markup.indexOf('class="instagram-section"') < markup.indexOf('class="business-gallery-section"'));
   assert.equal((markup.match(/class="business-gallery-trigger/g) ?? []).length, 13);
   assert.match(markup, /loading="lazy"/);
   assert.match(markup, /<dialog[^>]*class="business-gallery-lightbox"/);
   assert.match(markup, /href="\/business-gallery\.css"/);
   assert.match(markup, /src="\/business-gallery\.js"/);
   assert.match(clientScript, /new MutationObserver/);
-  assert.match(clientScript, /\.intro-strip/);
+  assert.match(clientScript, /\.kinezyo-flow/);
   assert.match(clientScript, /insertAdjacentHTML\("afterend"/);
   assert.match(clientScript, /document\.addEventListener\("click"/);
+  assert.doesNotMatch(markup, /class="business-gallery-caption"/);
 });
 
 test("optimized gallery photos are available as WebP assets", async () => {

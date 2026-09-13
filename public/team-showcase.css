@@ -1,0 +1,203 @@
+.team-section.team-showcase {
+  --team-ink: #11363a;
+  --team-aqua: #8bd0c4;
+  --team-cream: #f5f7f2;
+  display: grid;
+  grid-template-columns: minmax(15rem, .78fr) minmax(0, 1.45fr);
+  gap: clamp(2.5rem, 7vw, 8rem);
+  padding: clamp(5.5rem, 10vw, 9rem) clamp(1.25rem, 7vw, 8rem);
+  background: var(--team-ink);
+  color: var(--team-cream);
+}
+
+.team-showcase-heading {
+  align-self: start;
+  position: sticky;
+  top: 2rem;
+}
+
+.team-showcase-eyebrow,
+.team-showcase-role {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin: 0;
+  color: var(--team-aqua);
+  font: 700 .67rem/1.3 var(--font-sans, Arial, sans-serif);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.team-showcase-eyebrow span {
+  width: 1.8rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.team-showcase-heading h2 {
+  margin: 1.65rem 0 1.5rem;
+  color: var(--team-cream);
+  font: 400 clamp(3rem, 5.4vw, 5.8rem)/.88 var(--font-serif, Georgia, serif);
+  letter-spacing: -.065em;
+}
+
+.team-showcase-heading h2 em {
+  color: var(--team-aqua);
+  font-weight: 400;
+}
+
+.team-showcase-heading > p:last-child {
+  max-width: 22rem;
+  margin: 0;
+  color: rgb(233 244 239 / 72%);
+  font: 400 1rem/1.75 var(--font-sans, Arial, sans-serif);
+}
+
+.team-showcase-people {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(1rem, 2.6vw, 2.2rem);
+}
+
+.team-showcase-person {
+  min-width: 0;
+}
+
+.team-showcase-tilbe {
+  margin-top: clamp(2rem, 9vw, 9rem);
+}
+
+.team-showcase-person figure {
+  position: relative;
+  aspect-ratio: 4 / 5.35;
+  margin: 0;
+  overflow: hidden;
+  background: #d9e8e1;
+}
+
+.team-showcase-person figure::after {
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, rgb(8 35 38 / 75%));
+  content: "";
+}
+
+.team-showcase-person img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 700ms cubic-bezier(.2, .65, .3, 1);
+}
+
+.team-showcase-person:hover img {
+  transform: scale(1.035);
+}
+
+.team-showcase-person figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 1.15rem;
+  bottom: 1.05rem;
+  left: 1.15rem;
+  display: flex;
+  align-items: baseline;
+  gap: .7rem;
+  color: #fff;
+  font: 500 .78rem/1.35 var(--font-sans, Arial, sans-serif);
+}
+
+.team-showcase-person figcaption span {
+  color: var(--team-aqua);
+  font: 700 .64rem/1 var(--font-sans, Arial, sans-serif);
+  letter-spacing: .12em;
+}
+
+.team-showcase-copy {
+  padding: 1.35rem .2rem .3rem;
+}
+
+.team-showcase-copy h3 {
+  margin: 1rem 0 .9rem;
+  color: var(--team-cream);
+  font: 400 clamp(2rem, 3.25vw, 3.5rem)/.9 var(--font-serif, Georgia, serif);
+  letter-spacing: -.06em;
+}
+
+.team-showcase-copy > p:not(.team-showcase-role) {
+  min-height: 5.2rem;
+  margin: 0;
+  color: rgb(233 244 239 / 72%);
+  font: 400 .9rem/1.65 var(--font-sans, Arial, sans-serif);
+}
+
+.team-showcase-copy a {
+  display: inline-flex;
+  gap: .65rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid rgb(139 208 196 / 62%);
+  color: var(--team-cream);
+  font: 650 .76rem/1.2 var(--font-sans, Arial, sans-serif);
+  text-decoration: none;
+}
+
+.team-showcase-copy a span {
+  color: var(--team-aqua);
+  font-size: 1rem;
+}
+
+.team-showcase-copy a:hover,
+.team-showcase-copy a:focus-visible {
+  color: var(--team-aqua);
+}
+
+.team-showcase-copy a:focus-visible {
+  outline: 2px solid var(--team-aqua);
+  outline-offset: .35rem;
+}
+
+@media (max-width: 860px) {
+  .team-section.team-showcase {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .team-showcase-heading {
+    position: static;
+  }
+
+  .team-showcase-heading > p:last-child {
+    max-width: 35rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .team-section.team-showcase {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .team-showcase-people {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  .team-showcase-tilbe {
+    margin-top: 0;
+  }
+
+  .team-showcase-person figure {
+    aspect-ratio: 4 / 4.65;
+  }
+
+  .team-showcase-copy > p:not(.team-showcase-role) {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-showcase-person img { transition: none; }
+}

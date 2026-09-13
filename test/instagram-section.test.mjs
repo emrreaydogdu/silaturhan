@@ -11,6 +11,7 @@ test("homepage publishes the prepared Instagram feed section", async () => {
   const markup = await response.text();
 
   assert.match(markup, /class="instagram-section"/);
+  assert.ok(markup.indexOf('class="instagram-section"') < markup.indexOf('class="kinezyo-flow"'));
   assert.match(markup, /@fztsilasuarikanturhan/);
   assert.match(markup, /@fzt\.tilbemeric/);
   assert.match(markup, /href="https:\/\/www\.instagram\.com\/fzt\.tilbemeric\/"/);
