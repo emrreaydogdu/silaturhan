@@ -222,14 +222,23 @@
 .blog-appointment span { color: var(--journal-teal); }
 
 .blog-all-link {
-  display: flex;
-  width: min(1200px, 100%);
-  margin: 1.2rem auto 0;
-  justify-content: flex-end;
-  gap: 0.45rem;
-  border-bottom: 1px solid var(--journal-ink);
-  padding-bottom: 0.35rem;
+  display: inline-flex;
+  width: fit-content;
+  margin: 2rem auto 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border: 1px solid var(--journal-ink);
+  border-radius: 999px;
+  padding: 0.95rem 1.35rem;
+  background: var(--journal-ink);
+  color: #fff !important;
+  box-shadow: 0 0.8rem 1.8rem rgba(18, 61, 64, 0.14);
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
+.blog-all-link:hover { background: var(--journal-teal); box-shadow: 0 1.1rem 2.2rem rgba(18, 61, 64, 0.2); transform: translateY(-2px); }
+.blog-all-link span { color: #b8e7dc; transition: transform 160ms ease; }
+.blog-all-link:hover span { transform: translate(2px, -2px); }
 
 .blog-page {
   min-height: 100vh;
@@ -484,7 +493,7 @@
   .blog-heading > div:nth-child(2) > p { font-size: 0.92rem; }
   .blog-controls button { width: 2.65rem; height: 2.65rem; }
   .blog-card { flex-basis: 88%; min-height: 22.5rem; }
-  .blog-all-link { justify-content: flex-start; }
+  .blog-all-link { margin-top: 1.5rem; }
   .blog-site-header { padding-block: 1rem; }
   .blog-brand { font-size: 1.08rem; }
   .blog-site-header > a:last-child { padding: 0.7rem 0.85rem; font-size: 0.72rem; }

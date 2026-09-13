@@ -11,7 +11,7 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/multisport-promo.css">',
   '<link rel="stylesheet" href="/business-gallery.css">',
   '<link rel="stylesheet" href="/team-showcase.css">',
-  '<link rel="stylesheet" href="/blog.css">',
+  '<link rel="stylesheet" href="/blog.css?v=home-blog-button-1">',
   '<link rel="stylesheet" href="/link-refinement.css">',
   '<link rel="stylesheet" href="/liquid-glass.css">',
 ].join("");
@@ -236,7 +236,7 @@ export async function render(request, fetchAsset = fetch) {
     'href="/multisport-promo.css"',
     'href="/business-gallery.css"',
     'href="/team-showcase.css"',
-    'href="/blog.css"',
+    'href="/blog.css?v=home-blog-button-1"',
     'href="/link-refinement.css"',
     'href="/liquid-glass.css"',
   ].every((stylesheet) => enhancedMarkup.includes(stylesheet));
