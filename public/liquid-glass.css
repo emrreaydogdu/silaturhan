@@ -1,21 +1,21 @@
 @media (max-width: 800px) {
   .site-header.menu-open {
-    background: linear-gradient(135deg, rgba(245, 252, 249, .32), rgba(214, 235, 229, .16)) !important;
-    border: 1px solid rgba(255, 255, 255, .6);
-    box-shadow: 0 .8rem 2.4rem rgba(8, 49, 50, .16), inset 0 1px rgba(255, 255, 255, .72);
-    -webkit-backdrop-filter: blur(24px) saturate(145%);
-    backdrop-filter: blur(24px) saturate(145%);
+    background: linear-gradient(135deg, rgba(245, 252, 249, .78), rgba(214, 235, 229, .68)) !important;
+    border: 1px solid rgba(255, 255, 255, .76);
+    box-shadow: 0 .8rem 2.4rem rgba(8, 49, 50, .16), inset 0 1px rgba(255, 255, 255, .86);
+    -webkit-backdrop-filter: blur(30px) saturate(135%);
+    backdrop-filter: blur(30px) saturate(135%);
   }
 
   .site-header.menu-open .mobile-menu {
     background:
-      radial-gradient(circle at 92% 8%, rgba(255, 255, 255, .62), transparent 26%),
-      linear-gradient(145deg, rgba(234, 247, 243, .4), rgba(207, 229, 224, .22)) !important;
-    border: 1px solid rgba(255, 255, 255, .67);
+      radial-gradient(circle at 92% 8%, rgba(255, 255, 255, .78), transparent 26%),
+      linear-gradient(145deg, rgba(234, 247, 243, .84), rgba(207, 229, 224, .76)) !important;
+    border: 1px solid rgba(255, 255, 255, .82);
     border-radius: 1.55rem;
     box-shadow: 0 1.35rem 3.2rem rgba(8, 49, 50, .2), inset 0 1px rgba(255, 255, 255, .8);
-    -webkit-backdrop-filter: blur(28px) saturate(160%);
-    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(38px) saturate(135%);
+    backdrop-filter: blur(38px) saturate(135%);
   }
 
   .site-header.menu-open .mobile-menu a {
