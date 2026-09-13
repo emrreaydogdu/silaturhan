@@ -13,6 +13,27 @@ test("Tilbe Meriç has a dedicated profile page with her portrait and expertise 
   assert.match(page, /\/images\/team\/tilbe-meric\.webp/);
   assert.match(page, /Uzmanlık alanları/);
   assert.match(page, /Kinezyoterapi/);
+  for (const service of [
+    "Manuel Terapi",
+    "Medikal Masaj",
+    "Nörolojik Rehabilitasyon",
+    "İnme Rehabilitasyonu",
+    "Parkinson Rehabilitasyonu",
+    "MS Rehabilitasyonu",
+    "El Rehabilitasyonu",
+    "Diz Protezi Sonrası Rehabilitasyon",
+    "Omuz Ameliyatı Sonrası Rehabilitasyon",
+    "Çapraz Bağ Yırtıkları Rehabilitasyonu",
+    "Menisküs Rehabilitasyonu",
+    "Skolyoz Rehabilitasyonu",
+    "Evde Fizyoterapi",
+    "Hamile Pilatesi",
+    "İnkontinans Rehabilitasyonu",
+    "Migren Rehabilitasyonu",
+    "Oyun Terapisi",
+  ]) {
+    assert.match(page, new RegExp(service, "i"));
+  }
   assert.match(page, /href="\/\?randevu=1"/);
   assert.match(config, /"source": "\/fzt-tilbe-meric"/);
   assert.match(buildScript, /"fzt-tilbe-meric"/);
