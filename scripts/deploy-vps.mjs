@@ -85,6 +85,8 @@ async function main() {
     console.log("\n[7/8] Starting / restarting PM2 admin server process...");
     await exec(ssh, `cd "${remoteAppDir}" && (pm2 restart turhanmeric-admin || pm2 start server/admin-server.mjs --name turhanmeric-admin --watch=false)`);
     await exec(ssh, "pm2 save");
+    console.log("Waiting 2 seconds for PM2 server to initialize...");
+    await new Promise((r) => setTimeout(r, 2000));
 
     // 8. Switch symlink atomically & reload Nginx
     console.log("\n[8/8] Activating release and reloading Nginx...");

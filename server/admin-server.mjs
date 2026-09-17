@@ -349,7 +349,21 @@ const server = http.createServer(async (req, res) => {
 
 export { server, PORT };
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+const isTest =
+  process.env.NODE_TEST_CONTEXT !== undefined ||
+  process.execArgv.some((a) => a.includes("test")) ||
+  process.argv.some((a) => a.includes(".test."));
+
+const isMain =
+  (process.argv[1] && (
+    process.argv[1] === fileURLToPath(import.meta.url) ||
+    process.argv[1].includes("admin-server")
+  )) ||
+  process.env.pm_id !== undefined ||
+  process.env.PM2_HOME !== undefined ||
+  process.env.ADMIN_AUTO_START === "true";
+
+if (isMain && !isTest) {
   server.listen(PORT, "0.0.0.0", () => {
     console.log(`[TurhanMeric Admin] Server running at http://127.0.0.1:${PORT}/admin`);
   });
