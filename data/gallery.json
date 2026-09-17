@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "image": "/images/business-gallery/01.webp",
+    "caption": "Stüdyo ve egzersiz alanı"
+  },
+  {
+    "id": "2",
+    "image": "/images/business-gallery/02.webp",
+    "caption": "Fizyoterapi uygulama alanı"
+  },
+  {
+    "id": "3",
+    "image": "/images/business-gallery/03.webp",
+    "caption": "Egzersiz ekipmanlarımız"
+  },
+  {
+    "id": "4",
+    "image": "/images/business-gallery/04.webp",
+    "caption": "Klinik iç mekânı"
+  },
+  {
+    "id": "5",
+    "image": "/images/business-gallery/05.webp",
+    "caption": "Postür değerlendirme alanı"
+  },
+  {
+    "id": "6",
+    "image": "/images/business-gallery/06.webp",
+    "caption": "Terapi odası"
+  },
+  {
+    "id": "7",
+    "image": "/images/business-gallery/07.webp",
+    "caption": "Tedavi alanımız"
+  },
+  {
+    "id": "8",
+    "image": "/images/business-gallery/08.webp",
+    "caption": "Karşılama alanı"
+  },
+  {
+    "id": "9",
+    "image": "/images/business-gallery/09.webp",
+    "caption": "Egzersiz ve hareket alanı"
+  },
+  {
+    "id": "10",
+    "image": "/images/business-gallery/10.webp",
+    "caption": "Klinikten bir kare"
+  },
+  {
+    "id": "11",
+    "image": "/images/business-gallery/11.webp",
+    "caption": "Anatomi eğitim modeli"
+  },
+  {
+    "id": "12",
+    "image": "/images/business-gallery/12.webp",
+    "caption": "Klinik içinden bir detay"
+  },
+  {
+    "id": "13",
+    "image": "/images/business-gallery/13.webp",
+    "caption": "Danışmanlık alanı"
+  }
+]

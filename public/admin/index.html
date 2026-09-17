@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yönetim Paneli | Fizyoterapist Sılasu Turhan · Tilbe Meriç</title>
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/admin/admin.css?v=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+      <div class="login-brand">
+        <span class="brand-dot"></span>
+        <h1>Turhan &amp; Meriç</h1>
+        <p>Yönetim Sistemi Girişi</p>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Kullanıcı Adı</label>
+          <input type="text" id="username" autocomplete="username" required placeholder="admin" />
+        </div>
+        <div class="form-group">
+          <label for="password">Parola</label>
+          <input type="password" id="password" autocomplete="current-password" required placeholder="••••••••" />
+        </div>
+        <div id="login-error" class="login-error" style="display: none;"></div>
+        <button type="submit" class="btn btn-primary btn-block" id="login-submit">Giriş Yap</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP SHELL -->
+  <div id="app" class="app-shell" style="display: none;">
+    <!-- TOP NAVBAR -->
+    <header class="top-nav">
+      <div class="nav-left">
+        <a href="/" target="_blank" class="brand-title">
+          <span class="brand-dot"></span>
+          <span>Fizyoterapist Sılasu Turhan · Tilbe Meriç</span>
+          <span class="badge badge-subtle">Yönetim Paneli</span>
+        </a>
+      </div>
+      <div class="nav-right">
+        <button type="button" class="btn btn-success" id="btn-publish" title="Tüm değişiklikleri derler ve canlı siteye aktarır">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <span id="publish-text">Değişiklikleri Canlıya Al</span>
+        </button>
+        <a href="/" target="_blank" class="btn btn-secondary btn-sm" title="Siteyi Yeni Sekmede Aç">
+          Siteyi Gör ↗
+        </a>
+        <button type="button" class="btn btn-danger btn-sm" id="btn-logout" title="Oturumu Kapat">
+          Çıkış
+        </button>
+      </div>
+    </header>
+
+    <!-- TABS BAR -->
+    <nav class="tabs-bar">
+      <button type="button" class="tab-btn active" data-tab="gallery">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        İşletmemizden Kareler (Galeri)
+      </button>
+      <button type="button" class="tab-btn" data-tab="articles">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Makaleler (Blog Rehberi)
+      </button>
+      <button type="button" class="tab-btn" data-tab="experts">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Danışmanlar (Uzman Profilleri)
+      </button>
+      <button type="button" class="tab-btn" data-tab="instagram">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        Instagram Reels Videoları
+      </button>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="content-container">
+
+      <!-- ============================================== -->
+      <!-- TAB 1: GALERİ -->
+      <!-- ============================================== -->
+      <section id="tab-gallery" class="tab-content active">
+        <div class="section-header">
+          <div>
+            <h2>İşletmemizden Kareler</h2>
+            <p class="text-muted">Ana sayfada yer alan klinik fotoğraflarını yönetin, yeni fotoğraflar yükleyin veya sıralamasını değiştirin.</p>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-add-gallery-photo">
+              + Yeni Fotoğraf Ekle
+            </button>
+            <button type="button" class="btn btn-success" id="btn-save-gallery">
+              Galeriyi Kaydet
+            </button>
+          </div>
+        </div>
+
+        <div id="gallery-list" class="gallery-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB 2: MAKALELER -->
+      <!-- ============================================== -->
+      <section id="tab-articles" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Makaleler (Fizyoterapi Rehberi)</h2>
+            <p class="text-muted">Blog yazılarını düzenleyin, silin veya arama motorlarına tam uyumlu yeni makaleler ekleyin.</p>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-new-article">
+              + Yeni Makale Ekle
+            </button>
+            <button type="button" class="btn btn-success" id="btn-save-articles">
+              Makaleleri Kaydet
+            </button>
+          </div>
+        </div>
+
+        <div class="articles-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">Kapak</th>
+                <th>Başlık</th>
+                <th>Kategori</th>
+                <th>Okuma Süresi</th>
+                <th>Slug</th>
+                <th style="width: 160px; text-align: right;">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody id="articles-list">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB 3: DANIŞMANLAR / UZMANLAR -->
+      <!-- ============================================== -->
+      <section id="tab-experts" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Danışman Bilgileri</h2>
+            <p class="text-muted">Uzmanların sayfalarda ve detay profillerinde görünen biyografi, uzmanlık alanları ve iletişim bilgilerini düzenleyin.</p>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-success" id="btn-save-experts">
+              Tüm Danışman Bilgilerini Kaydet
+            </button>
+          </div>
+        </div>
+
+        <div class="expert-subtabs">
+          <button type="button" class="subtab-btn active" data-expert="silasu">Uzm. Fzt. Sılasu Arıkan Turhan</button>
+          <button type="button" class="subtab-btn" data-expert="tilbe">Fzt. Tilbe Meriç</button>
+        </div>
+
+        <!-- Sılasu Form -->
+        <div id="expert-form-silasu" class="expert-form-card">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Tilbe Form -->
+        <div id="expert-form-tilbe" class="expert-form-card" style="display: none;">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB 4: INSTAGRAM REELS VİDEOLARI -->
+      <!-- ============================================== -->
+      <section id="tab-instagram" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Instagram Reels Videoları</h2>
+            <p class="text-muted">Ana sayfada Sılasu Turhan ve Tilbe Meriç adına gösterilen Instagram video linklerini düzenleyin, ekleyin veya çıkarın.</p>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-success" id="btn-save-instagram">
+              Instagram Videolarını Kaydet
+            </button>
+          </div>
+        </div>
+
+        <div class="instagram-columns">
+          <!-- Sılasu Reels -->
+          <div class="insta-column-card">
+            <div class="insta-col-header">
+              <h3>Sılasu Turhan Videoları</h3>
+              <span class="badge">@fztsilasuarikanturhan</span>
+            </div>
+            <div class="insta-add-bar">
+              <input type="url" id="silasu-reel-input" placeholder="https://www.instagram.com/reel/..." />
+              <button type="button" class="btn btn-primary btn-sm" id="btn-add-silasu-reel">Ekle</button>
+            </div>
+            <ul id="silasu-reels-list" class="reels-list"></ul>
+          </div>
+
+          <!-- Tilbe Reels -->
+          <div class="insta-column-card">
+            <div class="insta-col-header">
+              <h3>Tilbe Meriç Videoları</h3>
+              <span class="badge">@fzt.tilbemeric</span>
+            </div>
+            <div class="insta-add-bar">
+              <input type="url" id="tilbe-reel-input" placeholder="https://www.instagram.com/reel/..." />
+              <button type="button" class="btn btn-primary btn-sm" id="btn-add-tilbe-reel">Ekle</button>
+            </div>
+            <ul id="tilbe-reels-list" class="reels-list"></ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ARTICLE EDIT / CREATE MODAL -->
+  <dialog id="article-modal" class="admin-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="article-modal-title">Makaleyi Düzenle</h3>
+        <button type="button" class="modal-close" id="btn-close-article-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="article-form">
+          <input type="hidden" id="article-original-slug" />
+          
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="article-title">Makale Başlığı *</label>
+              <input type="text" id="article-title" required />
+            </div>
+            <div class="form-group flex-1">
+              <label for="article-slug">URL (Slug) *</label>
+              <input type="text" id="article-slug" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="article-topic">Konu / Kategori *</label>
+              <input type="text" id="article-topic" required placeholder="Örn: DEĞERLENDİRME, DİZ SAĞLIĞI" />
+            </div>
+            <div class="form-group flex-1">
+              <label for="article-readingTime">Okuma Süresi</label>
+              <input type="text" id="article-readingTime" placeholder="Örn: 4 dk okuma" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="article-cover">Kapak Görseli Yolu / URL *</label>
+              <div class="input-with-button">
+                <input type="text" id="article-cover" required />
+                <label class="btn btn-secondary file-upload-label">
+                  Yükle
+                  <input type="file" accept="image/*" class="file-upload-input" data-target="article-cover" />
+                </label>
+              </div>
+            </div>
+            <div class="form-group flex-2">
+              <label for="article-coverAlt">Kapak Görseli Açıklaması (Alt Metin) *</label>
+              <input type="text" id="article-coverAlt" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="article-excerpt">Kısa Özet (Listeleme kartlarında görünür) *</label>
+            <textarea id="article-excerpt" rows="2" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="article-answer">Özet Vurgusu / Cevap Kutusu *</label>
+            <textarea id="article-answer" rows="2" required></textarea>
+          </div>
+
+          <div class="form-sections-group">
+            <div class="sections-header">
+              <h4>Makale Paragrafları ve Alt Başlıkları</h4>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-add-section">+ Alt Bölüm Ekle</button>
+            </div>
+            <div id="article-sections-container" class="sections-container">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-article">Vazgeç</button>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- GALLERY PHOTO ADD MODAL -->
+  <dialog id="gallery-modal" class="admin-modal">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3>Yeni Galeri Fotoğrafı</h3>
+        <button type="button" class="modal-close" id="btn-close-gallery-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="gallery-add-form">
+          <div class="form-group">
+            <label for="new-gallery-image">Fotoğraf Seç veya URL Belirt</label>
+            <div class="input-with-button">
+              <input type="text" id="new-gallery-image" required placeholder="/images/business-gallery/01.webp veya yükleyin" />
+              <label class="btn btn-secondary file-upload-label">
+                Yükle
+                <input type="file" accept="image/*" class="file-upload-input" data-target="new-gallery-image" />
+              </label>
+            </div>
+            <div id="gallery-preview-wrap" class="image-preview-box" style="display: none; margin-top: 10px;">
+              <img id="gallery-preview-img" src="" alt="Önizleme" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="new-gallery-caption">Fotoğraf Açıklaması (Alt Metin)</label>
+            <input type="text" id="new-gallery-caption" required placeholder="Örn: Egzersiz ve hareket alanımız" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-gallery">Vazgeç</button>
+            <button type="submit" class="btn btn-primary">Ekle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/admin/admin.js?v=1"></script>
+</body>
+</html>

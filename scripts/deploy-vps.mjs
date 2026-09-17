@@ -60,13 +60,34 @@ async function main() {
     console.log("Setting correct permissions...");
     await exec(ssh, `find "${releaseDir}" -type d -exec chmod 755 {} + && find "${releaseDir}" -type f -exec chmod 644 {} +`);
 
-    // 5. Update Nginx configuration
-    console.log("\n[5/6] Updating Nginx configuration on VPS...");
+    // 5. Package backend app into tar.gz
+    console.log("\n[5/8] Packaging backend app...");
+    const appArchive = "turhanmeric-app.tar.gz";
+    if (existsSync(appArchive)) {
+      rmSync(appArchive);
+    }
+    execSync(`tar.exe -czf ${appArchive} server data public scripts api package.json`, { stdio: "inherit" });
+
+    const remoteAppDir = `${REMOTE_BASE}/app`;
+    const remoteAppArchive = `${REMOTE_BASE}/turhanmeric-app.tar.gz`;
+    console.log(`Uploading backend app to VPS (${remoteAppDir})...`);
+    await exec(ssh, `mkdir -p "${remoteAppDir}"`);
+    await ssh.putFile(appArchive, remoteAppArchive);
+    await exec(ssh, `tar -xzf "${remoteAppArchive}" -C "${remoteAppDir}"`);
+    await exec(ssh, `rm -f "${remoteAppArchive}"`);
+
+    // 6. Update Nginx configuration
+    console.log("\n[6/8] Updating Nginx configuration on VPS...");
     await ssh.putFile("deploy/nginx-turhanmeric.conf", "/etc/nginx/sites-available/turhanmeric.com");
     await exec(ssh, "nginx -t");
 
-    // 6. Switch symlink atomically & reload Nginx
-    console.log("\n[6/6] Activating release and reloading Nginx...");
+    // 7. Start/Restart PM2 Admin Server
+    console.log("\n[7/8] Starting / restarting PM2 admin server process...");
+    await exec(ssh, `cd "${remoteAppDir}" && (pm2 restart turhanmeric-admin || pm2 start server/admin-server.mjs --name turhanmeric-admin --watch=false)`);
+    await exec(ssh, "pm2 save");
+
+    // 8. Switch symlink atomically & reload Nginx
+    console.log("\n[8/8] Activating release and reloading Nginx...");
     await exec(ssh, `ln -sfn "${releaseDir}" "${REMOTE_BASE}/current.next" && mv -Tf "${REMOTE_BASE}/current.next" "${REMOTE_BASE}/current"`);
     await exec(ssh, "systemctl reload nginx");
 
@@ -81,15 +102,25 @@ async function main() {
     const checkKvkk = await exec(ssh, `curl -s -o /dev/null -w "%{http_code}" -H "Host: www.turhanmeric.com" http://127.0.0.1/kvkk`);
     const checkKvkkSlash = await exec(ssh, `curl -s -o /dev/null -w "%{http_code}" -H "Host: www.turhanmeric.com" http://127.0.0.1/kvkk/`);
 
+    const checkAdminLocal = await exec(ssh, `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3105/admin`);
+    const checkAdminNginx = await exec(ssh, `curl -s -o /dev/null -w "%{http_code}" -H "Host: www.turhanmeric.com" http://127.0.0.1/admin`);
+    const checkAdminApi = await exec(ssh, `curl -s -o /dev/null -w "%{http_code}" -H "Host: www.turhanmeric.com" http://127.0.0.1/api/admin/check`);
+
     console.log(`- Homepage has KVKK: ${hasKvkk}`);
     console.log(`- Homepage has Tilbe number (+90 551 841 88 80): ${hasTilbe}`);
     console.log(`- /kvkk HTTP status: ${checkKvkk.stdout.trim()}`);
     console.log(`- /kvkk/ HTTP status: ${checkKvkkSlash.stdout.trim()}`);
+    console.log(`- Admin local port 3105 status: ${checkAdminLocal.stdout.trim()}`);
+    console.log(`- Admin via Nginx (/admin) status: ${checkAdminNginx.stdout.trim()}`);
+    console.log(`- Admin auth check (/api/admin/check) status: ${checkAdminApi.stdout.trim()}`);
 
   } finally {
     ssh.dispose();
     if (existsSync(archiveName)) {
       rmSync(archiveName);
+    }
+    if (existsSync("turhanmeric-app.tar.gz")) {
+      rmSync("turhanmeric-app.tar.gz");
     }
   }
 

@@ -1,0 +1,48 @@
+{
+  "silasu": {
+    "id": "silasu",
+    "name": "Sılasu Arıkan Turhan",
+    "prefix": "Uzm. Fzt.",
+    "title": "Fizyoloji YL · FTR PhD",
+    "role": "Kurucu · Fizyoterapist",
+    "category": "FİZYOTERAPİ VE REHABİLİTASYON",
+    "shortBio": "Kişiye özel değerlendirme, egzersiz planlama ve günlük yaşama uyumlu rehabilitasyon yaklaşımı.",
+    "fullBio": "Lisans eğitiminin ardından Fizyoloji yüksek lisansını tamamlamış ve FTR doktora çalışmalarına devam etmektedir. Danışanlarının hareket kapasitesini, postürünü ve yaşam kalitesini kanıta dayalı yöntemlerle desteklemektedir.",
+    "expertiseAreas": [
+      "Ortopedik Rehabilitasyon",
+      "Klinik Pilates",
+      "Manuel Terapi",
+      "Omurga Sağlığı",
+      "Postür ve Hareket Analizi",
+      "Nörolojik Rehabilitasyon"
+    ],
+    "phone": "0551 646 74 62",
+    "email": "silasuturhan@gmail.com",
+    "instagram": "@fztsilasuarikanturhan",
+    "instagramUrl": "https://www.instagram.com/fztsilasuarikanturhan/",
+    "image": "/images/team/silasu-turhan.webp"
+  },
+  "tilbe": {
+    "id": "tilbe",
+    "name": "Tilbe Meriç",
+    "prefix": "Fzt.",
+    "title": "Fizyoterapist",
+    "role": "Kurucu · Fizyoterapist",
+    "category": "FİZYOTERAPİ VE HAREKET",
+    "shortBio": "Fonksiyonel hareket, osteopatik değerlendirme ve sürdürülebilir seans planıyla ilerleyen yaklaşım.",
+    "fullBio": "Fizyoterapi ve rehabilitasyon alanında bireye özgü hareket stratejileri, osteopatik değerlendirme ilkeleri ve fonksiyonel egzersiz yaklaşımlarıyla çalışmalarını sürdürmektedir.",
+    "expertiseAreas": [
+      "Osteopatik Değerlendirme",
+      "Core ve Stabilizasyon Egzersizleri",
+      "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+      "Manuel Terapi",
+      "Egzersizle Rehabilitasyon",
+      "Bütüncül Hareket Planı"
+    ],
+    "phone": "0551 841 88 80",
+    "email": "fzt.tilbemeric@gmail.com",
+    "instagram": "@fzt.tilbemeric",
+    "instagramUrl": "https://www.instagram.com/fzt.tilbemeric/",
+    "image": "/images/team/tilbe-meric.webp"
+  }
+}
