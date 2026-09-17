@@ -87,3 +87,52 @@
   min-height: 54px;
   font-size: 0.95rem;
 }
+
+/* Modal window screen centering for desktop and all viewports */
+.booking-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 10000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(12px, 3vw, 28px) !important;
+  background: rgba(12, 38, 36, 0.78) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  overflow-y: auto !important;
+}
+
+.booking-overlay[style*="display: none"] {
+  display: none !important;
+}
+
+.booking-modal {
+  margin: auto !important;
+  width: min(790px, 100%) !important;
+  max-width: 790px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+/* Mobile menu clearance so the appointment button is never clipped */
+@media (max-width: 800px) {
+  .site-header.menu-open .mobile-menu {
+    max-height: min(580px, calc(100dvh - 80px)) !important;
+    padding: 14px 16px 22px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .site-header.menu-open .mobile-menu-cta {
+    margin-top: 14px !important;
+    margin-bottom: 6px !important;
+    min-height: 50px !important;
+    padding: 14px 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+  }
+}
+
