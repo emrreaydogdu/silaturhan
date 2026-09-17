@@ -1,8 +1,9 @@
 import worker from "../server/index.js";
-import { businessGalleryMarkup } from "./business-gallery.mjs";
+import { businessGalleryMarkup, renderBusinessGallery } from "./business-gallery.mjs";
 import { teamShowcaseMarkup } from "./team-showcase.mjs";
-import { blogSectionMarkup } from "./blog.mjs";
+import { blogSectionMarkup, renderBlogSection } from "./blog.mjs";
 import { homeSeoMarkup } from "./seo.mjs";
+import { getInstagram, getGallery } from "../server/data-store.mjs";
 
 const extraStylesheets = [
   '<link rel="stylesheet" href="/instagram-feed.css?v=silasu-curated-2">',
@@ -206,26 +207,56 @@ export async function render(request, fetchAsset = fetch) {
       "kinezyo-section",
     );
   }
-  const needsBusinessGallery =
-    pathname === "/" &&
-    !enhancedMarkup.includes('class="business-gallery-section"');
-  if (needsBusinessGallery) {
+
+  // Dynamic Instagram Feed on Homepage
+  if (pathname === "/" && enhancedMarkup.includes('class="instagram-section"')) {
+    const data = getInstagram();
+    const silasuLinks = data.silasu || [];
+    const tilbeLinks = data.tilbe || [];
+    const makeCard = (link, author) =>
+      `<article class="instagram-feed-card instagram-preview-card"><div class="instagram-preview-art" aria-hidden="true"><span class="instagram-preview-pill">Instagram Reels</span><span class="instagram-preview-symbol">◎</span><span class="instagram-preview-author">${author}</span></div><div class="instagram-preview-actions"><button type="button" class="instagram-load-button" data-instagram-permalink="${link}" aria-label="${author} Instagram gönderisini sayfada yükle">Gönderiyi yükle</button><a class="instagram-open-link" href="${link}" target="_blank" rel="noreferrer">Instagram’da izle</a></div></article>`;
+
     enhancedMarkup = enhancedMarkup.replace(
-      /(<section class="services-section"[\s\S]*?<\/section>)/,
-      `$1${businessGalleryMarkup}`,
+      /(<section class="instagram-account instagram-account-silasu"[^>]*>[\s\S]*?<div class="instagram-feed-grid">)[\s\S]*?(<\/div>\s*<\/section>)/,
+      `$1${silasuLinks.map((l) => makeCard(l, "Sılasu Turhan")).join("")}$2`,
+    );
+    enhancedMarkup = enhancedMarkup.replace(
+      /(<section class="instagram-account instagram-account-tilbe"[^>]*>[\s\S]*?<div class="instagram-feed-grid">)[\s\S]*?(<\/div>\s*<\/section>)/,
+      `$1${tilbeLinks.map((l) => makeCard(l, "Tilbe Meriç")).join("")}$2`,
     );
   }
-  const needsBlogSection =
-    pathname === "/" &&
-    !enhancedMarkup.includes('class="blog-section"');
-  if (needsBlogSection) {
-    enhancedMarkup = insertAfterSection(
-      enhancedMarkup,
-      "instagram-section",
-      blogSectionMarkup,
-    );
+
+  // Dynamic Gallery on Homepage
+  if (pathname === "/") {
+    const currentGalleryMarkup = renderBusinessGallery();
+    if (enhancedMarkup.includes('class="business-gallery-section"')) {
+      enhancedMarkup = enhancedMarkup.replace(
+        /<section class="business-gallery-section" id="isletmemizden-kareler"[\s\S]*?<\/section>/,
+        currentGalleryMarkup.slice(0, currentGalleryMarkup.indexOf("<dialog")),
+      );
+    } else {
+      enhancedMarkup = enhancedMarkup.replace(
+        /(<section class="services-section"[\s\S]*?<\/section>)/,
+        `$1${currentGalleryMarkup}`,
+      );
+    }
   }
-  if (pathname === "/" && enhancedMarkup.includes('class="blog-section"')) {
+
+  // Dynamic Blog on Homepage
+  if (pathname === "/") {
+    const currentBlogMarkup = renderBlogSection();
+    if (enhancedMarkup.includes('class="blog-section"')) {
+      enhancedMarkup = enhancedMarkup.replace(
+        /<section class="blog-section" id="makaleler"[\s\S]*?<\/section>/,
+        currentBlogMarkup,
+      );
+    } else {
+      enhancedMarkup = insertAfterSection(
+        enhancedMarkup,
+        "instagram-section",
+        currentBlogMarkup,
+      );
+    }
     enhancedMarkup = moveSectionAfter(
       enhancedMarkup,
       "blog-section",

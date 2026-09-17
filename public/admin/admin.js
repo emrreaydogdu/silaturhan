@@ -324,7 +324,7 @@ document.getElementById("btn-save-gallery")?.addEventListener("click", async () 
       body: { gallery: state.gallery },
     });
     state.gallery = res.gallery;
-    showToast("İşletmemizden Kareler galerisi başarıyla kaydedildi!");
+    showToast("İşletmemizden Kareler kaydedildi ve anında canlıya aktarıldı! ✓");
   } catch (err) {
     showToast("Kaydetme hatası: " + err.message, "error");
   } finally {
@@ -507,7 +507,7 @@ document.getElementById("btn-save-articles")?.addEventListener("click", async ()
       body: { articles: state.articles },
     });
     state.articles = res.articles;
-    showToast("Makaleler başarıyla kaydedildi!");
+    showToast("Makaleler kaydedildi ve anında canlıya aktarıldı! ✓");
   } catch (err) {
     showToast("Hata: " + err.message, "error");
   } finally {
@@ -702,7 +702,7 @@ document.getElementById("btn-save-experts")?.addEventListener("click", async () 
     });
     state.experts = res.experts;
     renderExperts();
-    showToast("Danışman bilgileri başarıyla kaydedildi!");
+    showToast("Danışman bilgileri kaydedildi ve anında canlıya aktarıldı! ✓");
   } catch (err) {
     showToast("Hata: " + err.message, "error");
   } finally {
@@ -808,7 +808,7 @@ document.getElementById("btn-save-instagram")?.addEventListener("click", async (
       body: { instagram: state.instagram },
     });
     state.instagram = res.instagram;
-    showToast("Instagram videoları başarıyla kaydedildi!");
+    showToast("Instagram videoları kaydedildi ve anında canlıya aktarıldı! ✓");
   } catch (err) {
     showToast("Hata: " + err.message, "error");
   } finally {

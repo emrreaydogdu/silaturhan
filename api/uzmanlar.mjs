@@ -1,8 +1,13 @@
 import { universalContactCta } from "./contact-cta.mjs";
+import { getExperts } from "../server/data-store.mjs";
 
 const arrow = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>';
 
-export const expertsPage = `<!doctype html>
+export function renderExpertsPage(experts = getExperts()) {
+  const silasu = experts.silasu || {};
+  const tilbe = experts.tilbe || {};
+
+  return `<!doctype html>
 <html lang="tr">
   <head>
     <meta charset="utf-8" />
@@ -37,12 +42,12 @@ export const expertsPage = `<!doctype html>
       </section>
       <section class="experts-grid" aria-label="Fizyoterapistlerimiz">
         <article class="expert-card expert-card-silasu">
-          <div class="expert-image"><img src="/images/team/silasu-turhan.webp" alt="Uzm. Fzt. Sılasu Arıkan Turhan" width="900" height="1200" /><span>Uzm. Fzt.</span></div>
-          <div class="expert-copy"><p>FİZYOTERAPİ VE REHABİLİTASYON</p><h2>Sılasu Arıkan<br /><em>Turhan</em></h2><p>Kişiye özel değerlendirme, egzersiz planlama ve günlük yaşama uyumlu rehabilitasyon yaklaşımı.</p><a class="expert-link" href="/uzm-fzt-silasu-arikan">Profili inceleyin ${arrow}</a></div>
+          <div class="expert-image"><img src="${silasu.image || "/images/team/silasu-turhan.webp"}" alt="${silasu.prefix || "Uzm. Fzt."} ${silasu.name || "Sılasu Arıkan Turhan"}" width="900" height="1200" /><span>${silasu.prefix || "Uzm. Fzt."}</span></div>
+          <div class="expert-copy"><p>${silasu.category || "FİZYOTERAPİ VE REHABİLİTASYON"}</p><h2>Sılasu Arıkan<br /><em>Turhan</em></h2><p>${silasu.shortBio || "Kişiye özel değerlendirme, egzersiz planlama ve günlük yaşama uyumlu rehabilitasyon yaklaşımı."}</p><a class="expert-link" href="/uzm-fzt-silasu-arikan">Profili inceleyin ${arrow}</a></div>
         </article>
         <article class="expert-card expert-card-tilbe">
-          <div class="expert-image"><img src="/images/team/tilbe-meric.webp" alt="Fizyoterapist Tilbe Meriç" width="900" height="1200" /><span>Fzt.</span></div>
-          <div class="expert-copy"><p>FİZYOTERAPİ VE HAREKET</p><h2>Tilbe<br /><em>Meriç</em></h2><p>Fonksiyonel hareket, osteopatik değerlendirme ve sürdürülebilir seans planıyla ilerleyen yaklaşım.</p><a class="expert-link" href="/fzt-tilbe-meric">Profili inceleyin ${arrow}</a></div>
+          <div class="expert-image"><img src="${tilbe.image || "/images/team/tilbe-meric.webp"}" alt="${tilbe.prefix || "Fzt."} ${tilbe.name || "Tilbe Meriç"}" width="900" height="1200" /><span>${tilbe.prefix || "Fzt."}</span></div>
+          <div class="expert-copy"><p>${tilbe.category || "FİZYOTERAPİ VE HAREKET"}</p><h2>Tilbe<br /><em>Meriç</em></h2><p>${tilbe.shortBio || "Fonksiyonel hareket, osteopatik değerlendirme ve sürdürülebilir seans planıyla ilerleyen yaklaşım."}</p><a class="expert-link" href="/fzt-tilbe-meric">Profili inceleyin ${arrow}</a></div>
         </article>
       </section>
       <section class="experts-note" aria-label="Çalışma yaklaşımımız"><p>İlk görüşmede</p><h2>İhtiyacınızı dinler,<br /><em>birlikte</em> planlarız.</h2><a href="/?randevu=1">Randevu planlayın ${arrow}</a></section>
@@ -54,6 +59,9 @@ export const expertsPage = `<!doctype html>
     <script defer src="/header-runtime.js?v=header-2"></script>
   </body>
 </html>`;
+}
+
+export const expertsPage = renderExpertsPage();
 
 export default function handler(_request, response) {
   response.statusCode = 200;

@@ -2,12 +2,13 @@ import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { extname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { multisportPage } from "../api/multisport.mjs";
-import { tilbeMericPage } from "../api/tilbe-meric.mjs";
-import { silasuArikanPage } from "../api/silasu-arikan.mjs";
-import { expertsPage } from "../api/uzmanlar.mjs";
+import { tilbeMericPage, renderTilbePage } from "../api/tilbe-meric.mjs";
+import { silasuArikanPage, renderSilasuPage } from "../api/silasu-arikan.mjs";
+import { expertsPage, renderExpertsPage } from "../api/uzmanlar.mjs";
 import { blogArticles, renderArticlePage, renderBlogIndex } from "../api/blog.mjs";
 import { kvkkPage } from "../api/kvkk.mjs";
 import { render } from "../api/index.mjs";
+import { getArticles, getExperts } from "../server/data-store.mjs";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 const publicRoot = resolve(projectRoot, "public");
@@ -100,39 +101,42 @@ await writeFile(
   multisportPage.replace("</head>", `${staticNavigationScript}</head>`),
 );
 
+const currentExperts = getExperts();
+
 const expertiseDirectory = resolve(outputRoot, "uzm-fzt-silasu-arikan");
 await mkdir(expertiseDirectory, { recursive: true });
 await writeFile(
   resolve(expertiseDirectory, "index.html"),
-  silasuArikanPage.replace("</head>", `${staticNavigationScript}</head>`),
+  renderSilasuPage(currentExperts.silasu).replace("</head>", `${staticNavigationScript}</head>`),
 );
 
 const tilbeProfileDirectory = resolve(outputRoot, "fzt-tilbe-meric");
 await mkdir(tilbeProfileDirectory, { recursive: true });
 await writeFile(
   resolve(tilbeProfileDirectory, "index.html"),
-  tilbeMericPage.replace("</head>", `${staticNavigationScript}</head>`),
+  renderTilbePage(currentExperts.tilbe).replace("</head>", `${staticNavigationScript}</head>`),
 );
 
 const expertsDirectory = resolve(outputRoot, "uzmanlar");
 await mkdir(expertsDirectory, { recursive: true });
 await writeFile(
   resolve(expertsDirectory, "index.html"),
-  expertsPage.replace("</head>", `${staticNavigationScript}</head>`),
+  renderExpertsPage(currentExperts).replace("</head>", `${staticNavigationScript}</head>`),
 );
 
 const blogDirectory = resolve(outputRoot, "blog");
 await mkdir(blogDirectory, { recursive: true });
+const currentArticles = getArticles();
 await writeFile(
   resolve(blogDirectory, "index.html"),
-  renderBlogIndex().replace("</head>", `${staticNavigationScript}</head>`),
+  renderBlogIndex(currentArticles).replace("</head>", `${staticNavigationScript}</head>`),
 );
-for (const article of blogArticles) {
+for (const article of currentArticles) {
   const articleDirectory = resolve(blogDirectory, article.slug);
   await mkdir(articleDirectory, { recursive: true });
   await writeFile(
     resolve(articleDirectory, "index.html"),
-    renderArticlePage(article).replace("</head>", `${staticNavigationScript}</head>`),
+    renderArticlePage(article, currentArticles).replace("</head>", `${staticNavigationScript}</head>`),
   );
 }
 
@@ -151,7 +155,7 @@ const sitemapPaths = [
   "/uzmanlar/",
   "/kvkk/",
   "/blog/",
-  ...blogArticles.map((article) => `/blog/${article.slug}/`),
+  ...currentArticles.map((article) => `/blog/${article.slug}/`),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths.map((pathname) => `  <url><loc>https://www.turhanmeric.com${pathname}</loc></url>`).join("\n")}\n</urlset>\n`;
 await writeFile(resolve(outputRoot, "sitemap.xml"), sitemap);
