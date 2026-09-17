@@ -11,6 +11,7 @@
     { "source": "/fzt-tilbe-meric", "destination": "/api/tilbe-meric" },
     { "source": "/uzmanlar", "destination": "/api/uzmanlar" },
     { "source": "/blog", "destination": "/api/blog" },
-    { "source": "/blog/:slug", "destination": "/api/blog?slug=:slug" }
+    { "source": "/blog/:slug", "destination": "/api/blog?slug=:slug" },
+    { "source": "/kvkk", "destination": "/api/kvkk" }
   ]
 }

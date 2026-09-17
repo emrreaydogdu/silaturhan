@@ -42,7 +42,7 @@ export const expertsPage = `<!doctype html>
         </article>
         <article class="expert-card expert-card-tilbe">
           <div class="expert-image"><img src="/images/team/tilbe-meric.webp" alt="Fizyoterapist Tilbe Meriç" width="900" height="1200" /><span>Fzt.</span></div>
-          <div class="expert-copy"><p>FİZYOTERAPİ VE HAREKET</p><h2>Tilbe<br /><em>Meriç</em></h2><p>Fonksiyonel hareket, kinezyoterapi ve sürdürülebilir seans planıyla ilerleyen yaklaşım.</p><a class="expert-link" href="/fzt-tilbe-meric">Profili inceleyin ${arrow}</a></div>
+          <div class="expert-copy"><p>FİZYOTERAPİ VE HAREKET</p><h2>Tilbe<br /><em>Meriç</em></h2><p>Fonksiyonel hareket, osteopatik değerlendirme ve sürdürülebilir seans planıyla ilerleyen yaklaşım.</p><a class="expert-link" href="/fzt-tilbe-meric">Profili inceleyin ${arrow}</a></div>
         </article>
       </section>
       <section class="experts-note" aria-label="Çalışma yaklaşımımız"><p>İlk görüşmede</p><h2>İhtiyacınızı dinler,<br /><em>birlikte</em> planlarız.</h2><a href="/?randevu=1">Randevu planlayın ${arrow}</a></section>

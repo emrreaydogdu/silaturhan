@@ -20,6 +20,20 @@ test("appointment booking captures contact details without a time picker", () =>
   }
 });
 
+test("appointment booking includes KVKK consent and consultant-based WhatsApp routing", () => {
+  for (const bundle of bookingBundles) {
+    assert.match(bundle, /booking-kvkk/);
+    assert.match(bundle, /KVKK Aydınlatma Metni/);
+    assert.match(bundle, /\/kvkk/);
+    assert.match(bundle, /905516467462/);
+    assert.match(bundle, /905518418880/);
+    assert.match(bundle, /Osteopatik Değerlendirme/);
+    assert.match(bundle, /Core \/ Stabilizasyon Egzersizleri/);
+    assert.match(bundle, /Sporcu Sağlığı ve Fonksiyonel Egzersiz/);
+    assert.doesNotMatch(bundle, /Evde Fizyoterapi/);
+  }
+});
+
 test("booking modal opens from a direct appointment link", () => {
   const clientBundle = bookingBundles[0];
 

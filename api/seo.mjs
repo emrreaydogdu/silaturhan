@@ -12,18 +12,18 @@ const homeStructuredData = {
       address: { "@type": "PostalAddress", streetAddress: "Bağlarbaşı Mah. Bağdat Cad. Yenice İş Merkezi, B Blok Daire: 26", addressLocality: "Maltepe", addressRegion: "İstanbul", addressCountry: "TR" },
       areaServed: [{ "@type": "City", name: "İstanbul" }, { "@type": "Place", name: "Maltepe" }],
       sameAs: ["https://www.instagram.com/fztsilasuarikanturhan/", "https://www.instagram.com/fzt.tilbemeric/"],
-      hasOfferCatalog: { "@type": "OfferCatalog", name: "Fizyoterapi hizmetleri", itemListElement: ["Fizyoterapi ve Rehabilitasyon", "Kinezyoterapi", "Ortopedik Rehabilitasyon", "Klinik Pilates", "Manuel terapi rehabilitasyonu", "Osteopati"].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })) }
+      hasOfferCatalog: { "@type": "OfferCatalog", name: "Fizyoterapi hizmetleri", itemListElement: ["Fizyoterapi ve Rehabilitasyon", "Osteopatik Değerlendirme", "Sporcu Sağlığı ve Fonksiyonel Egzersiz", "Ortopedik Rehabilitasyon", "Klinik Pilates", "Manuel terapi rehabilitasyonu", "Osteopati"].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })) }
     },
     {
       "@type": "FAQPage",
       mainEntity: [
-        ["Randevu nasıl oluşturabilirim?", "Randevu için 0551 646 74 62 numaralı telefondan bize doğrudan ulaşabilirsiniz. İhtiyacınızı dinleyip size uygun bir zaman planlarız."],
+        ["Randevu nasıl oluşturabilirim?", "Randevu için 0551 646 74 62 (Sılasu Turhan) veya 0551 841 88 80 (Tilbe Meriç) numaralı telefonlardan bize doğrudan ulaşabilir ya da randevu oluştur butonundan dilediğiniz danışmanı seçerek WhatsApp üzerinden iletişime geçebilirsiniz. İhtiyacınızı dinleyip size uygun bir zaman planlarız."],
         ["İlk seansta neler yapılıyor?", "İlk görüşmede sizi, günlük yaşamınızdaki hedeflerinizi ve hareket ihtiyaçlarınızı dinliyor; size uygun bir yol haritası oluşturuyoruz."],
-        ["Kinezyoterapi nedir?", "Kinezyoterapi; doğru dozda ve güvenli ilerleyen egzersizlerle hareket kapasitesini destekleyen, kişiye özel planlanan bir seans yaklaşımıdır."],
+        ["Fizyoterapi nedir?", "Fizyoterapi; hareket sistemi bozukluklarında ve ağrılı durumlarda fonksiyonel kapasiteyi ve yaşam kalitesini bilimsel egzersiz ve manuel terapi yöntemleriyle artıran, kişiye özel planlanan bir seans yaklaşımıdır."],
         ["Seansa gelirken yanımda ne getirmeliyim?", "Rahat hareket edebileceğiniz kıyafetleri tercih edebilirsiniz. Varsa önceki tetkik veya raporlarınızı yanınızda getirmeniz faydalı olur."]
       ].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } }))
     }
   ]
 };
 
-export const homeSeoMarkup = `<meta name="description" content="Maltepe, İstanbul'da Sılasu Turhan ve Tilbe Meriç ile kişiye özel fizyoterapi, kinezyoterapi ve rehabilitasyon." data-local-seo="true"/><meta name="robots" content="index,follow,max-image-preview:large" data-local-seo="true"/><link rel="canonical" href="https://www.turhanmeric.com/" data-local-seo="true"/><meta property="og:locale" content="tr_TR" data-local-seo="true"/><meta property="og:site_name" content="Fizyoterapistler Sılasu Turhan ve Tilbe Meriç" data-local-seo="true"/><script type="application/ld+json" data-local-seo="true">${JSON.stringify(homeStructuredData)}</script>`;
+export const homeSeoMarkup = `<meta name="description" content="Maltepe, İstanbul'da Sılasu Turhan ve Tilbe Meriç ile kişiye özel fizyoterapi, osteopatik değerlendirme ve rehabilitasyon." data-local-seo="true"/><meta name="robots" content="index,follow,max-image-preview:large" data-local-seo="true"/><link rel="canonical" href="https://www.turhanmeric.com/" data-local-seo="true"/><meta property="og:locale" content="tr_TR" data-local-seo="true"/><meta property="og:site_name" content="Fizyoterapistler Sılasu Turhan ve Tilbe Meriç" data-local-seo="true"/><script type="application/ld+json" data-local-seo="true">${JSON.stringify(homeStructuredData)}</script>`;

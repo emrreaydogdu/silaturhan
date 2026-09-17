@@ -13,7 +13,9 @@ test("Tilbe Meriç has a dedicated profile page with her portrait and expertise 
   assert.match(page, /\/images\/team\/tilbe-meric\.webp/);
   assert.match(page, /Uzmanlık alanları/);
   assert.match(page, /href="#uzmanlik">Uzmanlık profilini inceleyin/);
-  assert.match(page, /Kinezyoterapi/);
+  assert.match(page, /Osteopatik Değerlendirme/i);
+  assert.match(page, /Sporcu Sağlığı/i);
+  assert.doesNotMatch(page, /Evde Fizyoterapi/i);
   for (const service of [
     "Manuel Terapi",
     "Medikal Masaj",
@@ -27,7 +29,7 @@ test("Tilbe Meriç has a dedicated profile page with her portrait and expertise 
     "Çapraz Bağ Yırtıkları Rehabilitasyonu",
     "Menisküs Rehabilitasyonu",
     "Skolyoz Rehabilitasyonu",
-    "Evde Fizyoterapi",
+    "Core / Stabilizasyon Egzersizleri",
     "Hamile Pilatesi",
     "İnkontinans Rehabilitasyonu",
     "Migren Rehabilitasyonu",

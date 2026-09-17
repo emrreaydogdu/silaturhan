@@ -19,13 +19,14 @@ test("static build exports the homepage, profiles, articles, sitemap, and runtim
 
     assert.equal(build.status, 0, build.stderr || build.stdout);
 
-    const [home, multisport, blogIndex, article, sitemap, instagramScript] = await Promise.all([
+    const [home, multisport, blogIndex, article, sitemap, instagramScript, kvkk] = await Promise.all([
       readFile(join(outputDirectory, "index.html"), "utf8"),
       readFile(join(outputDirectory, "multisport", "index.html"), "utf8"),
       readFile(join(outputDirectory, "blog", "index.html"), "utf8"),
       readFile(join(outputDirectory, "blog", "kinezyoterapi-nedir", "index.html"), "utf8"),
       readFile(join(outputDirectory, "sitemap.xml"), "utf8"),
       stat(join(outputDirectory, "instagram-feed.js")),
+      readFile(join(outputDirectory, "kvkk", "index.html"), "utf8"),
     ]);
 
     assert.match(home, /Fizyoterapist Sılasu Turhan/);
@@ -40,6 +41,8 @@ test("static build exports the homepage, profiles, articles, sitemap, and runtim
     assert.match(blogIndex, /Fizyoterapi Rehberi/);
     assert.match(article, /Kinezyoterapi Nedir/);
     assert.match(sitemap, /blog\/kinezyoterapi-nedir\//);
+    assert.match(sitemap, /kvkk\//);
+    assert.match(kvkk, /KVKK Aydınlatma Metni/);
   } finally {
     await rm(outputDirectory, { recursive: true, force: true });
   }

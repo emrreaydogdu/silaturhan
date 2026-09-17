@@ -6,6 +6,7 @@ import { tilbeMericPage } from "../api/tilbe-meric.mjs";
 import { silasuArikanPage } from "../api/silasu-arikan.mjs";
 import { expertsPage } from "../api/uzmanlar.mjs";
 import { blogArticles, renderArticlePage, renderBlogIndex } from "../api/blog.mjs";
+import { kvkkPage } from "../api/kvkk.mjs";
 import { render } from "../api/index.mjs";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -134,12 +135,20 @@ for (const article of blogArticles) {
   );
 }
 
+const kvkkDirectory = resolve(outputRoot, "kvkk");
+await mkdir(kvkkDirectory, { recursive: true });
+await writeFile(
+  resolve(kvkkDirectory, "index.html"),
+  kvkkPage.replace("</head>", `${staticNavigationScript}</head>`),
+);
+
 const sitemapPaths = [
   "/",
   "/multisport/",
   "/uzm-fzt-silasu-arikan/",
   "/fzt-tilbe-meric/",
   "/uzmanlar/",
+  "/kvkk/",
   "/blog/",
   ...blogArticles.map((article) => `/blog/${article.slug}/`),
 ];

@@ -1,6 +1,11 @@
 (() => {
   const entry = document.querySelector(".entry-experience");
-  const appointmentUrl = "https://wa.me/905516467462?text=Merhaba%20%F0%9F%91%8B%20Fizyoterapist%20S%C4%B1lasu%20Turhan%20i%C3%A7in%20randevu%20talebi%20olu%C5%9Fturmak%20istiyorum.";
+  const getAppointmentUrl = () => {
+    const isTilbe = Math.random() < 0.5;
+    const phone = isTilbe ? "905518418880" : "905516467462";
+    const name = isTilbe ? "Tilbe%20Meri%C3%A7" : "S%C4%B1lasu%20Turhan";
+    return `https://wa.me/${phone}?text=Merhaba%20%F0%9F%91%8B%20Fizyoterapist%20${name}%20i%C3%A7in%20randevu%20talebi%20olu%C5%9Fturmak%20istiyorum.`;
+  };
 
   function finishEntry() {
     entry?.remove();
@@ -21,7 +26,7 @@
 
   function requestAppointment(event) {
     event.preventDefault();
-    window.location.assign(appointmentUrl);
+    window.location.assign(getAppointmentUrl());
   }
 
   document.querySelectorAll(".header-cta, .hero-actions .button.primary, .mobile-menu-cta").forEach((button) => {
@@ -29,6 +34,6 @@
   });
 
   if (new URLSearchParams(window.location.search).has("randevu")) {
-    window.location.replace(appointmentUrl);
+    window.location.replace(getAppointmentUrl());
   }
 })();
