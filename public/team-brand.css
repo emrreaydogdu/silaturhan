@@ -36,3 +36,45 @@
     font-size: clamp(2.15rem, 11vw, 3.2rem);
   }
 }
+
+/* ==========================================================================
+   Custom Scrollbar (Website Theme: Mint / Deep Teal Palette)
+   ========================================================================== */
+html,
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #237671 #edf5f2;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #237671 #edf5f2;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #edf5f2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #237671;
+  border-radius: 999px;
+  border: 2px solid #edf5f2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #175450;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #0f3d3a;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
