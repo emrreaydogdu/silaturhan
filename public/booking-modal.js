@@ -1,4 +1,7 @@
 (() => {
+  if (window.__bookingModalInitialized) return;
+  window.__bookingModalInitialized = true;
+
   const services = [
     "İlk Muayene",
     "Fizyoterapi Seansları",
@@ -49,7 +52,16 @@
   let selectedDateKey = toDateKey(new Date());
 
   function createModal() {
-    if (overlayEl) return overlayEl;
+    // Check if an overlay already exists in the DOM to avoid multiple windows
+    const existingOverlays = document.querySelectorAll(".booking-overlay");
+    if (existingOverlays.length > 0) {
+      overlayEl = existingOverlays[0];
+      for (let i = 1; i < existingOverlays.length; i++) {
+        existingOverlays[i].remove();
+      }
+      return overlayEl;
+    }
+    if (overlayEl && overlayEl.isConnected) return overlayEl;
 
     overlayEl = document.createElement("div");
     overlayEl.className = "booking-overlay";
@@ -310,8 +322,9 @@
   }
 
   function closeModal() {
-    if (!overlayEl) return;
-    overlayEl.style.display = "none";
+    document.querySelectorAll(".booking-overlay").forEach((el) => {
+      el.style.display = "none";
+    });
     document.body.classList.remove("booking-open");
   }
 
