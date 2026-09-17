@@ -24,8 +24,9 @@ document.addEventListener("click", (event) => {
   event.preventDefault();
   window.location.assign(destination.href);
 }, true);
-</script>`;
-const staticHomeRuntime = '<script defer src="/static-home.js?v=static-1"></script>';
+</script>
+<script defer src="/booking-modal.js"></script>`;
+const staticHomeRuntime = '<script defer src="/booking-modal.js"></script><script defer src="/static-home.js?v=static-1"></script>';
 const contentTypes = new Map([
   [".css", "text/css; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],

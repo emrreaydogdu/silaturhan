@@ -16,7 +16,7 @@ const extraStylesheets = [
   '<link rel="stylesheet" href="/liquid-glass.css">',
 ].join("");
 const instagramClientScript = '<script defer src="/instagram-feed.js?v=silasu-curated-2"></script>';
-const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script><script defer src="/navigation-unifier.js?v=fast-3"></script><script defer src="/header-runtime.js?v=header-2"></script>';
+const siteEnhancementsScript = '<script defer src="/site-enhancements.js"></script><script defer src="/navigation-unifier.js?v=fast-3"></script><script defer src="/header-runtime.js?v=header-2"></script><script defer src="/booking-modal.js"></script>';
 const businessGalleryScript = '<script type="module" src="/business-gallery.js"></script>';
 const teamShowcaseScript = '<script type="module" src="/team-showcase.js"></script>';
 const blogSliderScript = '<script defer src="/blog-slider.js"></script>';

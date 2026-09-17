@@ -26,7 +26,9 @@
 
   function requestAppointment(event) {
     event.preventDefault();
-    window.location.assign(getAppointmentUrl());
+    if (typeof window.openBookingModal === "function") {
+      window.openBookingModal();
+    }
   }
 
   document.querySelectorAll(".header-cta, .hero-actions .button.primary, .mobile-menu-cta").forEach((button) => {
@@ -34,6 +36,8 @@
   });
 
   if (new URLSearchParams(window.location.search).has("randevu")) {
-    window.location.replace(getAppointmentUrl());
+    if (typeof window.openBookingModal === "function") {
+      window.openBookingModal();
+    }
   }
 })();

@@ -5,6 +5,7 @@ import test from "node:test";
 const bookingBundles = [
   "../public/_next/static/chunks/appointment-booking-9CIoC0ma.js",
   "../server/ssr/_next/static/appointment-booking-DK1O_E2f.js",
+  "../public/booking-modal.js",
 ].map((path) => readFileSync(new URL(path, import.meta.url), "utf8"));
 
 test("appointment booking captures contact details without a time picker", () => {
@@ -39,4 +40,20 @@ test("booking modal opens from a direct appointment link", () => {
 
   assert.match(clientBundle, /URLSearchParams\(window\.location\.search\)/);
   assert.match(clientBundle, /randevu/);
+});
+
+test("standalone booking modal provides interactive popup window with consultant routing and KVKK", () => {
+  const modalScript = readFileSync(new URL("../public/booking-modal.js", import.meta.url), "utf8");
+  const homeScript = readFileSync(new URL("../public/static-home.js", import.meta.url), "utf8");
+
+  assert.match(modalScript, /booking-modal/);
+  assert.match(modalScript, /booking-overlay/);
+  assert.match(modalScript, /booking-close/);
+  assert.match(modalScript, /modal-kvkk-checkbox/);
+  assert.match(modalScript, /905518418880/);
+  assert.match(modalScript, /905516467462/);
+  assert.match(modalScript, /Math\.random\(\)\s*<\s*0\.5/);
+  assert.match(modalScript, /window\.openBookingModal/);
+  assert.match(modalScript, /booking-success/);
+  assert.match(homeScript, /openBookingModal/);
 });
