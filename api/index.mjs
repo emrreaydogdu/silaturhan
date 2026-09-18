@@ -220,7 +220,8 @@ export async function render(request, fetchAsset = fetch) {
       const isDirectVideo = src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".mov") || src.startsWith("/videos/");
 
       if (isDirectVideo) {
-        return `<article class="instagram-feed-card video-card"><div class="video-media-wrap"><video class="clinic-video-player" src="${src}" playsinline preload="metadata" controls loop></video></div><div class="video-card-body"><span class="video-author-pill">${author}</span><h4 class="video-card-title">${title}</h4>${caption ? `<p class="video-card-caption">${caption}</p>` : ""}</div></article>`;
+        const poster = src.replace(/\.(mp4|webm|mov)$/i, ".webp");
+        return `<article class="instagram-feed-card video-card"><div class="video-media-wrap"><video class="clinic-video-player" src="${src}" poster="${poster}" playsinline preload="none" controls loop></video></div></article>`;
       }
 
       return `<article class="instagram-feed-card instagram-preview-card"><div class="instagram-preview-art" aria-hidden="true"><span class="instagram-preview-pill">Instagram Reels</span><span class="instagram-preview-symbol">◎</span><span class="instagram-preview-author">${author}</span></div><div class="instagram-preview-actions"><button type="button" class="instagram-load-button" data-instagram-permalink="${src}" aria-label="${author} Instagram gönderisini sayfada yükle">Gönderiyi yükle</button><a class="instagram-open-link" href="${src}" target="_blank" rel="noreferrer">Instagram’da izle</a></div></article>`;

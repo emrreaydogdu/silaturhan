@@ -82,16 +82,34 @@
     document.querySelectorAll(".instagram-heading .instagram-profile-link").forEach((link) => link.remove());
   }
 
+  function initClinicVideoPlayers() {
+    const videos = document.querySelectorAll(".clinic-video-player");
+    videos.forEach((video) => {
+      if (video.dataset.initPlayer) return;
+      video.dataset.initPlayer = "true";
+
+      video.addEventListener("play", () => {
+        videos.forEach((other) => {
+          if (other !== video && !other.paused) {
+            other.pause();
+          }
+        });
+      });
+    });
+  }
+
   function start() {
     placeInstagramBelowKinezyotherapy();
     removeLegacyProfileLink();
     processEmbeds();
+    initClinicVideoPlayers();
 
     if (document.body) {
       new MutationObserver(() => {
         placeInstagramBelowKinezyotherapy();
         removeLegacyProfileLink();
         processEmbeds();
+        initClinicVideoPlayers();
       }).observe(document.body, {
         childList: true,
         subtree: true,

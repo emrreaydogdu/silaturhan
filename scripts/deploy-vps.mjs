@@ -29,7 +29,7 @@ async function main() {
   if (existsSync(archiveName)) {
     rmSync(archiveName);
   }
-  execSync(`tar.exe --exclude="videos" -czf ${archiveName} -C dist .`, { stdio: "inherit" });
+  execSync(`tar.exe --exclude="*.mp4" -czf ${archiveName} -C dist .`, { stdio: "inherit" });
 
   // 4. Connect to SSH
   console.log(`\n[3/6] Connecting to Hetzner VPS (${HOST})...`);
@@ -39,7 +39,7 @@ async function main() {
     username: USERNAME,
     password: PASSWORD,
     tryKeyboard: true,
-    readyTimeout: 30000,
+    readyTimeout: 45000,
     keepaliveInterval: 10000,
     keepaliveCountMax: 10,
   });
