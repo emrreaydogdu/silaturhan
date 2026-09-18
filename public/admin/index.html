@@ -152,28 +152,26 @@
         <div class="section-header">
           <div>
             <h2>Danışman Bilgileri</h2>
-            <p class="text-muted">Uzmanların sayfalarda ve detay profillerinde görünen biyografi, uzmanlık alanları ve iletişim bilgilerini düzenleyin.</p>
+            <p class="text-muted">Uzmanların sayfalarda ve detay profillerinde görünen biyografi, uzmanlık alanları ve iletişim bilgilerini düzenleyin, dilediğiniz gibi yeni uzman ekleyin veya silin.</p>
           </div>
           <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-add-expert">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Yeni Uzman Ekle
+            </button>
             <button type="button" class="btn btn-success" id="btn-save-experts">
               Tüm Danışman Bilgilerini Kaydet
             </button>
           </div>
         </div>
 
-        <div class="expert-subtabs">
-          <button type="button" class="subtab-btn active" data-expert="silasu">Uzm. Fzt. Sılasu Arıkan Turhan</button>
-          <button type="button" class="subtab-btn" data-expert="tilbe">Fzt. Tilbe Meriç</button>
+        <div class="expert-subtabs" id="expert-subtabs-bar">
+          <!-- Populated dynamically by JS -->
         </div>
 
-        <!-- Sılasu Form -->
-        <div id="expert-form-silasu" class="expert-form-card">
-          <!-- Populated by JS -->
-        </div>
-
-        <!-- Tilbe Form -->
-        <div id="expert-form-tilbe" class="expert-form-card" style="display: none;">
-          <!-- Populated by JS -->
+        <!-- Dynamic Expert Forms Container -->
+        <div id="expert-forms-container">
+          <!-- Populated dynamically by JS -->
         </div>
       </section>
 
@@ -333,6 +331,44 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" id="btn-cancel-gallery">Vazgeç</button>
             <button type="submit" class="btn btn-primary">Ekle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- NEW EXPERT MODAL -->
+  <dialog id="new-expert-modal" class="admin-modal">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3>Yeni Uzman Ekle</h3>
+        <button type="button" class="modal-close" id="btn-close-new-expert-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="new-expert-form">
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="new-expert-prefix">Ünvan Ön Ek *</label>
+              <input type="text" id="new-expert-prefix" required placeholder="Örn: Fzt. veya Uzm. Fzt." value="Fzt." />
+            </div>
+            <div class="form-group flex-2">
+              <label for="new-expert-name">Ad Soyad *</label>
+              <input type="text" id="new-expert-name" required placeholder="Örn: Ahmet Yılmaz" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="new-expert-role">Rol</label>
+              <input type="text" id="new-expert-role" placeholder="Örn: Fizyoterapist" value="Fizyoterapist" />
+            </div>
+            <div class="form-group flex-1">
+              <label for="new-expert-degree">Akademik Derece / Alan</label>
+              <input type="text" id="new-expert-degree" placeholder="Örn: Fizyoterapist" value="Fizyoterapist" />
+            </div>
+          </div>
+          <div class="modal-footer" style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-new-expert">Vazgeç</button>
+            <button type="submit" class="btn btn-primary">Uzmanı Ekle</button>
           </div>
         </form>
       </div>

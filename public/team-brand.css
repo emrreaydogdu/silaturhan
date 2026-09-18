@@ -78,3 +78,124 @@ body {
   background: transparent;
 }
 
+/* ==========================================================================
+   Expert Profile Hero: Actions & High-End Fact Badges
+   ========================================================================== */
+.profile-hero-copy .profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  margin-bottom: 24px;
+}
+
+.profile-hero-copy .profile-actions .button.primary {
+  min-height: 52px;
+  padding: 13px 32px;
+  font-size: 0.96rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1f736c 0%, #165651 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 24px -4px rgba(22, 86, 81, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.profile-hero-copy .profile-actions .button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -4px rgba(22, 86, 81, 0.45);
+  background: linear-gradient(135deg, #24857d 0%, #1a635d 100%);
+}
+
+.profile-facts {
+  border-top: none !important;
+  margin-top: 24px !important;
+  padding-top: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  max-width: 600px !important;
+}
+
+.profile-fact-card {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 16px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1px solid rgba(24, 125, 121, 0.18) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 16px -2px rgba(18, 52, 59, 0.05) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.22s ease !important;
+}
+
+.profile-fact-card:hover {
+  transform: translateY(-2px) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(24, 125, 121, 0.38) !important;
+  box-shadow: 0 8px 22px -4px rgba(18, 52, 59, 0.12) !important;
+}
+
+.profile-fact-icon {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #eaf4f2 0%, #d7ece8 100%) !important;
+  color: #175450 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  border: 1px solid rgba(24, 125, 121, 0.22) !important;
+  transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease !important;
+}
+
+.profile-fact-card:hover .profile-fact-icon {
+  background: linear-gradient(135deg, #187d79 0%, #125552 100%) !important;
+  color: #ffffff !important;
+  transform: scale(1.06) !important;
+}
+
+.profile-fact-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1px !important;
+  min-width: 0 !important;
+}
+
+.profile-fact-content strong {
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: #12343b !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.profile-fact-content small {
+  font-size: 0.76rem !important;
+  font-weight: 500 !important;
+  color: #436965 !important;
+  line-height: 1.3 !important;
+}
+
+@media (max-width: 600px) {
+  .profile-facts {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .profile-fact-card {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+

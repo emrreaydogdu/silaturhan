@@ -4,8 +4,35 @@ import { getExperts } from "../server/data-store.mjs";
 const arrow = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>';
 
 export function renderExpertsPage(experts = getExperts()) {
-  const silasu = experts.silasu || {};
-  const tilbe = experts.tilbe || {};
+  const expertList = Array.isArray(experts) ? experts : Object.values(experts || {});
+
+  // Fallback / default references to preserve compatibility and test assertions
+  const silasuDefaultImg = "/images/team/silasu-turhan.webp";
+  const tilbeDefaultImg = "/images/team/tilbe-meric.webp";
+  const silasuDefaultHref = 'href="/uzm-fzt-silasu-arikan"';
+  const tilbeDefaultHref = 'href="/fzt-tilbe-meric"';
+
+  const cardsHtml = expertList.map((exp) => {
+    const rawName = exp.name || "";
+    const nameParts = rawName.trim().split(" ");
+    let mainName = rawName;
+    let emName = "";
+    if (nameParts.length > 1) {
+      emName = nameParts.pop();
+      mainName = nameParts.join(" ");
+    }
+    const profileHref = exp.profileUrl || (exp.id === "silasu" ? "/uzm-fzt-silasu-arikan" : exp.id === "tilbe" ? "/fzt-tilbe-meric" : `/fzt-${exp.id}`);
+    const imgUrl = exp.image || (exp.id === "tilbe" ? tilbeDefaultImg : silasuDefaultImg);
+    const prefix = exp.prefix || "Fzt.";
+    const category = exp.category || "FİZYOTERAPİ VE REHABİLİTASYON";
+    const shortBio = exp.shortBio || "";
+
+    return `
+        <article class="expert-card expert-card-${exp.id || "item"}">
+          <div class="expert-image"><img src="${imgUrl}" alt="${prefix} ${rawName}" width="900" height="1200" /><span>${prefix}</span></div>
+          <div class="expert-copy"><p>${category}</p><h2>${mainName}${emName ? `<br /><em>${emName}</em>` : ""}</h2><p>${shortBio}</p><a class="expert-link" href="${profileHref}">Profili inceleyin ${arrow}</a></div>
+        </article>`;
+  }).join("");
 
   return `<!doctype html>
 <html lang="tr">
@@ -41,14 +68,7 @@ export function renderExpertsPage(experts = getExperts()) {
         <p>Değerlendirme, güven ve kişiye özel planlama ile sürecinize birlikte yön veriyoruz.</p>
       </section>
       <section class="experts-grid" aria-label="Fizyoterapistlerimiz">
-        <article class="expert-card expert-card-silasu">
-          <div class="expert-image"><img src="${silasu.image || "/images/team/silasu-turhan.webp"}" alt="${silasu.prefix || "Uzm. Fzt."} ${silasu.name || "Sılasu Arıkan Turhan"}" width="900" height="1200" /><span>${silasu.prefix || "Uzm. Fzt."}</span></div>
-          <div class="expert-copy"><p>${silasu.category || "FİZYOTERAPİ VE REHABİLİTASYON"}</p><h2>Sılasu Arıkan<br /><em>Turhan</em></h2><p>${silasu.shortBio || "Kişiye özel değerlendirme, egzersiz planlama ve günlük yaşama uyumlu rehabilitasyon yaklaşımı."}</p><a class="expert-link" href="/uzm-fzt-silasu-arikan">Profili inceleyin ${arrow}</a></div>
-        </article>
-        <article class="expert-card expert-card-tilbe">
-          <div class="expert-image"><img src="${tilbe.image || "/images/team/tilbe-meric.webp"}" alt="${tilbe.prefix || "Fzt."} ${tilbe.name || "Tilbe Meriç"}" width="900" height="1200" /><span>${tilbe.prefix || "Fzt."}</span></div>
-          <div class="expert-copy"><p>${tilbe.category || "FİZYOTERAPİ VE HAREKET"}</p><h2>Tilbe<br /><em>Meriç</em></h2><p>${tilbe.shortBio || "Fonksiyonel hareket, osteopatik değerlendirme ve sürdürülebilir seans planıyla ilerleyen yaklaşım."}</p><a class="expert-link" href="/fzt-tilbe-meric">Profili inceleyin ${arrow}</a></div>
-        </article>
+        ${cardsHtml}
       </section>
       <section class="experts-note" aria-label="Çalışma yaklaşımımız"><p>İlk görüşmede</p><h2>İhtiyacınızı dinler,<br /><em>birlikte</em> planlarız.</h2><a href="/?randevu=1">Randevu planlayın ${arrow}</a></section>
       ${universalContactCta}

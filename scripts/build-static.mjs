@@ -7,6 +7,7 @@ import { silasuArikanPage, renderSilasuPage } from "../api/silasu-arikan.mjs";
 import { expertsPage, renderExpertsPage } from "../api/uzmanlar.mjs";
 import { blogArticles, renderArticlePage, renderBlogIndex } from "../api/blog.mjs";
 import { kvkkPage } from "../api/kvkk.mjs";
+import { renderGenericExpertPage } from "../api/expert-profile.mjs";
 import { render } from "../api/index.mjs";
 import { getArticles, getExperts } from "../server/data-store.mjs";
 
@@ -103,19 +104,40 @@ await writeFile(
 
 const currentExperts = getExperts();
 
-const expertiseDirectory = resolve(outputRoot, "uzm-fzt-silasu-arikan");
-await mkdir(expertiseDirectory, { recursive: true });
-await writeFile(
-  resolve(expertiseDirectory, "index.html"),
-  renderSilasuPage(currentExperts.silasu).replace("</head>", `${staticNavigationScript}</head>`),
-);
+// 1. Build Sılasu if present
+if (currentExperts.silasu) {
+  const expertiseDirectory = resolve(outputRoot, "uzm-fzt-silasu-arikan");
+  await mkdir(expertiseDirectory, { recursive: true });
+  await writeFile(
+    resolve(expertiseDirectory, "index.html"),
+    renderSilasuPage(currentExperts.silasu).replace("</head>", `${staticNavigationScript}</head>`),
+  );
+}
 
-const tilbeProfileDirectory = resolve(outputRoot, "fzt-tilbe-meric");
-await mkdir(tilbeProfileDirectory, { recursive: true });
-await writeFile(
-  resolve(tilbeProfileDirectory, "index.html"),
-  renderTilbePage(currentExperts.tilbe).replace("</head>", `${staticNavigationScript}</head>`),
-);
+// 2. Build Tilbe if present
+if (currentExperts.tilbe) {
+  const tilbeProfileDirectory = resolve(outputRoot, "fzt-tilbe-meric");
+  await mkdir(tilbeProfileDirectory, { recursive: true });
+  await writeFile(
+    resolve(tilbeProfileDirectory, "index.html"),
+    renderTilbePage(currentExperts.tilbe).replace("</head>", `${staticNavigationScript}</head>`),
+  );
+}
+
+// 3. Build any additional experts dynamically
+for (const [key, exp] of Object.entries(currentExperts)) {
+  if (key !== "silasu" && key !== "tilbe") {
+    const rawPath = (exp.profileUrl || `/fzt-${key}`).replace(/^\//, "").replace(/\/$/, "");
+    if (rawPath) {
+      const expDir = resolve(outputRoot, rawPath);
+      await mkdir(expDir, { recursive: true });
+      await writeFile(
+        resolve(expDir, "index.html"),
+        renderGenericExpertPage(exp).replace("</head>", `${staticNavigationScript}</head>`),
+      );
+    }
+  }
+}
 
 const expertsDirectory = resolve(outputRoot, "uzmanlar");
 await mkdir(expertsDirectory, { recursive: true });
@@ -147,14 +169,20 @@ await writeFile(
   kvkkPage.replace("</head>", `${staticNavigationScript}</head>`),
 );
 
+const expertProfilePaths = Object.entries(currentExperts).map(([key, exp]) => {
+  if (key === "silasu") return "/uzm-fzt-silasu-arikan/";
+  if (key === "tilbe") return "/fzt-tilbe-meric/";
+  const clean = (exp.profileUrl || `/fzt-${key}`).replace(/^\//, "").replace(/\/$/, "");
+  return `/${clean}/`;
+});
+
 const sitemapPaths = [
   "/",
   "/multisport/",
-  "/uzm-fzt-silasu-arikan/",
-  "/fzt-tilbe-meric/",
   "/uzmanlar/",
   "/kvkk/",
   "/blog/",
+  ...expertProfilePaths,
   ...currentArticles.map((article) => `/blog/${article.slug}/`),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths.map((pathname) => `  <url><loc>https://www.turhanmeric.com${pathname}</loc></url>`).join("\n")}\n</urlset>\n`;

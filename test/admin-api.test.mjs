@@ -116,5 +116,75 @@ test("Admin Server API tests", async (t) => {
     assert.equal(getGallery().length, 13);
   });
 
+  await t.test("persists experts with add, edit, and delete support", async () => {
+    const { getExperts } = await import("../server/data-store.mjs");
+    const original = getExperts();
+
+    const withNewExpert = {
+      ...original,
+      "test-fzt": {
+        id: "test-fzt",
+        name: "Test Fizyoterapist",
+        prefix: "Fzt.",
+        title: "Fizyoterapist",
+        role: "Fizyoterapist",
+        category: "FİZYOTERAPİ",
+        shortBio: "Test kısa biyografi",
+        fullBio: "Test detaylı biyografi",
+        image: "/images/team/silasu-turhan.webp",
+        phone: "+90 551 000 00 00",
+        whatsappNumber: "905510000000",
+        email: "test@example.com",
+        profileUrl: "/fzt-test",
+        expertiseAreas: ["Manuel Terapi"],
+      },
+    };
+
+    const res = await fetch(`${baseUrl}/api/admin/experts`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ experts: withNewExpert }),
+    });
+    assert.equal(res.status, 200);
+    const saved = getExperts();
+    assert.ok(saved["test-fzt"]);
+    assert.equal(saved["test-fzt"].name, "Test Fizyoterapist");
+
+    // Clean up (delete test expert)
+    await fetch(`${baseUrl}/api/admin/experts`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ experts: original }),
+    });
+    const cleaned = getExperts();
+    assert.equal(cleaned["test-fzt"], undefined);
+  });
+
+  await t.test("includes booking modal scrollbar and expert management UI assets", async () => {
+    const { readFileSync } = await import("node:fs");
+    const bookingCss = readFileSync("public/booking-refinement.css", "utf8");
+    const adminHtml = readFileSync("public/admin/index.html", "utf8");
+    const adminJs = readFileSync("public/admin/admin.js", "utf8");
+
+    assert.match(bookingCss, /\.booking-modal::-webkit-scrollbar/);
+    assert.match(bookingCss, /scrollbar-color/);
+    assert.match(bookingCss, /max-height:\s*min\(90vh/);
+    assert.match(bookingCss, /overflow-y:\s*auto/);
+
+    assert.match(adminHtml, /id="btn-add-expert"/);
+    assert.match(adminHtml, /id="new-expert-modal"/);
+    assert.match(adminHtml, /id="expert-subtabs-bar"/);
+
+    assert.match(adminJs, /btn-delete-expert/);
+    assert.match(adminJs, /new-expert-form/);
+    assert.match(adminJs, /renderExpertFormHtml/);
+  });
+
   await new Promise((resolve) => server.close(resolve));
 });

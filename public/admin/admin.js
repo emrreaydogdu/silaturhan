@@ -516,34 +516,120 @@ document.getElementById("btn-save-articles")?.addEventListener("click", async ()
   }
 });
 
-// ================= TAB 3: DANIŞMANLAR =================
+// ================= TAB 3: DANIŞMANLAR / UZMANLAR =================
 function renderExperts() {
-  renderExpertForm("silasu");
-  renderExpertForm("tilbe");
+  const subtabsContainer = document.getElementById("expert-subtabs-bar");
+  const formsContainer = document.getElementById("expert-forms-container");
+  if (!subtabsContainer || !formsContainer) return;
+
+  const keys = Object.keys(state.experts || {});
+
+  if (keys.length === 0) {
+    subtabsContainer.innerHTML = "";
+    formsContainer.innerHTML = `
+      <div class="empty-state" style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+        <p style="font-size: 1.1rem; margin-bottom: 1rem;">Kayıtlı uzman bulunmuyor.</p>
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('btn-add-expert')?.click()">
+          + İlk Uzmanı Ekle
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  if (!state.activeExpert || !state.experts[state.activeExpert]) {
+    state.activeExpert = keys[0];
+  }
+
+  // 1. Render Subtabs
+  subtabsContainer.innerHTML = keys
+    .map((k) => {
+      const exp = state.experts[k] || {};
+      const label = `${exp.prefix ? exp.prefix + " " : ""}${exp.name || k}`;
+      const isActive = k === state.activeExpert;
+      return `<button type="button" class="subtab-btn ${isActive ? "active" : ""}" data-expert="${escapeHtml(k)}">${escapeHtml(label)}</button>`;
+    })
+    .join("");
+
+  // Subtabs click handling
+  subtabsContainer.querySelectorAll(".subtab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      harvestActiveExpertForm();
+      state.activeExpert = btn.dataset.expert;
+      renderExperts();
+    });
+  });
+
+  // 2. Render Forms for each expert
+  formsContainer.innerHTML = keys
+    .map((k) => {
+      const isVisible = k === state.activeExpert;
+      return `
+        <div id="expert-form-${k}" class="expert-form-card" style="display: ${isVisible ? "block" : "none"};">
+          ${renderExpertFormHtml(k, state.experts[k])}
+        </div>
+      `;
+    })
+    .join("");
+
+  // 3. Attach listeners to active forms
+  keys.forEach((k) => {
+    attachExpertFormEvents(k);
+  });
 }
 
-function renderExpertForm(id) {
-  const container = document.getElementById(`expert-form-${id}`);
-  const data = state.experts[id] || {};
-  if (!container) return;
+function harvestActiveExpertForm() {
+  const id = state.activeExpert;
+  if (!id || !state.experts[id]) return;
 
-  container.innerHTML = `
+  const exp = state.experts[id];
+  const getVal = (field) => {
+    const el = document.getElementById(`input-${id}-${field}`);
+    return el ? el.value.trim() : (exp[field] || "");
+  };
+
+  exp.prefix = getVal("prefix");
+  exp.name = getVal("name");
+  exp.title = getVal("title");
+  exp.degree = exp.title;
+  exp.role = getVal("role");
+  exp.category = getVal("category");
+  exp.profileUrl = getVal("profileUrl");
+  exp.shortBio = getVal("shortBio");
+  exp.fullBio = getVal("fullBio");
+  exp.image = getVal("image");
+  exp.phone = getVal("phone");
+  exp.whatsappNumber = getVal("whatsappNumber") || exp.phone.replace(/\D/g, "");
+  exp.email = getVal("email");
+  exp.instagram = getVal("instagram");
+  exp.instagramUrl = getVal("instagramUrl");
+}
+
+function renderExpertFormHtml(id, data = {}) {
+  const photo = data.image || "/images/team/silasu-turhan.webp";
+  const fullName = `${data.prefix ? data.prefix + " " : ""}${data.name || ""}`;
+  const subtitle = `${data.role || "Fizyoterapist"} · ${data.title || data.degree || ""}`;
+
+  return `
     <div class="expert-profile-banner">
-      <img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.name)}" class="expert-portrait-preview" id="preview-${id}-image" />
-      <div>
-        <h3 style="color: #fff; font-size: 1.25rem;">${escapeHtml(data.prefix || "")} ${escapeHtml(data.name || "")}</h3>
-        <p class="text-muted">${escapeHtml(data.role || "")} · ${escapeHtml(data.title || "")}</p>
-        <div style="margin-top: 0.75rem;">
+      <img src="${escapeHtml(photo)}" alt="${escapeHtml(data.name || "")}" class="expert-portrait-preview" id="preview-${id}-image" />
+      <div style="flex: 1;">
+        <h3 style="color: #fff; font-size: 1.25rem;">${escapeHtml(fullName || "Yeni Uzman")}</h3>
+        <p class="text-muted">${escapeHtml(subtitle)}</p>
+        <div style="margin-top: 0.75rem; display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
           <label class="btn btn-secondary btn-sm file-upload-label">
-            Yeni Fotoğraf Yükle
+            Fotoğraf Yükle / Değiştir
             <input type="file" accept="image/*" class="file-upload-input" data-target="input-${id}-image" />
           </label>
+          <button type="button" class="btn btn-danger btn-sm btn-delete-expert" data-expert-id="${escapeHtml(id)}">
+            Uzmanı Sil
+          </button>
         </div>
       </div>
     </div>
 
-    <form id="form-expert-${id}">
-      <input type="hidden" id="input-${id}-image" value="${escapeHtml(data.image || "")}" />
+    <form id="form-expert-${id}" onsubmit="return false;">
+      <input type="hidden" id="input-${id}-image" value="${escapeHtml(photo)}" />
 
       <div class="form-row">
         <div class="form-group flex-1">
@@ -556,7 +642,7 @@ function renderExpertForm(id) {
         </div>
         <div class="form-group flex-2">
           <label>Akademik Derece / Alan</label>
-          <input type="text" id="input-${id}-title" value="${escapeHtml(data.title || "")}" placeholder="Örn: Fizyoloji YL · FTR PhD" />
+          <input type="text" id="input-${id}-title" value="${escapeHtml(data.title || data.degree || "")}" placeholder="Örn: Fizyoterapist & Osteopat" />
         </div>
       </div>
 
@@ -569,10 +655,14 @@ function renderExpertForm(id) {
           <label>Kategori</label>
           <input type="text" id="input-${id}-category" value="${escapeHtml(data.category || "")}" placeholder="Örn: FİZYOTERAPİ VE REHABİLİTASYON" />
         </div>
+        <div class="form-group flex-1">
+          <label>Profil Sayfası URL</label>
+          <input type="text" id="input-${id}-profileUrl" value="${escapeHtml(data.profileUrl || `/fzt-${id}`)}" placeholder="Örn: /fzt-${id}" />
+        </div>
       </div>
 
       <div class="form-group">
-        <label>Kısa Tanıtım (Hero Bölümü) *</label>
+        <label>Kısa Tanıtım (Kartlar ve Özet Bölümü) *</label>
         <textarea rows="2" id="input-${id}-shortBio">${escapeHtml(data.shortBio || "")}</textarea>
       </div>
 
@@ -604,11 +694,15 @@ function renderExpertForm(id) {
       <div class="form-row">
         <div class="form-group flex-1">
           <label>Randevu Telefonu</label>
-          <input type="tel" id="input-${id}-phone" value="${escapeHtml(data.phone || "")}" />
+          <input type="tel" id="input-${id}-phone" value="${escapeHtml(data.phone || "")}" placeholder="+90 5XX XXX XX XX" />
+        </div>
+        <div class="form-group flex-1">
+          <label>WhatsApp Numarası (Sadece Rakam)</label>
+          <input type="text" id="input-${id}-whatsappNumber" value="${escapeHtml(data.whatsappNumber || "")}" placeholder="905XXXXXXXXX" />
         </div>
         <div class="form-group flex-1">
           <label>E-posta Adresi</label>
-          <input type="email" id="input-${id}-email" value="${escapeHtml(data.email || "")}" />
+          <input type="email" id="input-${id}-email" value="${escapeHtml(data.email || "")}" placeholder="ornek@turhanmeric.com" />
         </div>
       </div>
 
@@ -619,15 +713,18 @@ function renderExpertForm(id) {
         </div>
         <div class="form-group flex-2">
           <label>Instagram Profil Linki</label>
-          <input type="url" id="input-${id}-instagramUrl" value="${escapeHtml(data.instagramUrl || "")}" />
+          <input type="url" id="input-${id}-instagramUrl" value="${escapeHtml(data.instagramUrl || "")}" placeholder="https://www.instagram.com/..." />
         </div>
       </div>
     </form>
   `;
+}
 
+function attachExpertFormEvents(id) {
   // Listen to portrait input changes to update preview
   document.getElementById(`input-${id}-image`)?.addEventListener("input", (e) => {
-    document.getElementById(`preview-${id}-image`).src = e.target.value;
+    const preview = document.getElementById(`preview-${id}-image`);
+    if (preview) preview.src = e.target.value;
   });
 
   // Add tag
@@ -637,7 +734,8 @@ function renderExpertForm(id) {
     if (val) {
       if (!state.experts[id].expertiseAreas) state.experts[id].expertiseAreas = [];
       state.experts[id].expertiseAreas.push(val);
-      renderExpertForm(id);
+      harvestActiveExpertForm();
+      renderExperts();
     }
   });
 
@@ -652,55 +750,111 @@ function renderExpertForm(id) {
   document.getElementById(`tags-box-${id}`)?.addEventListener("click", (e) => {
     if (e.target.classList.contains("tag-remove")) {
       const idx = Number(e.target.dataset.tagIdx);
-      state.experts[id].expertiseAreas.splice(idx, 1);
-      renderExpertForm(id);
+      if (state.experts[id]?.expertiseAreas) {
+        state.experts[id].expertiseAreas.splice(idx, 1);
+        harvestActiveExpertForm();
+        renderExperts();
+      }
+    }
+  });
+
+  // Delete expert button
+  const formCard = document.getElementById(`expert-form-${id}`);
+  formCard?.querySelector(".btn-delete-expert")?.addEventListener("click", () => {
+    const exp = state.experts[id];
+    const name = exp?.name || id;
+    if (confirm(`"${name}" uzmanını silmek istediğinize emin misiniz? Bu işlem canlı sitedeki uzman profilini ve listesini güncelleyecektir.`)) {
+      delete state.experts[id];
+      const remaining = Object.keys(state.experts);
+      state.activeExpert = remaining[0] || null;
+      renderExperts();
+      showToast(`"${name}" uzmanı silindi. Değişiklikleri kaydetmek için lütfen 'Tüm Danışman Bilgilerini Kaydet' butonuna tıklayın.`);
     }
   });
 }
 
-// Switch Expert Subtabs
-document.querySelectorAll(".subtab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".subtab-btn").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    const expert = btn.dataset.expert;
-    state.activeExpert = expert;
+// Modal: Yeni Uzman Ekle
+const newExpertModal = document.getElementById("new-expert-modal");
+document.getElementById("btn-add-expert")?.addEventListener("click", () => {
+  document.getElementById("new-expert-form")?.reset();
+  newExpertModal?.showModal();
+});
 
-    document.getElementById("expert-form-silasu").style.display = expert === "silasu" ? "block" : "none";
-    document.getElementById("expert-form-tilbe").style.display = expert === "tilbe" ? "block" : "none";
-  });
+document.getElementById("btn-close-new-expert-modal")?.addEventListener("click", () => {
+  newExpertModal?.close();
+});
+
+document.getElementById("btn-cancel-new-expert")?.addEventListener("click", () => {
+  newExpertModal?.close();
+});
+
+document.getElementById("new-expert-form")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const prefix = document.getElementById("new-expert-prefix").value.trim() || "Fzt.";
+  const name = document.getElementById("new-expert-name").value.trim();
+  const role = document.getElementById("new-expert-role").value.trim() || "Fizyoterapist";
+  const degree = document.getElementById("new-expert-degree").value.trim() || "Fizyoterapist";
+
+  if (!name) return;
+
+  harvestActiveExpertForm();
+
+  let slug = slugify(name);
+  if (!slug) slug = `uzman-${Date.now().toString().slice(-4)}`;
+  if (state.experts[slug]) {
+    slug = `${slug}-${Date.now().toString().slice(-4)}`;
+  }
+
+  state.experts[slug] = {
+    id: slug,
+    name: name,
+    prefix: prefix,
+    degree: degree,
+    title: degree,
+    role: role,
+    category: "FİZYOTERAPİ VE REHABİLİTASYON",
+    shortBio: "Kişiye özel değerlendirme, hareket analizi ve sürdürülebilir seans planıyla ilerleyen yaklaşım.",
+    fullBio: `${prefix} ${name}, hareket sistemi ve fonksiyonel rehabilitasyon alanında klinik çalışmalarını sürdürmektedir.`,
+    image: "/images/team/silasu-turhan.webp",
+    phone: "+90 551 000 00 00",
+    whatsappNumber: "905510000000",
+    email: "",
+    instagram: "",
+    instagramUrl: "",
+    profileUrl: `/fzt-${slug}`,
+    expertiseAreas: ["Ortopedik Rehabilitasyon", "Fonksiyonel Egzersiz", "Manuel Terapi"],
+  };
+
+  state.activeExpert = slug;
+  newExpertModal?.close();
+  renderExperts();
+  showToast(`Yeni uzman (${prefix} ${name}) eklendi! Bilgilerini doldurup 'Tüm Danışman Bilgilerini Kaydet' butonuna basarak anında yayınlayabilirsiniz.`);
 });
 
 // Save Experts
 document.getElementById("btn-save-experts")?.addEventListener("click", async () => {
   const btn = document.getElementById("btn-save-experts");
   btn.disabled = true;
-  btn.textContent = "Kaydediliyor...";
+  btn.textContent = "Kaydediliyor ve Canlıya Aktarılıyor...";
 
   try {
-    // Harvest both forms
-    ["silasu", "tilbe"].forEach((id) => {
-      const exp = state.experts[id] || {};
-      exp.prefix = document.getElementById(`input-${id}-prefix`).value.trim();
-      exp.name = document.getElementById(`input-${id}-name`).value.trim();
-      exp.title = document.getElementById(`input-${id}-title`).value.trim();
-      exp.role = document.getElementById(`input-${id}-role`).value.trim();
-      exp.category = document.getElementById(`input-${id}-category`).value.trim();
-      exp.shortBio = document.getElementById(`input-${id}-shortBio`).value.trim();
-      exp.fullBio = document.getElementById(`input-${id}-fullBio`).value.trim();
-      exp.image = document.getElementById(`input-${id}-image`).value.trim();
-      exp.phone = document.getElementById(`input-${id}-phone`).value.trim();
-      exp.email = document.getElementById(`input-${id}-email`).value.trim();
-      exp.instagram = document.getElementById(`input-${id}-instagram`).value.trim();
-      exp.instagramUrl = document.getElementById(`input-${id}-instagramUrl`).value.trim();
-      state.experts[id] = exp;
+    harvestActiveExpertForm();
+
+    // Ensure all experts have clean whatsapp numbers and title/degree
+    Object.keys(state.experts).forEach((k) => {
+      const exp = state.experts[k];
+      if (!exp.whatsappNumber && exp.phone) {
+        exp.whatsappNumber = exp.phone.replace(/\D/g, "");
+      }
+      if (!exp.degree && exp.title) exp.degree = exp.title;
+      if (!exp.title && exp.degree) exp.title = exp.degree;
     });
 
     const res = await apiRequest("/api/admin/experts", {
       method: "POST",
       body: { experts: state.experts },
     });
-    state.experts = res.experts;
+    state.experts = res.experts || state.experts;
     renderExperts();
     showToast("Danışman bilgileri kaydedildi ve anında canlıya aktarıldı! ✓");
   } catch (err) {
