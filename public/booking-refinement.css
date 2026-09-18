@@ -89,9 +89,18 @@
 }
 
 /* Modal window screen centering and scrollbar for all viewports */
+html.booking-open,
+body.booking-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
 .booking-overlay {
   position: fixed !important;
   inset: 0 !important;
+  width: 100vw !important;
+  height: 100% !important;
+  height: 100dvh !important;
   z-index: 10000 !important;
   display: flex !important;
   align-items: flex-start !important;
@@ -101,7 +110,8 @@
   -webkit-backdrop-filter: blur(12px) !important;
   backdrop-filter: blur(12px) !important;
   overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
 }
 
 .booking-overlay[style*="display: none"] {
@@ -119,7 +129,7 @@
   flex-direction: column !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch !important;
   overscroll-behavior: contain;
   scrollbar-width: thin !important;
   scrollbar-color: #187d79 rgba(22, 78, 72, 0.08) !important;
@@ -144,6 +154,26 @@
 
 .booking-modal::-webkit-scrollbar-thumb:hover {
   background: #125552 !important;
+}
+
+/* Specific iPhone 11 and Mobile Screen Responsive Continuous Scroll */
+@media (max-width: 640px) {
+  .booking-overlay {
+    display: block !important;
+    padding: 8px 8px 40px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+  }
+
+  .booking-modal {
+    margin: 8px auto 36px !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    border-radius: 20px !important;
+    width: 100% !important;
+  }
 }
 
 #booking-form-container form {

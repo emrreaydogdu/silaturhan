@@ -377,3 +377,79 @@
   .instagram-feed-card::before { animation: none; }
   .instagram-profile-link::after { transition: none; }
 }
+
+/* Direct Clinic Video Player Cards */
+.video-card {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 30px -6px rgba(18, 52, 59, 0.08) !important;
+  border: 1px solid rgba(24, 125, 121, 0.16) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease !important;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+}
+
+.video-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 36px -8px rgba(18, 52, 59, 0.16) !important;
+  border-color: rgba(24, 125, 121, 0.38) !important;
+}
+
+.video-media-wrap {
+  position: relative !important;
+  width: 100% !important;
+  aspect-ratio: 9 / 16 !important;
+  max-height: 480px !important;
+  background: #0d2629 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.clinic-video-player {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.video-card-body {
+  padding: 16px 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  background: #ffffff !important;
+  flex: 1 !important;
+}
+
+.video-author-pill {
+  align-self: flex-start !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 3px 10px !important;
+  border-radius: 20px !important;
+  background: #eaf4f2 !important;
+  color: #176b62 !important;
+  border: 1px solid rgba(24, 125, 121, 0.18) !important;
+}
+
+.video-card-title {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #12343b !important;
+  line-height: 1.35 !important;
+  margin: 4px 0 2px !important;
+}
+
+.video-card-caption {
+  font-size: 0.85rem !important;
+  color: #4a615e !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}

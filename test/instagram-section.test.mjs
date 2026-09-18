@@ -21,16 +21,13 @@ test("homepage publishes the prepared Instagram feed section", async () => {
   const silaMarkup = markup.slice(silaStart, markup.indexOf("</section>", silaStart));
   const tilbeMarkup = markup.slice(tilbeStart, markup.indexOf("</section>", tilbeStart));
 
-  for (const shortcode of ["DdE7j7gIKGg", "DcjNyjhI_nt", "DcOH_9AICJt"]) {
-    assert.ok(silaMarkup.includes(shortcode), `Sılasu's feed should embed ${shortcode}`);
-  }
-  for (const shortcode of ["DXCmcpoClmk", "DX6IB74KQTA", "DWedsHlCrBp"]) {
-    assert.ok(tilbeMarkup.includes(shortcode), `Tilbe's feed should embed ${shortcode}`);
-  }
+  assert.ok(silaMarkup.includes("/videos/sila/"), "Sılasu feed should include local video files");
+  assert.ok(tilbeMarkup.includes("/videos/tilbe/"), "Tilbe feed should include local video files");
 
   assert.match(markup, /Sılasu Turhan/);
   assert.match(markup, /Tilbe Meriç/);
-  assert.equal((markup.match(/class="instagram-feed-card instagram-preview-card"/g) ?? []).length, 6);
+  assert.ok((markup.match(/class="instagram-feed-card video-card"/g) ?? []).length >= 6);
+  assert.ok((markup.match(/class="clinic-video-player"/g) ?? []).length >= 6);
   assert.equal((markup.match(/class="instagram-media"/g) ?? []).length, 0);
   assert.doesNotMatch(markup, /https:\/\/www\.instagram\.com\/embed\.js/);
   assert.equal((markup.match(/src="\/instagram-feed\.js\?v=silasu-curated-2"/g) ?? []).length, 1);

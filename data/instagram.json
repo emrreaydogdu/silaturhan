@@ -1,12 +1,42 @@
 {
   "silasu": [
-    "https://www.instagram.com/reel/DdE7j7gIKGg/",
-    "https://www.instagram.com/reel/DcjNyjhI_nt/",
-    "https://www.instagram.com/reel/DcOH_9AICJt/"
+    {
+      "id": "sila-video-1",
+      "src": "/videos/sila/hareket-ve-denge-analizi.mp4",
+      "title": "Denge ve Hareket Analizi",
+      "caption": "Sık düşen veya ayağı takılan kişilerde fonksiyonel değerlendirme."
+    },
+    {
+      "id": "sila-video-2",
+      "src": "/videos/sila/klinik-pilates-ve-egzersiz.mp4",
+      "title": "Klinik Pilates ve Doğru Hareket",
+      "caption": "Pilates çok güzel; ama en güzeli kontrollü ve doğru yapılması."
+    },
+    {
+      "id": "sila-video-3",
+      "src": "/videos/sila/agrisiz-fizyoterapi-yaklasimi.mp4",
+      "title": "Ağrısız Fizyoterapi Seansları",
+      "caption": "Zorlama olmadan, güvenli ve konforlu hareket seansları."
+    }
   ],
   "tilbe": [
-    "https://www.instagram.com/reel/DXCmcpoClmk/",
-    "https://www.instagram.com/reel/DX6IB74KQTA/",
-    "https://www.instagram.com/reel/DWedsHlCrBp/"
+    {
+      "id": "tilbe-video-1",
+      "src": "/videos/tilbe/fonksiyonel-egzersiz-ve-pilates.mp4",
+      "title": "Sistemli Pilates ve Egzersiz",
+      "caption": "Ulaşılabilir, sistemli ve fonksiyonel egzersiz yaklaşımı."
+    },
+    {
+      "id": "tilbe-video-2",
+      "src": "/videos/tilbe/postur-ve-durus-analizi.mp4",
+      "title": "Postür (Duruş) Analizi ve Omurga Sağlığı",
+      "caption": "Özellikle büyüme çağındaki çocuklarda ve ofis çalışanlarında postür önemi."
+    },
+    {
+      "id": "tilbe-video-3",
+      "src": "/videos/tilbe/norolojik-degerlendirme-ve-denge.mp4",
+      "title": "Nörolojik Değerlendirme ve Koordinasyon",
+      "caption": "Sık düşme veya sakarlık durumlarında nörolojik hareket takibi."
+    }
   ]
 }

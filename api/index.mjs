@@ -208,21 +208,31 @@ export async function render(request, fetchAsset = fetch) {
     );
   }
 
-  // Dynamic Instagram Feed on Homepage
+  // Dynamic Video / Reels Feed on Homepage
   if (pathname === "/" && enhancedMarkup.includes('class="instagram-section"')) {
     const data = getInstagram();
-    const silasuLinks = data.silasu || [];
-    const tilbeLinks = data.tilbe || [];
-    const makeCard = (link, author) =>
-      `<article class="instagram-feed-card instagram-preview-card"><div class="instagram-preview-art" aria-hidden="true"><span class="instagram-preview-pill">Instagram Reels</span><span class="instagram-preview-symbol">◎</span><span class="instagram-preview-author">${author}</span></div><div class="instagram-preview-actions"><button type="button" class="instagram-load-button" data-instagram-permalink="${link}" aria-label="${author} Instagram gönderisini sayfada yükle">Gönderiyi yükle</button><a class="instagram-open-link" href="${link}" target="_blank" rel="noreferrer">Instagram’da izle</a></div></article>`;
+    const silasuVideos = data.silasu || [];
+    const tilbeVideos = data.tilbe || [];
+    const makeCard = (item, author) => {
+      const src = typeof item === "object" ? (item.src || item.url || "") : item;
+      const title = (typeof item === "object" && item.title) ? item.title : "Klinik Seans & Egzersiz";
+      const caption = (typeof item === "object" && item.caption) ? item.caption : "";
+      const isDirectVideo = src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".mov") || src.startsWith("/videos/");
+
+      if (isDirectVideo) {
+        return `<article class="instagram-feed-card video-card"><div class="video-media-wrap"><video class="clinic-video-player" src="${src}" playsinline preload="metadata" controls loop></video></div><div class="video-card-body"><span class="video-author-pill">${author}</span><h4 class="video-card-title">${title}</h4>${caption ? `<p class="video-card-caption">${caption}</p>` : ""}</div></article>`;
+      }
+
+      return `<article class="instagram-feed-card instagram-preview-card"><div class="instagram-preview-art" aria-hidden="true"><span class="instagram-preview-pill">Instagram Reels</span><span class="instagram-preview-symbol">◎</span><span class="instagram-preview-author">${author}</span></div><div class="instagram-preview-actions"><button type="button" class="instagram-load-button" data-instagram-permalink="${src}" aria-label="${author} Instagram gönderisini sayfada yükle">Gönderiyi yükle</button><a class="instagram-open-link" href="${src}" target="_blank" rel="noreferrer">Instagram’da izle</a></div></article>`;
+    };
 
     enhancedMarkup = enhancedMarkup.replace(
       /(<section class="instagram-account instagram-account-silasu"[^>]*>[\s\S]*?<div class="instagram-feed-grid">)[\s\S]*?(<\/div>\s*<\/section>)/,
-      `$1${silasuLinks.map((l) => makeCard(l, "Sılasu Turhan")).join("")}$2`,
+      `$1${silasuVideos.map((v) => makeCard(v, "Sılasu Turhan")).join("")}$2`,
     );
     enhancedMarkup = enhancedMarkup.replace(
       /(<section class="instagram-account instagram-account-tilbe"[^>]*>[\s\S]*?<div class="instagram-feed-grid">)[\s\S]*?(<\/div>\s*<\/section>)/,
-      `$1${tilbeLinks.map((l) => makeCard(l, "Tilbe Meriç")).join("")}$2`,
+      `$1${tilbeVideos.map((v) => makeCard(v, "Tilbe Meriç")).join("")}$2`,
     );
   }
 

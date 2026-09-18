@@ -309,7 +309,9 @@
     modal.querySelector("#modal-kvkk-checkbox").checked = false;
 
     modal.style.display = "flex";
+    modal.scrollTop = 0;
     document.body.classList.add("booking-open");
+    document.documentElement.classList.add("booking-open");
 
     // Close on escape
     const onKeyDown = (e) => {
@@ -326,6 +328,7 @@
       el.style.display = "none";
     });
     document.body.classList.remove("booking-open");
+    document.documentElement.classList.remove("booking-open");
   }
 
   window.openBookingModal = openModal;

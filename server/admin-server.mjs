@@ -23,9 +23,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, "..");
 const publicDir = resolve(rootDir, "public");
 const uploadsDir = resolve(publicDir, "images/uploads");
+const videoUploadsDir = resolve(publicDir, "videos/uploads");
 
 if (!existsSync(uploadsDir)) {
   mkdirSync(uploadsDir, { recursive: true });
+}
+if (!existsSync(videoUploadsDir)) {
+  mkdirSync(videoUploadsDir, { recursive: true });
 }
 
 const PORT = Number(process.env.ADMIN_PORT || 3105);
@@ -110,6 +114,9 @@ const MIME_TYPES = {
   ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".mov": "video/quicktime",
 };
 
 function sendJson(res, statusCode, data) {
@@ -128,14 +135,14 @@ function sendText(res, statusCode, text) {
   res.end(text);
 }
 
-function readJsonBody(req, limitBytes = 15 * 1024 * 1024) {
+function readJsonBody(req, limitBytes = 100 * 1024 * 1024) {
   return new Promise((resolvePromise, rejectPromise) => {
     let body = "";
     let size = 0;
     req.on("data", (chunk) => {
       size += chunk.length;
       if (size > limitBytes) {
-        rejectPromise(new Error("İstek boyutu çok büyük (Max: 15MB)"));
+        rejectPromise(new Error("İstek boyutu çok büyük (Max: 100MB)"));
         req.destroy();
         return;
       }
@@ -268,7 +275,7 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 200, { ok: true, instagram: updated, published: true });
       }
 
-      // UPLOAD IMAGE (Base64 JSON payload: { filename, dataUrl })
+      // UPLOAD MEDIA (Base64 JSON payload: { filename, dataUrl })
       if (pathname === "/api/admin/upload" && method === "POST") {
         const body = await readJsonBody(req);
         const { filename, dataUrl } = body;
@@ -276,21 +283,23 @@ const server = http.createServer(async (req, res) => {
           return sendJson(res, 400, { ok: false, error: "Dosya adı veya içerik eksik." });
         }
 
-        const match = dataUrl.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,(.+)$/);
+        const match = dataUrl.match(/^data:([a-zA-Z0-9-]+\/[a-zA-Z0-9-.+]+);base64,(.+)$/);
         if (!match) {
-          return sendJson(res, 400, { ok: false, error: "Geçersiz resim veri formatı (Data URL bekleniyor)." });
+          return sendJson(res, 400, { ok: false, error: "Geçersiz dosya veri formatı (Data URL bekleniyor)." });
         }
 
         const rawExt = extname(filename).toLowerCase() || ".webp";
-        const allowedExts = [".jpg", ".jpeg", ".png", ".webp", ".svg"];
-        if (!allowedExts.includes(rawExt)) {
-          return sendJson(res, 400, { ok: false, error: "Desteklenmeyen dosya türü. (.jpg, .png, .webp, .svg)" });
+        const isVideo = [".mp4", ".mov", ".webm"].includes(rawExt);
+        const isImage = [".jpg", ".jpeg", ".png", ".webp", ".svg"].includes(rawExt);
+        if (!isVideo && !isImage) {
+          return sendJson(res, 400, { ok: false, error: "Desteklenmeyen dosya türü. (.jpg, .png, .webp, .svg, .mp4, .mov, .webm)" });
         }
 
         const base64Data = match[2];
         const buffer = Buffer.from(base64Data, "base64");
-        if (buffer.length > 10 * 1024 * 1024) {
-          return sendJson(res, 400, { ok: false, error: "Dosya 10MB boyutunu aşamaz." });
+        const maxBytes = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
+        if (buffer.length > maxBytes) {
+          return sendJson(res, 400, { ok: false, error: `Dosya boyutu çok büyük (Max: ${isVideo ? "100MB" : "10MB"}).` });
         }
 
         const safeBase = basename(filename, rawExt)
@@ -299,25 +308,29 @@ const server = http.createServer(async (req, res) => {
           .replace(/-+/g, "-")
           .slice(0, 40);
         const uniqueName = `${Date.now()}-${safeBase}${rawExt}`;
-        const targetPath = resolve(uploadsDir, uniqueName);
+        const targetDir = isVideo ? videoUploadsDir : uploadsDir;
+        const targetPath = resolve(targetDir, uniqueName);
 
         writeFileSync(targetPath, buffer);
 
         // Also copy directly to current release if running on VPS
-        const vpsCurrentUploads = "/var/www/turhanmeric/current/images/uploads";
+        const vpsCurrentTarget = isVideo
+          ? "/var/www/turhanmeric/current/videos/uploads"
+          : "/var/www/turhanmeric/current/images/uploads";
+
         if (existsSync("/var/www/turhanmeric/current")) {
           try {
-            if (!existsSync(vpsCurrentUploads)) {
-              mkdirSync(vpsCurrentUploads, { recursive: true });
+            if (!existsSync(vpsCurrentTarget)) {
+              mkdirSync(vpsCurrentTarget, { recursive: true });
             }
-            writeFileSync(resolve(vpsCurrentUploads, uniqueName), buffer);
+            writeFileSync(resolve(vpsCurrentTarget, uniqueName), buffer);
           } catch (e) {
-            console.warn("Could not copy uploaded image to current:", e);
+            console.warn("Could not copy uploaded file to current:", e);
           }
         }
 
-        const publicUrl = `/images/uploads/${uniqueName}`;
-        return sendJson(res, 200, { ok: true, url: publicUrl, filename: uniqueName });
+        const publicUrl = isVideo ? `/videos/uploads/${uniqueName}` : `/images/uploads/${uniqueName}`;
+        return sendJson(res, 200, { ok: true, url: publicUrl, filename: uniqueName, isVideo });
       }
 
       // PUBLISH / STATIC REBUILD (Manual trigger)

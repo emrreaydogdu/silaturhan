@@ -213,6 +213,42 @@ document.addEventListener("change", async (e) => {
   }
 });
 
+// Setup video file upload inputs
+document.addEventListener("change", async (e) => {
+  if (e.target.classList.contains("video-file-input")) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const expert = e.target.dataset.expert;
+    const statusEl = document.getElementById(`${expert}-upload-status`);
+    const srcInput = document.getElementById(`${expert}-video-src-input`);
+    const titleInput = document.getElementById(`${expert}-video-title-input`);
+
+    const labelBtn = e.target.closest("label");
+    const origText = labelBtn ? labelBtn.textContent.trim() : "";
+    if (labelBtn) labelBtn.childNodes[0].textContent = "Video Yükleniyor... ";
+    if (statusEl) statusEl.textContent = "Yükleniyor (lütfen bekleyin)...";
+
+    try {
+      const url = await uploadFile(file);
+      if (srcInput) {
+        srcInput.value = url;
+        srcInput.dispatchEvent(new Event("input"));
+      }
+      if (titleInput && !titleInput.value) {
+        titleInput.value = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ").slice(0, 50);
+      }
+      if (statusEl) statusEl.textContent = "✓ Yüklendi: " + url.split("/").pop();
+      showToast("Video başarıyla yüklendi: " + url);
+    } catch (err) {
+      if (statusEl) statusEl.textContent = "Hata oluştu!";
+      showToast("Video yükleme hatası: " + err.message, "error");
+    } finally {
+      if (labelBtn) labelBtn.childNodes[0].textContent = origText || "📁 Cihazdan Video Dosyası Seç (.mp4, .mov)";
+      e.target.value = "";
+    }
+  }
+});
+
 // ================= TAB 1: GALERİ =================
 function renderGallery() {
   const container = document.getElementById("gallery-list");
@@ -1016,17 +1052,32 @@ function renderReelsList(id) {
   listEl.innerHTML = "";
 
   const items = state.instagram[id] || [];
-  items.forEach((url, index) => {
+  items.forEach((item, index) => {
+    const src = typeof item === "object" ? (item.src || "") : item;
+    const title = typeof item === "object" ? (item.title || "Klinik Video") : "Instagram Reel";
+    const caption = typeof item === "object" ? (item.caption || "") : "";
+    const isLocalVideo = src.endsWith(".mp4") || src.endsWith(".mov") || src.endsWith(".webm") || src.includes("/videos/");
+
     const li = document.createElement("li");
     li.className = "reel-item";
+    li.style.cssText = "display: flex; gap: 12px; align-items: center; padding: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px;";
     li.innerHTML = `
-      <a href="${escapeHtml(url)}" target="_blank" class="reel-link" title="${escapeHtml(url)}">
-        ${escapeHtml(url)}
-      </a>
-      <div class="reel-actions">
-        <button type="button" class="btn btn-secondary btn-sm" data-action="move-up" data-expert="${id}" data-index="${index}" ${index === 0 ? "disabled" : ""}>▲</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-action="move-down" data-expert="${id}" data-index="${index}" ${index === items.length - 1 ? "disabled" : ""}>▼</button>
-        <button type="button" class="btn btn-danger btn-sm" data-action="delete-reel" data-expert="${id}" data-index="${index}">Sil</button>
+      ${isLocalVideo ? `
+        <video src="${escapeHtml(src)}" preload="metadata" style="width: 72px; height: 96px; object-fit: cover; border-radius: 6px; background: #000; flex-shrink: 0;" playsinline muted></video>
+      ` : `
+        <div style="width: 72px; height: 72px; border-radius: 6px; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;">🎬</div>
+      `}
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 600; font-size: 0.95rem; color: #1e293b; margin-bottom: 3px;">${escapeHtml(title)}</div>
+        ${caption ? `<div style="font-size: 0.82rem; color: #64748b; margin-bottom: 4px; line-height: 1.3;">${escapeHtml(caption)}</div>` : ""}
+        <a href="${escapeHtml(src)}" target="_blank" class="reel-link" title="${escapeHtml(src)}" style="font-size: 0.8rem; word-break: break-all; color: var(--primary);">
+          ${escapeHtml(src)}
+        </a>
+      </div>
+      <div class="reel-actions" style="display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;">
+        <button type="button" class="btn btn-secondary btn-sm" data-action="move-up" data-expert="${id}" data-index="${index}" ${index === 0 ? "disabled" : ""} title="Yukarı taşı">▲</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-action="move-down" data-expert="${id}" data-index="${index}" ${index === items.length - 1 ? "disabled" : ""} title="Aşağı taşı">▼</button>
+        <button type="button" class="btn btn-danger btn-sm" data-action="delete-reel" data-expert="${id}" data-index="${index}" title="Kaldır">Sil</button>
       </div>
     `;
     listEl.appendChild(li);
@@ -1063,26 +1114,47 @@ function handleReelAction(e) {
 document.getElementById("silasu-reels-list")?.addEventListener("click", handleReelAction);
 document.getElementById("tilbe-reels-list")?.addEventListener("click", handleReelAction);
 
-// Add Reel
+// Add Video / Reel
 ["silasu", "tilbe"].forEach((id) => {
   const addBtn = document.getElementById(`btn-add-${id}-reel`);
-  const input = document.getElementById(`${id}-reel-input`);
+  const srcInput = document.getElementById(`${id}-video-src-input`);
+  const titleInput = document.getElementById(`${id}-video-title-input`);
+  const captionInput = document.getElementById(`${id}-video-caption-input`);
+  const statusEl = document.getElementById(`${id}-upload-status`);
 
   const addAction = () => {
-    let url = input.value.trim();
-    if (!url) return;
-    if (!url.includes("instagram.com/")) {
-      return alert("Lütfen geçerli bir Instagram bağlantısı girin (Örn: https://www.instagram.com/reel/...)");
+    let src = srcInput ? srcInput.value.trim() : "";
+    let title = titleInput ? titleInput.value.trim() : "";
+    let caption = captionInput ? captionInput.value.trim() : "";
+
+    if (!src) {
+      return alert("Lütfen video dosyası yükleyin veya bir video URL'si / dosya yolu girin.");
     }
+    if (!title) {
+      title = "Klinik Video";
+    }
+
     if (!state.instagram[id]) state.instagram[id] = [];
-    state.instagram[id].push(url);
-    input.value = "";
+
+    const newVideo = {
+      id: `${id}-video-${Date.now()}`,
+      src,
+      title,
+      caption,
+    };
+
+    state.instagram[id].push(newVideo);
+    if (srcInput) srcInput.value = "";
+    if (titleInput) titleInput.value = "";
+    if (captionInput) captionInput.value = "";
+    if (statusEl) statusEl.textContent = "";
+
     renderReelsList(id);
-    showToast("Reel eklendi. Kaydetmeyi unutmayın.");
+    showToast("Video listeye eklendi. 'Videoları Kaydet' butonuna basarak canlıya aktarabilirsiniz.");
   };
 
   addBtn?.addEventListener("click", addAction);
-  input?.addEventListener("keydown", (e) => {
+  srcInput?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       addAction();
@@ -1094,19 +1166,19 @@ document.getElementById("tilbe-reels-list")?.addEventListener("click", handleRee
 document.getElementById("btn-save-instagram")?.addEventListener("click", async () => {
   const btn = document.getElementById("btn-save-instagram");
   btn.disabled = true;
-  btn.textContent = "Kaydediliyor...";
+  btn.textContent = "Kaydediliyor ve Canlıya Aktarılıyor...";
   try {
     const res = await apiRequest("/api/admin/instagram", {
       method: "POST",
       body: { instagram: state.instagram },
     });
     state.instagram = res.instagram;
-    showToast("Instagram videoları kaydedildi ve anında canlıya aktarıldı! ✓");
+    showToast("Videolar kaydedildi ve anında canlıya aktarıldı! ✓");
   } catch (err) {
     showToast("Hata: " + err.message, "error");
   } finally {
     btn.disabled = false;
-    btn.textContent = "Instagram Videolarını Kaydet";
+    btn.textContent = "Videoları Kaydet";
   }
 });
 

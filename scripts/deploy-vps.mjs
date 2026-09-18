@@ -71,11 +71,11 @@ async function main() {
     const remoteAppDir = `${REMOTE_BASE}/app`;
     const remoteAppArchive = `${REMOTE_BASE}/turhanmeric-app.tar.gz`;
     console.log(`Uploading backend app to VPS (${remoteAppDir})...`);
-    await exec(ssh, `mkdir -p "${remoteAppDir}/public/images/uploads"`);
+    await exec(ssh, `mkdir -p "${remoteAppDir}/public/images/uploads" "${remoteAppDir}/public/videos/uploads"`);
     await ssh.putFile(appArchive, remoteAppArchive);
     await exec(ssh, `tar -xzf "${remoteAppArchive}" -C "${remoteAppDir}"`);
     await exec(ssh, `rm -f "${remoteAppArchive}"`);
-    await exec(ssh, `mkdir -p "${remoteAppDir}/public/images/uploads"`);
+    await exec(ssh, `mkdir -p "${remoteAppDir}/public/images/uploads" "${remoteAppDir}/public/videos/uploads"`);
 
     // 6. Update Nginx configuration
     console.log("\n[6/8] Updating Nginx configuration on VPS...");
