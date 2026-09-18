@@ -26,10 +26,8 @@ export function renderSilasuPage(expert = getExperts().silasu) {
     .replaceAll("Fizyoterapist Tilbe Meriç | Maltepe Fizyoterapi", "Uzm. Fzt. Sılasu Arıkan | Maltepe Fizyoterapi")
     .replaceAll("tilbe-title", "silasu-title")
     .replaceAll("Tilbe Meriç", exp.name || "Sılasu Arıkan Turhan")
-    .replace('Fzt.<br/><em>' + (exp.name || "Sılasu Arıkan Turhan") + '</em>', (exp.prefix || "Uzm. Fzt.") + '<br/><em>' + (exp.name || "Sılasu Arıkan Turhan") + '</em>')
     .replaceAll("/images/team/tilbe-meric.webp", exp.image || "/images/team/silasu-turhan.webp")
     .replaceAll("Fizyoterapist " + (exp.name || "Sılasu Arıkan Turhan"), (exp.prefix || "Uzm. Fzt.") + " " + (exp.name || "Sılasu Arıkan Turhan"))
-    .replace("Fzt.</span></div></section>", (exp.prefix || "Uzm. Fzt.") + "</span></div></section>")
     .replace("Tilbe Meriç, fizyoterapi sürecini", (exp.name || "Sılasu Arıkan Turhan") + ", fizyoterapi sürecini")
     .replace("Fonksiyonel hareket eğitimi", "Egzersiz ve hareket eğitimi");
 }
