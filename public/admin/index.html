@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Yönetim Paneli | Fizyoterapist Sılasu Turhan · Tilbe Meriç</title>
   <link rel="icon" href="/favicon.svg" />
-  <link rel="stylesheet" href="/admin/admin.css?v=1" />
+  <link rel="stylesheet" href="/admin/admin.css?v=20260918-v5" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -407,9 +407,54 @@
     </div>
   </dialog>
 
+  <!-- VIDEO EDIT MODAL -->
+  <dialog id="video-edit-modal" class="admin-modal">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h3 id="video-modal-title">Videoyu Düzenle</h3>
+        <button type="button" class="modal-close" id="btn-close-video-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="video-edit-form">
+          <input type="hidden" id="edit-video-expert" />
+          <input type="hidden" id="edit-video-index" />
+          
+          <div class="form-group">
+            <label for="edit-video-title">Video Başlığı *</label>
+            <input type="text" id="edit-video-title" required placeholder="Örn: Denge ve Hareket Analizi" />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-video-caption">Kısa Açıklama</label>
+            <textarea id="edit-video-caption" rows="2" placeholder="Örn: Sık düşen veya ayağı takılan kişilerde değerlendirme."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-video-src">Video Dosyası veya URL *</label>
+            <div class="input-with-button">
+              <input type="text" id="edit-video-src" required placeholder="/videos/sila/... veya dosya seçin" />
+              <label class="btn btn-secondary file-upload-label">
+                Yükle
+                <input type="file" accept="video/mp4,video/quicktime,video/webm" class="video-file-input" data-target="edit-video-src" />
+              </label>
+            </div>
+            <div id="edit-video-preview-wrap" style="margin-top: 10px; display: none;">
+              <video id="edit-video-preview" controls playsinline style="max-width: 100%; max-height: 180px; border-radius: 8px; background: #000;"></video>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-video-edit">Vazgeç</button>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="toast-container"></div>
 
-  <script src="/admin/admin.js?v=1"></script>
+  <script src="/admin/admin.js?v=20260918-v5"></script>
 </body>
 </html>

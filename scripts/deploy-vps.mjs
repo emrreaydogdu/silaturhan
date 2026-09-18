@@ -39,9 +39,7 @@ async function main() {
     username: USERNAME,
     password: PASSWORD,
     tryKeyboard: true,
-    readyTimeout: 45000,
-    keepaliveInterval: 10000,
-    keepaliveCountMax: 10,
+    readyTimeout: 30000,
   });
   console.log("Connected successfully!");
 

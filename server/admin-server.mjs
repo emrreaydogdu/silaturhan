@@ -372,7 +372,7 @@ const server = http.createServer(async (req, res) => {
     const contentType = MIME_TYPES[ext] || "application/octet-stream";
     res.writeHead(200, {
       "Content-Type": contentType,
-      "Cache-Control": ext === ".html" ? "no-cache, no-store, must-revalidate" : "public, max-age=3600",
+      "Cache-Control": pathname.startsWith("/admin") ? "no-cache, no-store, must-revalidate" : "public, max-age=3600",
     });
     return createReadStream(filePath).pipe(res);
   }

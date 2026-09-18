@@ -1060,23 +1060,24 @@ function renderReelsList(id) {
 
     const li = document.createElement("li");
     li.className = "reel-item";
-    li.style.cssText = "display: flex; gap: 12px; align-items: center; padding: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px;";
+    li.style.cssText = "display: flex; gap: 14px; align-items: center; padding: 12px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px;";
     li.innerHTML = `
       ${isLocalVideo ? `
-        <video src="${escapeHtml(src)}" preload="metadata" style="width: 72px; height: 96px; object-fit: cover; border-radius: 6px; background: #000; flex-shrink: 0;" playsinline muted></video>
+        <video src="${escapeHtml(src)}" preload="metadata" style="width: 70px; height: 95px; object-fit: cover; border-radius: 8px; background: #000; flex-shrink: 0;" playsinline muted></video>
       ` : `
-        <div style="width: 72px; height: 72px; border-radius: 6px; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;">🎬</div>
+        <div style="width: 70px; height: 70px; border-radius: 8px; background: rgba(59,162,154,0.1); border: 1px solid rgba(59,162,154,0.25); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;">🎬</div>
       `}
       <div style="flex: 1; min-width: 0;">
-        <div style="font-weight: 600; font-size: 0.95rem; color: #1e293b; margin-bottom: 3px;">${escapeHtml(title)}</div>
-        ${caption ? `<div style="font-size: 0.82rem; color: #64748b; margin-bottom: 4px; line-height: 1.3;">${escapeHtml(caption)}</div>` : ""}
-        <a href="${escapeHtml(src)}" target="_blank" class="reel-link" title="${escapeHtml(src)}" style="font-size: 0.8rem; word-break: break-all; color: var(--primary);">
+        <div style="font-weight: 600; font-size: 0.95rem; color: #fff; margin-bottom: 4px;">${escapeHtml(title)}</div>
+        ${caption ? `<div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px; line-height: 1.35;">${escapeHtml(caption)}</div>` : ""}
+        <a href="${escapeHtml(src)}" target="_blank" class="reel-link" title="${escapeHtml(src)}" style="font-size: 0.78rem; word-break: break-all; color: var(--primary);">
           ${escapeHtml(src)}
         </a>
       </div>
-      <div class="reel-actions" style="display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;">
+      <div class="reel-actions" style="display: flex; gap: 5px; align-items: center; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary btn-sm" data-action="move-up" data-expert="${id}" data-index="${index}" ${index === 0 ? "disabled" : ""} title="Yukarı taşı">▲</button>
         <button type="button" class="btn btn-secondary btn-sm" data-action="move-down" data-expert="${id}" data-index="${index}" ${index === items.length - 1 ? "disabled" : ""} title="Aşağı taşı">▼</button>
+        <button type="button" class="btn btn-primary btn-sm" data-action="edit-reel" data-expert="${id}" data-index="${index}" title="Düzenle">Düzenle</button>
         <button type="button" class="btn btn-danger btn-sm" data-action="delete-reel" data-expert="${id}" data-index="${index}" title="Kaldır">Sil</button>
       </div>
     `;
@@ -1102,6 +1103,30 @@ function handleReelAction(e) {
     list[index] = list[index + 1];
     list[index + 1] = temp;
     renderReelsList(expert);
+  } else if (action === "edit-reel") {
+    const item = list[index];
+    const src = typeof item === "object" ? (item.src || "") : item;
+    const title = typeof item === "object" ? (item.title || "") : "";
+    const caption = typeof item === "object" ? (item.caption || "") : "";
+
+    document.getElementById("edit-video-expert").value = expert;
+    document.getElementById("edit-video-index").value = index;
+    document.getElementById("edit-video-title").value = title;
+    document.getElementById("edit-video-caption").value = caption;
+    document.getElementById("edit-video-src").value = src;
+
+    const previewWrap = document.getElementById("edit-video-preview-wrap");
+    const previewEl = document.getElementById("edit-video-preview");
+    if (src && (src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".mov") || src.includes("/videos/"))) {
+      previewWrap.style.display = "block";
+      previewEl.src = src;
+    } else {
+      previewWrap.style.display = "none";
+      previewEl.src = "";
+    }
+
+    document.getElementById("video-modal-title").textContent = `${expert === "silasu" ? "Sılasu Turhan" : "Tilbe Meriç"} Videosunu Düzenle`;
+    document.getElementById("video-edit-modal").showModal();
   } else if (action === "delete-reel") {
     if (confirm("Bu videoyu kaldırmak istediğinize emin misiniz?")) {
       list.splice(index, 1);
@@ -1113,6 +1138,50 @@ function handleReelAction(e) {
 
 document.getElementById("silasu-reels-list")?.addEventListener("click", handleReelAction);
 document.getElementById("tilbe-reels-list")?.addEventListener("click", handleReelAction);
+
+// Video Edit Modal Handlers
+const videoEditModal = document.getElementById("video-edit-modal");
+document.getElementById("btn-close-video-modal")?.addEventListener("click", () => videoEditModal?.close());
+document.getElementById("btn-cancel-video-edit")?.addEventListener("click", () => videoEditModal?.close());
+
+document.getElementById("edit-video-src")?.addEventListener("input", (e) => {
+  const url = e.target.value.trim();
+  const previewWrap = document.getElementById("edit-video-preview-wrap");
+  const previewEl = document.getElementById("edit-video-preview");
+  if (url && (url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".mov") || url.includes("/videos/"))) {
+    previewWrap.style.display = "block";
+    previewEl.src = url;
+  } else {
+    previewWrap.style.display = "none";
+  }
+});
+
+document.getElementById("video-edit-form")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const expert = document.getElementById("edit-video-expert").value;
+  const index = Number(document.getElementById("edit-video-index").value);
+  const title = document.getElementById("edit-video-title").value.trim();
+  const caption = document.getElementById("edit-video-caption").value.trim();
+  const src = document.getElementById("edit-video-src").value.trim();
+
+  if (!src) {
+    return alert("Lütfen geçerli bir video dosyası veya URL'si girin.");
+  }
+
+  const existing = state.instagram[expert][index];
+  const id = (typeof existing === "object" && existing.id) ? existing.id : `${expert}-video-${Date.now()}`;
+
+  state.instagram[expert][index] = {
+    id,
+    src,
+    title: title || "Klinik Video",
+    caption,
+  };
+
+  videoEditModal.close();
+  renderReelsList(expert);
+  showToast("Video bilgileri güncellendi! Canlıya aktarmak için 'Videoları Kaydet' butonuna basınız. ✓");
+});
 
 // Add Video / Reel
 ["silasu", "tilbe"].forEach((id) => {
