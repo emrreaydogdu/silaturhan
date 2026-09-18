@@ -691,6 +691,51 @@ function renderExpertFormHtml(id, data = {}) {
         </div>
       </div>
 
+      <div class="form-group">
+        <label>Seans Planı (Etiketler)</label>
+        <div class="tags-input-box" id="services-box-${id}">
+          ${(data.sessionPlanServices || [
+            "Fizyoterapi ve Rehabilitasyon",
+            "Osteopatik Değerlendirme",
+            "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+            "Core / Stabilizasyon Egzersizleri",
+            "Ortopedik Rehabilitasyon",
+            "Klinik Pilates",
+            "Manuel Terapi",
+            "Osteopati",
+            "Medikal Masaj",
+            "Nörolojik Rehabilitasyon",
+            "İnme Rehabilitasyonu",
+            "Parkinson Rehabilitasyonu",
+            "MS Rehabilitasyonu",
+            "El Rehabilitasyonu",
+            "Diz Protezi Sonrası Rehabilitasyon",
+            "Omuz Ameliyatı Sonrası Rehabilitasyon",
+            "Çapraz Bağ Yırtıkları Rehabilitasyonu",
+            "Menisküs Rehabilitasyonu",
+            "Skolyoz Rehabilitasyonu",
+            "Hamile Pilatesi",
+            "Pilates",
+            "İnkontinans Rehabilitasyonu",
+            "Migren Rehabilitasyonu",
+            "Oyun Terapisi"
+          ])
+            .map(
+              (svc, idx) => `
+            <span class="tag-item">
+              ${escapeHtml(svc)}
+              <button type="button" class="service-remove" data-expert="${id}" data-service-idx="${idx}">×</button>
+            </span>
+          `,
+            )
+            .join("")}
+        </div>
+        <div class="tag-add-bar">
+          <input type="text" id="new-service-input-${id}" placeholder="Yeni seans planı hizmeti yazın (Örn: Manuel Terapi)" />
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-add-service-${id}">Ekle</button>
+        </div>
+      </div>
+
       <div class="form-row">
         <div class="form-group flex-1">
           <label>Randevu Telefonu</label>
@@ -755,6 +800,90 @@ function attachExpertFormEvents(id) {
         harvestActiveExpertForm();
         renderExperts();
       }
+    }
+  });
+
+  // Add service tag
+  document.getElementById(`btn-add-service-${id}`)?.addEventListener("click", () => {
+    const input = document.getElementById(`new-service-input-${id}`);
+    const val = input.value.trim();
+    if (val) {
+      if (!state.experts[id].sessionPlanServices) {
+        state.experts[id].sessionPlanServices = [
+          "Fizyoterapi ve Rehabilitasyon",
+          "Osteopatik Değerlendirme",
+          "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+          "Core / Stabilizasyon Egzersizleri",
+          "Ortopedik Rehabilitasyon",
+          "Klinik Pilates",
+          "Manuel Terapi",
+          "Osteopati",
+          "Medikal Masaj",
+          "Nörolojik Rehabilitasyon",
+          "İnme Rehabilitasyonu",
+          "Parkinson Rehabilitasyonu",
+          "MS Rehabilitasyonu",
+          "El Rehabilitasyonu",
+          "Diz Protezi Sonrası Rehabilitasyon",
+          "Omuz Ameliyatı Sonrası Rehabilitasyon",
+          "Çapraz Bağ Yırtıkları Rehabilitasyonu",
+          "Menisküs Rehabilitasyonu",
+          "Skolyoz Rehabilitasyonu",
+          "Hamile Pilatesi",
+          "Pilates",
+          "İnkontinans Rehabilitasyonu",
+          "Migren Rehabilitasyonu",
+          "Oyun Terapisi"
+        ];
+      }
+      state.experts[id].sessionPlanServices.push(val);
+      harvestActiveExpertForm();
+      renderExperts();
+    }
+  });
+
+  document.getElementById(`new-service-input-${id}`)?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById(`btn-add-service-${id}`).click();
+    }
+  });
+
+  // Remove service tag
+  document.getElementById(`services-box-${id}`)?.addEventListener("click", (e) => {
+    if (e.target.classList.contains("service-remove")) {
+      const idx = Number(e.target.dataset.serviceIdx);
+      if (!state.experts[id].sessionPlanServices) {
+        state.experts[id].sessionPlanServices = [
+          "Fizyoterapi ve Rehabilitasyon",
+          "Osteopatik Değerlendirme",
+          "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+          "Core / Stabilizasyon Egzersizleri",
+          "Ortopedik Rehabilitasyon",
+          "Klinik Pilates",
+          "Manuel Terapi",
+          "Osteopati",
+          "Medikal Masaj",
+          "Nörolojik Rehabilitasyon",
+          "İnme Rehabilitasyonu",
+          "Parkinson Rehabilitasyonu",
+          "MS Rehabilitasyonu",
+          "El Rehabilitasyonu",
+          "Diz Protezi Sonrası Rehabilitasyon",
+          "Omuz Ameliyatı Sonrası Rehabilitasyon",
+          "Çapraz Bağ Yırtıkları Rehabilitasyonu",
+          "Menisküs Rehabilitasyonu",
+          "Skolyoz Rehabilitasyonu",
+          "Hamile Pilatesi",
+          "Pilates",
+          "İnkontinans Rehabilitasyonu",
+          "Migren Rehabilitasyonu",
+          "Oyun Terapisi"
+        ];
+      }
+      state.experts[id].sessionPlanServices.splice(idx, 1);
+      harvestActiveExpertForm();
+      renderExperts();
     }
   });
 
@@ -823,6 +952,16 @@ document.getElementById("new-expert-form")?.addEventListener("submit", (e) => {
     instagramUrl: "",
     profileUrl: `/fzt-${slug}`,
     expertiseAreas: ["Ortopedik Rehabilitasyon", "Fonksiyonel Egzersiz", "Manuel Terapi"],
+    sessionPlanServices: [
+      "Fizyoterapi ve Rehabilitasyon",
+      "Osteopatik Değerlendirme",
+      "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+      "Core / Stabilizasyon Egzersizleri",
+      "Ortopedik Rehabilitasyon",
+      "Klinik Pilates",
+      "Manuel Terapi",
+      "Osteopati"
+    ],
   };
 
   state.activeExpert = slug;

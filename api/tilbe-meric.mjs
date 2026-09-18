@@ -24,6 +24,41 @@ export function renderTilbePage(expert = getExperts().tilbe) {
     "Kinezyolojik bantlama"
   ];
 
+  const defaultServices = [
+    "Fizyoterapi ve Rehabilitasyon",
+    "Osteopatik Değerlendirme",
+    "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+    "Core / Stabilizasyon Egzersizleri",
+    "Ortopedik Rehabilitasyon",
+    "Klinik Pilates",
+    "Manuel Terapi",
+    "Osteopati",
+    "Medikal Masaj",
+    "Nörolojik Rehabilitasyon",
+    "İnme Rehabilitasyonu",
+    "Parkinson Rehabilitasyonu",
+    "MS Rehabilitasyonu",
+    "El Rehabilitasyonu",
+    "Diz Protezi Sonrası Rehabilitasyon",
+    "Omuz Ameliyatı Sonrası Rehabilitasyon",
+    "Çapraz Bağ Yırtıkları Rehabilitasyonu",
+    "Menisküs Rehabilitasyonu",
+    "Skolyoz Rehabilitasyonu",
+    "Hamile Pilatesi",
+    "Pilates",
+    "İnkontinans Rehabilitasyonu",
+    "Migren Rehabilitasyonu",
+    "Oyun Terapisi"
+  ];
+
+  const servicesList = (exp.sessionPlanServices && exp.sessionPlanServices.length)
+    ? exp.sessionPlanServices
+    : (exp.services && exp.services.length ? exp.services : defaultServices);
+
+  const serviceArticles = servicesList
+    .map((s, i) => `<article><span>${String(i + 1).padStart(2, "0")}</span><p>${s}</p></article>`)
+    .join("");
+
   const bioParagraphs = fullBio.split("\n\n").filter(Boolean).map(p => `<p>${p.trim()}</p>`).join("");
   const interestSpans = areas.map(a => `<span>✓ ${a}</span>`).join("");
 
@@ -51,7 +86,7 @@ export function renderTilbePage(expert = getExperts().tilbe) {
 
       <section class="interests-section" id="uzmanlik"><div><p class="eyebrow light"><span></span> Uzmanlık alanları</p><h2>Hareketi<br/><em>güçlendiren</em> seanslar.</h2></div><div class="interest-list">${interestSpans}</div></section>
 
-      <section class="profile-services" aria-labelledby="tilbe-services-title"><div class="profile-services-heading"><p class="eyebrow"><span></span> Seans planı</p><h2 id="tilbe-services-title">İhtiyacınıza göre<br/><em>birlikte</em> şekillenir.</h2><p>İlk görüşmede hedeflerinizi ve günlük yaşam ihtiyaçlarınızı dinleyerek size uygun başlangıç planını oluşturuyoruz.</p><a class="button primary" href="/?randevu=1">Randevu Planlayın ${arrow}</a></div><div class="profile-service-list"><article><span>01</span><p>Fizyoterapi ve Rehabilitasyon</p></article><article><span>02</span><p>Osteopatik Değerlendirme</p></article><article><span>03</span><p>Sporcu Sağlığı ve Fonksiyonel Egzersiz</p></article><article><span>04</span><p>Core / Stabilizasyon Egzersizleri</p></article><article><span>05</span><p>Ortopedik Rehabilitasyon</p></article><article><span>06</span><p>Klinik Pilates</p></article><article><span>07</span><p>Manuel Terapi</p></article><article><span>08</span><p>Osteopati</p></article><article><span>09</span><p>Medikal Masaj</p></article><article><span>10</span><p>Nörolojik Rehabilitasyon</p></article><article><span>11</span><p>İnme Rehabilitasyonu</p></article><article><span>12</span><p>Parkinson Rehabilitasyonu</p></article><article><span>13</span><p>MS Rehabilitasyonu</p></article><article><span>14</span><p>El Rehabilitasyonu</p></article><article><span>15</span><p>Diz Protezi Sonrası Rehabilitasyon</p></article><article><span>16</span><p>Omuz Ameliyatı Sonrası Rehabilitasyon</p></article><article><span>17</span><p>Çapraz Bağ Yırtıkları Rehabilitasyonu</p></article><article><span>18</span><p>Menisküs Rehabilitasyonu</p></article><article><span>19</span><p>Skolyoz Rehabilitasyonu</p></article><article><span>20</span><p>Hamile Pilatesi</p></article><article><span>21</span><p>Pilates</p></article><article><span>22</span><p>İnkontinans Rehabilitasyonu</p></article><article><span>23</span><p>Migren Rehabilitasyonu</p></article><article><span>24</span><p>Oyun Terapisi</p></article></div></section>
+      <section class="profile-services" aria-labelledby="tilbe-services-title"><div class="profile-services-heading"><p class="eyebrow"><span></span> Seans planı</p><h2 id="tilbe-services-title">İhtiyacınıza göre<br/><em>birlikte</em> şekillenir.</h2><p>İlk görüşmede hedeflerinizi ve günlük yaşam ihtiyaçlarınızı dinleyerek size uygun başlangıç planını oluşturuyoruz.</p><a class="button primary" href="/?randevu=1">Randevu Planlayın ${arrow}</a></div><div class="profile-service-list">${serviceArticles}</div></section>
 
       ${universalContactCta}<footer><a class="brand footer-brand" href="/"><span class="brand-mark"><span></span></span><span>Fizyoterapist<small>Sılasu Turhan · Tilbe Meriç</small></span></a><p>© 2026 Fizyoterapist Sılasu Turhan · Tilbe Meriç</p><p>Randevu ile hizmet verilmektedir.</p></footer>
     </main>

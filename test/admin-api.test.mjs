@@ -137,6 +137,7 @@ test("Admin Server API tests", async (t) => {
         email: "test@example.com",
         profileUrl: "/fzt-test",
         expertiseAreas: ["Manuel Terapi"],
+        sessionPlanServices: ["Fizyoterapi ve Rehabilitasyon", "Osteopatik Değerlendirme"],
       },
     };
 
@@ -152,6 +153,7 @@ test("Admin Server API tests", async (t) => {
     const saved = getExperts();
     assert.ok(saved["test-fzt"]);
     assert.equal(saved["test-fzt"].name, "Test Fizyoterapist");
+    assert.deepEqual(saved["test-fzt"].sessionPlanServices, ["Fizyoterapi ve Rehabilitasyon", "Osteopatik Değerlendirme"]);
 
     // Clean up (delete test expert)
     await fetch(`${baseUrl}/api/admin/experts`, {
@@ -184,6 +186,9 @@ test("Admin Server API tests", async (t) => {
     assert.match(adminJs, /btn-delete-expert/);
     assert.match(adminJs, /new-expert-form/);
     assert.match(adminJs, /renderExpertFormHtml/);
+    assert.match(adminJs, /services-box-/);
+    assert.match(adminJs, /btn-add-service-/);
+    assert.match(adminJs, /service-remove/);
   });
 
   await new Promise((resolve) => server.close(resolve));

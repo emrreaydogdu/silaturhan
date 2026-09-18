@@ -17,6 +17,25 @@ export function renderGenericExpertPage(expert) {
     "Klinik Pilates"
   ];
 
+  const defaultServices = [
+    "Fizyoterapi ve Rehabilitasyon",
+    "Osteopatik Değerlendirme",
+    "Sporcu Sağlığı ve Fonksiyonel Egzersiz",
+    "Core / Stabilizasyon Egzersizleri",
+    "Ortopedik Rehabilitasyon",
+    "Klinik Pilates",
+    "Manuel Terapi",
+    "Osteopati"
+  ];
+
+  const servicesList = (exp.sessionPlanServices && exp.sessionPlanServices.length)
+    ? exp.sessionPlanServices
+    : (exp.services && exp.services.length ? exp.services : defaultServices);
+
+  const serviceArticles = servicesList
+    .map((s, i) => `<article><span>${String(i + 1).padStart(2, "0")}</span><p>${s}</p></article>`)
+    .join("");
+
   const bioParagraphs = fullBio.split("\n\n").filter(Boolean).map(p => `<p>${p.trim()}</p>`).join("");
   const interestSpans = areas.map(a => `<span>✓ ${a}</span>`).join("");
 
@@ -108,6 +127,16 @@ export function renderGenericExpertPage(expert) {
         <div class="interest-list">
           ${interestSpans}
         </div>
+      </section>
+
+      <section class="profile-services" aria-labelledby="expert-services-title">
+        <div class="profile-services-heading">
+          <p class="eyebrow"><span></span> Seans planı</p>
+          <h2 id="expert-services-title">İhtiyacınıza göre<br/><em>birlikte</em> şekillenir.</h2>
+          <p>İlk görüşmede hedeflerinizi ve günlük yaşam ihtiyaçlarınızı dinleyerek size uygun başlangıç planını oluşturuyoruz.</p>
+          <a class="button primary" href="/?randevu=1">Randevu Planlayın ${arrow}</a>
+        </div>
+        <div class="profile-service-list">${serviceArticles}</div>
       </section>
 
       ${universalContactCta}
