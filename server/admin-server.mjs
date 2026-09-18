@@ -259,6 +259,13 @@ const server = http.createServer(async (req, res) => {
         if (typeof body.experts !== "object" || !body.experts) {
           return sendJson(res, 400, { ok: false, error: "experts bir nesne olmalıdır." });
         }
+        for (const [id, exp] of Object.entries(body.experts)) {
+          if (id === "silasu" && (!exp.profileUrl || exp.profileUrl === "/fzt-silasu")) {
+            exp.profileUrl = "/uzm-fzt-silasu-arikan";
+          } else if (id === "tilbe" && (!exp.profileUrl || exp.profileUrl === "/fzt-tilbe")) {
+            exp.profileUrl = "/fzt-tilbe-meric";
+          }
+        }
         const updated = saveExperts(body.experts);
         await triggerPublish();
         return sendJson(res, 200, { ok: true, experts: updated, published: true });

@@ -630,7 +630,13 @@ function harvestActiveExpertForm() {
   exp.degree = exp.title;
   exp.role = getVal("role");
   exp.category = getVal("category");
-  exp.profileUrl = getVal("profileUrl");
+  let profUrl = getVal("profileUrl");
+  if (id === "silasu" && (!profUrl || profUrl === "/fzt-silasu")) {
+    profUrl = "/uzm-fzt-silasu-arikan";
+  } else if (id === "tilbe" && (!profUrl || profUrl === "/fzt-tilbe")) {
+    profUrl = "/fzt-tilbe-meric";
+  }
+  exp.profileUrl = profUrl;
   exp.shortBio = getVal("shortBio");
   exp.fullBio = getVal("fullBio");
   exp.image = getVal("image");
@@ -693,7 +699,13 @@ function renderExpertFormHtml(id, data = {}) {
         </div>
         <div class="form-group flex-1">
           <label>Profil Sayfası URL</label>
-          <input type="text" id="input-${id}-profileUrl" value="${escapeHtml(data.profileUrl || `/fzt-${id}`)}" placeholder="Örn: /fzt-${id}" />
+          <input type="text" id="input-${id}-profileUrl" value="${escapeHtml(
+            (id === "silasu" && (!data.profileUrl || data.profileUrl === "/fzt-silasu"))
+              ? "/uzm-fzt-silasu-arikan"
+              : (id === "tilbe" && (!data.profileUrl || data.profileUrl === "/fzt-tilbe"))
+              ? "/fzt-tilbe-meric"
+              : (data.profileUrl || (id === "silasu" ? "/uzm-fzt-silasu-arikan" : id === "tilbe" ? "/fzt-tilbe-meric" : `/fzt-${id}`))
+          )}" placeholder="Örn: ${id === "silasu" ? "/uzm-fzt-silasu-arikan" : id === "tilbe" ? "/fzt-tilbe-meric" : `/fzt-${id}`}" />
         </div>
       </div>
 

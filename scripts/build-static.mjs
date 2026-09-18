@@ -139,6 +139,21 @@ for (const [key, exp] of Object.entries(currentExperts)) {
   }
 }
 
+// 4. Fallback / alias redirect directories in case legacy links or cached pages hit /fzt-silasu or /fzt-tilbe
+const silasuLegacyDir = resolve(outputRoot, "fzt-silasu");
+await mkdir(silasuLegacyDir, { recursive: true });
+await writeFile(
+  resolve(silasuLegacyDir, "index.html"),
+  `<!doctype html><html lang="tr"><head><meta charset="utf-8"/><title>Yönlendiriliyor...</title><meta http-equiv="refresh" content="0; url=/uzm-fzt-silasu-arikan"/><script>window.location.replace("/uzm-fzt-silasu-arikan");</script></head><body><p><a href="/uzm-fzt-silasu-arikan">Profile gitmek için tıklayınız</a></p></body></html>`,
+);
+
+const tilbeLegacyDir = resolve(outputRoot, "fzt-tilbe");
+await mkdir(tilbeLegacyDir, { recursive: true });
+await writeFile(
+  resolve(tilbeLegacyDir, "index.html"),
+  `<!doctype html><html lang="tr"><head><meta charset="utf-8"/><title>Yönlendiriliyor...</title><meta http-equiv="refresh" content="0; url=/fzt-tilbe-meric"/><script>window.location.replace("/fzt-tilbe-meric");</script></head><body><p><a href="/fzt-tilbe-meric">Profile gitmek için tıklayınız</a></p></body></html>`,
+);
+
 const expertsDirectory = resolve(outputRoot, "uzmanlar");
 await mkdir(expertsDirectory, { recursive: true });
 await writeFile(

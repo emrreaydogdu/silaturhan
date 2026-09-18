@@ -70,7 +70,16 @@ export function saveArticles(data) {
 }
 
 export function getExperts() {
-  return readJson("experts.json", {});
+  const experts = readJson("experts.json", {});
+  if (experts && typeof experts === "object") {
+    if (experts.silasu && (!experts.silasu.profileUrl || experts.silasu.profileUrl === "/fzt-silasu")) {
+      experts.silasu.profileUrl = "/uzm-fzt-silasu-arikan";
+    }
+    if (experts.tilbe && (!experts.tilbe.profileUrl || experts.tilbe.profileUrl === "/fzt-tilbe")) {
+      experts.tilbe.profileUrl = "/fzt-tilbe-meric";
+    }
+  }
+  return experts;
 }
 
 export function saveExperts(data) {

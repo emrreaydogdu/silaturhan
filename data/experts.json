@@ -46,7 +46,8 @@
     "email": "silasuturhan@gmail.com",
     "instagram": "@fztsilasuarikanturhan",
     "instagramUrl": "https://www.instagram.com/fztsilasuarikanturhan/",
-    "image": "/images/team/silasu-turhan.webp"
+    "image": "/images/team/silasu-turhan.webp",
+    "profileUrl": "/uzm-fzt-silasu-arikan"
   },
   "tilbe": {
     "id": "tilbe",
@@ -95,6 +96,7 @@
     "email": "fzt.tilbemeric@gmail.com",
     "instagram": "@fzt.tilbemeric",
     "instagramUrl": "https://www.instagram.com/fzt.tilbemeric/",
-    "image": "/images/team/tilbe-meric.webp"
+    "image": "/images/team/tilbe-meric.webp",
+    "profileUrl": "/fzt-tilbe-meric"
   }
 }

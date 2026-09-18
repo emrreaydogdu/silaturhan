@@ -21,7 +21,11 @@ export function renderExpertsPage(experts = getExperts()) {
       emName = nameParts.pop();
       mainName = nameParts.join(" ");
     }
-    const profileHref = exp.profileUrl || (exp.id === "silasu" ? "/uzm-fzt-silasu-arikan" : exp.id === "tilbe" ? "/fzt-tilbe-meric" : `/fzt-${exp.id}`);
+    const profileHref = exp.id === "silasu"
+      ? ((!exp.profileUrl || exp.profileUrl === "/fzt-silasu") ? "/uzm-fzt-silasu-arikan" : exp.profileUrl)
+      : exp.id === "tilbe"
+      ? ((!exp.profileUrl || exp.profileUrl === "/fzt-tilbe") ? "/fzt-tilbe-meric" : exp.profileUrl)
+      : (exp.profileUrl || `/fzt-${exp.id}`);
     const imgUrl = exp.image || (exp.id === "tilbe" ? tilbeDefaultImg : silasuDefaultImg);
     const prefix = exp.prefix || "Fzt.";
     const category = exp.category || "FİZYOTERAPİ VE REHABİLİTASYON";
