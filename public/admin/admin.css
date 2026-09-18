@@ -30,6 +30,36 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #237671 #081214;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #081214;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #237671;
+  border-radius: 999px;
+  border: 2px solid #081214;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3ba29a;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #48c9b0;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 body {
@@ -155,6 +185,29 @@ body {
   background: #091316;
   border-bottom: 1px solid var(--border);
   overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 162, 154, 0.4) rgba(8, 18, 20, 0.6);
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabs-bar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tabs-bar::-webkit-scrollbar-track {
+  background: rgba(8, 18, 20, 0.6);
+  border-radius: 999px;
+}
+
+.tabs-bar::-webkit-scrollbar-thumb {
+  background: #237671;
+  border-radius: 999px;
+  border: 1px solid rgba(8, 18, 20, 0.6);
+  transition: background 0.2s ease;
+}
+
+.tabs-bar::-webkit-scrollbar-thumb:hover {
+  background: #3ba29a;
 }
 
 .tab-btn {

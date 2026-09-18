@@ -29,7 +29,7 @@ async function main() {
   if (existsSync(archiveName)) {
     rmSync(archiveName);
   }
-  execSync(`tar.exe -czf ${archiveName} -C dist .`, { stdio: "inherit" });
+  execSync(`tar.exe --exclude="videos" -czf ${archiveName} -C dist .`, { stdio: "inherit" });
 
   // 4. Connect to SSH
   console.log(`\n[3/6] Connecting to Hetzner VPS (${HOST})...`);
@@ -39,7 +39,9 @@ async function main() {
     username: USERNAME,
     password: PASSWORD,
     tryKeyboard: true,
-    readyTimeout: 20000,
+    readyTimeout: 30000,
+    keepaliveInterval: 10000,
+    keepaliveCountMax: 10,
   });
   console.log("Connected successfully!");
 
@@ -57,6 +59,10 @@ async function main() {
     await exec(ssh, `tar -xzf "${remoteArchive}" -C "${releaseDir}"`);
     await exec(ssh, `rm -f "${remoteArchive}"`);
 
+    // Ensure videos are present in releaseDir from current or app
+    await exec(ssh, `if [ -d "${REMOTE_BASE}/current/videos" ]; then cp -rn "${REMOTE_BASE}/current/videos" "${releaseDir}/"; fi`);
+    await exec(ssh, `if [ -d "${REMOTE_BASE}/app/public/videos" ]; then cp -rn "${REMOTE_BASE}/app/public/videos" "${releaseDir}/"; fi`);
+
     console.log("Setting correct permissions...");
     await exec(ssh, `find "${releaseDir}" -type d -exec chmod 755 {} + && find "${releaseDir}" -type f -exec chmod 644 {} +`);
 
@@ -66,7 +72,7 @@ async function main() {
     if (existsSync(appArchive)) {
       rmSync(appArchive);
     }
-    execSync(`tar.exe -czf ${appArchive} server data public scripts api package.json`, { stdio: "inherit" });
+    execSync(`tar.exe --exclude="public/videos" --exclude="public/images" -czf ${appArchive} server data public scripts api package.json`, { stdio: "inherit" });
 
     const remoteAppDir = `${REMOTE_BASE}/app`;
     const remoteAppArchive = `${REMOTE_BASE}/turhanmeric-app.tar.gz`;
@@ -75,7 +81,12 @@ async function main() {
     await ssh.putFile(appArchive, remoteAppArchive);
     await exec(ssh, `tar -xzf "${remoteAppArchive}" -C "${remoteAppDir}"`);
     await exec(ssh, `rm -f "${remoteAppArchive}"`);
-    await exec(ssh, `mkdir -p "${remoteAppDir}/public/images/uploads" "${remoteAppDir}/public/videos/uploads"`);
+
+    // Sync media assets locally on VPS from releaseDir into app
+    console.log("Syncing media assets into app on VPS...");
+    await exec(ssh, `mkdir -p "${remoteAppDir}/public/videos" "${remoteAppDir}/public/images" "${remoteAppDir}/public/videos/uploads" "${remoteAppDir}/public/images/uploads"`);
+    await exec(ssh, `if [ -d "${releaseDir}/videos" ]; then cp -rn "${releaseDir}/videos"/* "${remoteAppDir}/public/videos/"; fi`);
+    await exec(ssh, `if [ -d "${releaseDir}/images" ]; then cp -rn "${releaseDir}/images"/* "${remoteAppDir}/public/images/"; fi`);
 
     // 6. Update Nginx configuration
     console.log("\n[6/8] Updating Nginx configuration on VPS...");
